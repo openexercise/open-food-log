@@ -35,7 +35,7 @@ var (
 	// simpleModifier is a second part a rule can put in front of the food: one or two plain words
 	// ("raw", "baked", "dried"), not a clause ("with skin", "from frozen").
 	simpleModifier = regexp.MustCompile(`^[a-z]+( [a-z]+)?$`)
-	notAModifier   = map[string]bool{"nfs": true, "ns": true, "with": true, "without": true, "from": true, "and": true, "or": true, "made": true, "type": true}
+	notAModifier   = map[string]bool{"nfs": true, "ns": true, "with": true, "without": true, "from": true, "and": true, "or": true, "made": true, "type": true, "no": true, "not": true, "school": true, "home": true}
 )
 
 // normalize is the comparison rule for names: lowercase, every run of other characters one space.

@@ -17,6 +17,8 @@ func TestRuleAliases(t *testing.T) {
 		"Milk, reduced fat (2%)":           nil,
 		"Salmon, Atlantic, farmed, raw":    nil,
 		"Beans, from canned, no added fat": nil,
+		"Ham and noodles, no sauce":        nil, // a negation, not a modifier
+		"Pancakes, school":                 nil,
 	}
 	for name, want := range cases {
 		if got := ruleAliases(name); !slices.Equal(got, want) {
