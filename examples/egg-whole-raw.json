@@ -1,0 +1,85 @@
+{
+  "$schema": "https://openfoodlog.org/schema/v0/food.json",
+  "id": "ofc:egg-whole-raw",
+  "name": "Egg, Whole, Raw",
+  "kind": "generic",
+  "aliases": [
+    {
+      "name": "egg",
+      "kind": "common"
+    },
+    {
+      "name": "eggs",
+      "kind": "common"
+    }
+  ],
+  "nutrients_per_100g": {
+    "energy_kcal": 143,
+    "protein_g": 12.56,
+    "fat_g": 9.51,
+    "saturated_fat_g": 3.126,
+    "monounsaturated_fat_g": 3.658,
+    "polyunsaturated_fat_g": 1.911,
+    "trans_fat_g": 0.038,
+    "cholesterol_mg": 372,
+    "carbohydrate_g": 0.72,
+    "fiber_g": 0,
+    "sugars_g": 0.37,
+    "sodium_mg": 142,
+    "potassium_mg": 138,
+    "calcium_mg": 56,
+    "iron_mg": 1.75,
+    "magnesium_mg": 12,
+    "zinc_mg": 1.29,
+    "vitamin_c_mg": 0,
+    "vitamin_d_ug": 2,
+    "vitamin_a_rae_ug": 160,
+    "caffeine_mg": 0,
+    "alcohol_g": 0,
+    "water_g": 76.15
+  },
+  "portions": [
+    {
+      "id": "small",
+      "label": "1 small",
+      "grams": 38
+    },
+    {
+      "id": "medium",
+      "label": "1 medium",
+      "grams": 44
+    },
+    {
+      "id": "large",
+      "label": "1 large",
+      "grams": 50,
+      "is_default": true
+    },
+    {
+      "id": "extra-large",
+      "label": "1 extra large",
+      "grams": 56
+    },
+    {
+      "id": "jumbo",
+      "label": "1 jumbo",
+      "grams": 63
+    }
+  ],
+  "identifiers": {
+    "fdc_id": 171287
+  },
+  "provenance": {
+    "sources": [
+      {
+        "name": "USDA FoodData Central (SR Legacy)",
+        "id": "171287",
+        "url": "https://fdc.nal.usda.gov/food-details/171287/nutrients",
+        "license": "CC0-1.0",
+        "retrieved_at": "2026-11-09"
+      }
+    ],
+    "license": "CC0-1.0",
+    "review": "unreviewed"
+  }
+}

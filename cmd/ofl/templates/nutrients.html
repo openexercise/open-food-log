@@ -1,0 +1,8 @@
+{{template "head" .}}
+<h1>Nutrients</h1>
+<p class="lead">The keys a food or a meal item may carry. Each ends in its unit. A key left out is unknown, never zero; a producer's own keys start <code>x-</code>. A dash means the other system has no exact match. The list is <a href="/schema/v0/nutrients.json">nutrients.json</a>.</p>
+<div class="scroll"><table>
+<thead><tr><th>Key</th><th>Nutrient</th><th>INFOODS</th><th>FoodData Central</th><th>Health Connect</th><th>HealthKit</th></tr></thead>
+<tbody>{{range .Nutrients}}<tr id="{{.Key}}"><td><code>{{.Key}}</code></td><td>{{.Name}}{{if .Notes}}<br><small>{{.Notes}}</small>{{end}}</td><td>{{or .INFOODS}}</td><td>{{or .FDC}}</td><td>{{or .HealthConnect}}</td><td>{{or .HealthKit}}</td></tr>
+{{end}}</tbody></table></div>
+{{template "foot" .}}

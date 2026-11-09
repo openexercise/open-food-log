@@ -1,0 +1,30 @@
+{
+  "title": "Open Food Log v0: nutrients",
+  "description": "The nutrient keys a food or a meal may carry. Each key names its unit, so a number never travels without one. infoods is the FAO INFOODS tagname the key corresponds to (null where none matches exactly), fdc_nutrient_number is USDA FoodData Central's nutrient number, and health_connect and healthkit name the matching Android NutritionRecord property and HealthKit quantity type identifier (null where the platform has none). Checked 2026-11-09 against the FAO tagname files (to 2007), FoodData Central's API, and the Health Connect and HealthKit references. Draft; may change until v1.",
+  "nutrients": [
+    { "key": "energy_kcal", "name": "Energy", "unit": "kcal", "infoods": "ENERC", "fdc_nutrient_number": "208", "health_connect": "energy", "healthkit": "dietaryEnergyConsumed", "notes": "Metabolizable energy. INFOODS reports ENERC in kJ by default; 1 kcal = 4.184 kJ." },
+    { "key": "protein_g", "name": "Protein", "unit": "g", "infoods": "PROCNT", "fdc_nutrient_number": "203", "health_connect": "protein", "healthkit": "dietaryProtein" },
+    { "key": "fat_g", "name": "Fat, total", "unit": "g", "infoods": "FAT", "fdc_nutrient_number": "204", "health_connect": "totalFat", "healthkit": "dietaryFatTotal" },
+    { "key": "saturated_fat_g", "name": "Saturated fat", "unit": "g", "infoods": "FASAT", "fdc_nutrient_number": "606", "health_connect": "saturatedFat", "healthkit": "dietaryFatSaturated" },
+    { "key": "monounsaturated_fat_g", "name": "Monounsaturated fat", "unit": "g", "infoods": "FAMS", "fdc_nutrient_number": "645", "health_connect": "monounsaturatedFat", "healthkit": "dietaryFatMonounsaturated" },
+    { "key": "polyunsaturated_fat_g", "name": "Polyunsaturated fat", "unit": "g", "infoods": "FAPU", "fdc_nutrient_number": "646", "health_connect": "polyunsaturatedFat", "healthkit": "dietaryFatPolyunsaturated" },
+    { "key": "trans_fat_g", "name": "Trans fat", "unit": "g", "infoods": "FATRN", "fdc_nutrient_number": "605", "health_connect": "transFat", "healthkit": null },
+    { "key": "cholesterol_mg", "name": "Cholesterol", "unit": "mg", "infoods": "CHOLE", "fdc_nutrient_number": "601", "health_connect": "cholesterol", "healthkit": "dietaryCholesterol" },
+    { "key": "carbohydrate_g", "name": "Carbohydrate", "unit": "g", "infoods": "CHOCDF", "fdc_nutrient_number": "205", "health_connect": "totalCarbohydrate", "healthkit": "dietaryCarbohydrates", "notes": "Total carbohydrate by difference, as US labels and FoodData Central give it. Fibre is included." },
+    { "key": "fiber_g", "name": "Fibre, total dietary", "unit": "g", "infoods": "FIBTG", "fdc_nutrient_number": "291", "health_connect": "dietaryFiber", "healthkit": "dietaryFiber" },
+    { "key": "sugars_g", "name": "Sugars, total", "unit": "g", "infoods": "SUGAR", "fdc_nutrient_number": "269", "health_connect": "sugar", "healthkit": "dietarySugar" },
+    { "key": "added_sugars_g", "name": "Added sugars", "unit": "g", "infoods": null, "fdc_nutrient_number": null, "health_connect": null, "healthkit": null, "notes": "On US labels since 2020. No tagname in the FAO list to 2007, and FoodData Central's number is not yet checked." },
+    { "key": "sodium_mg", "name": "Sodium", "unit": "mg", "infoods": "NA", "fdc_nutrient_number": "307", "health_connect": "sodium", "healthkit": "dietarySodium" },
+    { "key": "potassium_mg", "name": "Potassium", "unit": "mg", "infoods": "K", "fdc_nutrient_number": "306", "health_connect": "potassium", "healthkit": "dietaryPotassium" },
+    { "key": "calcium_mg", "name": "Calcium", "unit": "mg", "infoods": "CA", "fdc_nutrient_number": "301", "health_connect": "calcium", "healthkit": "dietaryCalcium" },
+    { "key": "iron_mg", "name": "Iron", "unit": "mg", "infoods": "FE", "fdc_nutrient_number": "303", "health_connect": "iron", "healthkit": "dietaryIron" },
+    { "key": "magnesium_mg", "name": "Magnesium", "unit": "mg", "infoods": "MG", "fdc_nutrient_number": "304", "health_connect": "magnesium", "healthkit": "dietaryMagnesium" },
+    { "key": "zinc_mg", "name": "Zinc", "unit": "mg", "infoods": "ZN", "fdc_nutrient_number": "309", "health_connect": "zinc", "healthkit": "dietaryZinc" },
+    { "key": "vitamin_c_mg", "name": "Vitamin C", "unit": "mg", "infoods": "VITC", "fdc_nutrient_number": "401", "health_connect": "vitaminC", "healthkit": "dietaryVitaminC" },
+    { "key": "vitamin_d_ug", "name": "Vitamin D (D2 + D3)", "unit": "µg", "infoods": "VITD", "fdc_nutrient_number": "328", "health_connect": "vitaminD", "healthkit": "dietaryVitaminD", "notes": "Micrograms, not IU (1 µg = 40 IU)." },
+    { "key": "vitamin_a_rae_ug", "name": "Vitamin A, retinol activity equivalents", "unit": "µg", "infoods": null, "fdc_nutrient_number": "320", "health_connect": "vitaminA", "healthkit": "dietaryVitaminA", "notes": "RAE, as US labels and FoodData Central give it. INFOODS VITA uses the older retinol equivalents, so it is not the same number." },
+    { "key": "caffeine_mg", "name": "Caffeine", "unit": "mg", "infoods": "CAFFN", "fdc_nutrient_number": "262", "health_connect": "caffeine", "healthkit": "dietaryCaffeine" },
+    { "key": "alcohol_g", "name": "Alcohol (ethanol)", "unit": "g", "infoods": "ALC", "fdc_nutrient_number": "221", "health_connect": null, "healthkit": null, "notes": "HealthKit's numberOfAlcoholicBeverages counts drinks, not grams." },
+    { "key": "water_g", "name": "Water", "unit": "g", "infoods": "WATER", "fdc_nutrient_number": "255", "health_connect": null, "healthkit": "dietaryWater", "notes": "Health Connect keeps drinking water in a separate hydration record." }
+  ]
+}

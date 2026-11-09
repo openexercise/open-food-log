@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openfoodlog.org/schema/v0/log.json",
+  "title": "Open Food Log v0: log",
+  "description": "A person's whole food log as one file: what an export holds and an import can read. A server may add more of the person's record beside these keys; readers ignore keys they don't know. Draft; may change until v1.",
+  "type": "object",
+  "required": ["exported_at", "meals"],
+  "properties": {
+    "$schema": { "const": "https://openfoodlog.org/schema/v0/log.json" },
+    "exported_at": { "type": "string", "format": "date-time" },
+    "meals": {
+      "description": "Every meal in the log, newest first.",
+      "type": "array",
+      "items": { "$ref": "meal.json" }
+    },
+    "foods": {
+      "description": "The person's own foods (usr:) that the meals name, so a reader elsewhere can resolve them. Catalogue and gtin: foods may be included too.",
+      "type": "array",
+      "items": { "$ref": "food.json" }
+    },
+    "deleted_meals": {
+      "description": "Meals the person deleted, newest first, for a server that keeps them until the account is deleted.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["deleted_at", "meal"],
+        "additionalProperties": false,
+        "properties": {
+          "deleted_at": { "type": "string", "format": "date-time" },
+          "meal": { "$ref": "meal.json" }
+        }
+      }
+    }
+  }
+}

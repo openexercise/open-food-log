@@ -1,0 +1,22 @@
+{{define "head"}}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}}{{if .Path}} · Open Food Log{{end}}</title>
+<meta name="description" content="{{.Description}}">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+<a class="brand" href="/">Open Food Log</a>
+<nav aria-label="Main"><a href="/schema/v0/">Specification</a><a href="/schema/">Schema</a><a href="/nutrients/">Nutrients</a><a href="/changelog/">Changelog</a></nav>
+</div></header>
+<p class="draft"><span class="wrap">Development draft, v0. The format may change; every change is in the changelog.</span></p>
+<main id="main" class="wrap">{{end}}
+{{define "foot"}}</main>
+<footer class="wrap"><p>Schemas and tools: Apache-2.0. The sister of <a href="https://openworkout.dev">Open Workout</a> and <a href="https://openexercise.org">Open Exercise</a>. Published from <a href="https://lifterclub.com">Lifterclub</a>, the reference implementation. Example foods from USDA FoodData Central (CC0).</p></footer>
+</body>
+</html>{{end}}

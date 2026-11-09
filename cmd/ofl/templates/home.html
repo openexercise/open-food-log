@@ -1,0 +1,28 @@
+{{template "head" .}}
+<section class="hero">
+<h1>What you ate, in a format you can take anywhere.</h1>
+<p class="lead">The Open Food Log records a person's meals: what they said they ate, the food it matched, how much, what it held, and which numbers were guessed. Any app can write it, any assistant can read it, and the person keeps the log.</p>
+<p class="actions"><a class="button" href="/schema/v0/">Read the specification</a><a class="button ghost" href="/nutrients/">See the nutrients</a></p>
+</section>
+<section class="grid">
+<div><h2>Unknown is not zero</h2><p>A nutrient a food doesn't list is left out, never written as 0. Every key names its unit: <code>protein_g</code>, <code>sodium_mg</code>.</p></div>
+<div><h2>Guesses say so</h2><p>A size the person didn't give, an amount read from a photo, a model's estimate: each is listed in <code>estimates</code> by JSON pointer, so a label's number and a guess never look the same.</p></div>
+<div><h2>The person's words stay</h2><p>Each item keeps what the person said beside the food it matched and how sure the match is, and records which app wrote it.</p></div>
+</section>
+<section>
+<h2>Documents</h2>
+<dl class="fields">
+{{range .Schemas}}<dt><a href="/schema/#{{.Kind}}">{{.Kind}}</a></dt><dd>{{.Description}}</dd>
+{{end}}</dl>
+</section>
+<section>
+<h2>Use it</h2>
+<ul class="links">
+{{range .Schemas}}<li><a href="/schema/v0/{{.Kind}}.json">{{.Kind}}.json</a>, JSON Schema (draft 2020-12), at its <code>$id</code></li>
+{{end}}<li><a href="/schema/v0/nutrients.json">nutrients.json</a>, the nutrient keys and their mappings</li>
+<li><a href="/schema/v0/amount-vectors.json">amount-vectors.json</a>, worked cases from an amount to grams to nutrients</li>
+<li><a href="/examples/breakfast.json">An example meal</a>, <a href="/examples/egg-whole-raw.json">a food</a> and <a href="/examples/log.json">a log</a></li>
+<li><code>go run github.com/openexercise/open-food-log/cmd/ofl@latest validate my-meal.json</code></li>
+</ul>
+</section>
+{{template "foot" .}}

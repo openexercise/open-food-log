@@ -1,0 +1,16 @@
+# Contributing
+
+Open an issue or pull request. Run `go run ./cmd/ofl validate` and `go test ./...` first; a change to a schema needs a changelog entry, the examples still valid, and the specification saying the same thing. Until v1 the format is published here from the reference implementation, so a change starts as an issue or proposal in this repository, is agreed here, and then lands in the next published version with a changelog entry.
+
+## Proposing a change
+
+1. Say what real meals, foods or apps the change would serve, with an example document.
+2. Say whether it is additive (a new optional field, a new nutrient key) or breaking (a renamed or removed field, a changed meaning). Before v1 both are possible; after v1 only additive changes land without a new major version.
+3. Prefer recording what a person stated or a source gave. A value a server would have to invent does not belong in the format; inferred values are listed in `estimates` instead.
+
+## Rules for the format
+
+- Every nutrient key ends in its unit, and a nutrient that isn't known is left out, never zero.
+- A new nutrient key names its INFOODS tagname, FoodData Central number, and Health Connect and HealthKit fields where they exist, checked against their published references.
+- Provenance (`source`, `external_id`) travels with the record, and an item keeps the person's words beside its match.
+- A change to how an amount becomes grams comes with cases in `schema/v0/amount-vectors.json`.

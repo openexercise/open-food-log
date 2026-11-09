@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openfoodlog.org/schema/v0/food.json",
+  "title": "Open Food Log v0: food",
+  "description": "One food: what it is, what 100 g of it holds, and the portions people measure it in. Draft; may change until v1.",
+  "type": "object",
+  "required": ["id", "name", "kind", "nutrients_per_100g"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": {} },
+  "properties": {
+    "$schema": { "const": "https://openfoodlog.org/schema/v0/food.json" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._-]+$",
+      "description": "namespace:slug. ofc: is the Open Food Catalogue; gtin: is a packaged product by its GTIN as 14 digits; usr: is one person's own food, meaningful only where it was made."
+    },
+    "name": { "type": "string", "minLength": 1, "description": "The canonical name, in English for the catalogue." },
+    "kind": {
+      "enum": ["generic", "branded", "restaurant", "custom"],
+      "description": "generic: a food as such (a raw egg). branded: a packaged product. restaurant: a dish as one restaurant serves it. custom: a person's own food."
+    },
+    "brand": { "type": "string" },
+    "gtin": {
+      "type": "array",
+      "description": "Barcodes the product is sold under, as 14 digits (shorter codes zero-padded on the left).",
+      "items": { "type": "string", "pattern": "^[0-9]{14}$" }
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "kind"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "kind": {
+            "enum": ["common", "regional", "brand", "legacy"],
+            "description": "How far a matcher may trust it: legacy names only suggest."
+          },
+          "locale": { "type": "string", "description": "BCP 47 tag, for a regional name." }
+        }
+      }
+    },
+    "status": { "enum": ["active", "deprecated", "replaced"], "default": "active" },
+    "replaced_by": { "type": "string" },
+    "previous_ids": { "type": "array", "items": { "type": "string" } },
+    "nutrients_per_100g": {
+      "$ref": "#/$defs/nutrients",
+      "description": "What 100 g of the food holds, as eaten in the state the name says (raw, cooked, dry). A nutrient left out is unknown, never zero."
+    },
+    "density_g_per_ml": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Grams per millilitre, so an amount in ml or fl oz can be weighed. Leave it out when it isn't known."
+    },
+    "portions": {
+      "type": "array",
+      "description": "Named measures with their weight: '1 large' egg is 50 g, '1 cup' of oats 81 g. Cups and spoons are portions, because what they weigh depends on the food.",
+      "items": { "$ref": "#/$defs/portion" }
+    },
+    "identifiers": {
+      "type": "object",
+      "description": "The food's IDs in other databases.",
+      "additionalProperties": false,
+      "patternProperties": { "^x-": {} },
+      "properties": {
+        "fdc_id": { "type": "integer", "description": "USDA FoodData Central." },
+        "off_code": { "type": "string", "description": "Open Food Facts product code." }
+      }
+    },
+    "provenance": { "$ref": "#/$defs/provenance" }
+  },
+  "$defs": {
+    "nutrients": {
+      "description": "Amounts keyed by nutrient, each in the unit its key names (nutrients.json). A key left out is unknown, never zero. x- keys are a producer's own.",
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": { "^x-[a-z0-9_]+$": { "type": "number", "minimum": 0 } },
+      "properties": {
+        "energy_kcal": { "type": "number", "minimum": 0 },
+        "protein_g": { "type": "number", "minimum": 0 },
+        "fat_g": { "type": "number", "minimum": 0 },
+        "saturated_fat_g": { "type": "number", "minimum": 0 },
+        "monounsaturated_fat_g": { "type": "number", "minimum": 0 },
+        "polyunsaturated_fat_g": { "type": "number", "minimum": 0 },
+        "trans_fat_g": { "type": "number", "minimum": 0 },
+        "cholesterol_mg": { "type": "number", "minimum": 0 },
+        "carbohydrate_g": { "type": "number", "minimum": 0 },
+        "fiber_g": { "type": "number", "minimum": 0 },
+        "sugars_g": { "type": "number", "minimum": 0 },
+        "added_sugars_g": { "type": "number", "minimum": 0 },
+        "sodium_mg": { "type": "number", "minimum": 0 },
+        "potassium_mg": { "type": "number", "minimum": 0 },
+        "calcium_mg": { "type": "number", "minimum": 0 },
+        "iron_mg": { "type": "number", "minimum": 0 },
+        "magnesium_mg": { "type": "number", "minimum": 0 },
+        "zinc_mg": { "type": "number", "minimum": 0 },
+        "vitamin_c_mg": { "type": "number", "minimum": 0 },
+        "vitamin_d_ug": { "type": "number", "minimum": 0 },
+        "vitamin_a_rae_ug": { "type": "number", "minimum": 0 },
+        "caffeine_mg": { "type": "number", "minimum": 0 },
+        "alcohol_g": { "type": "number", "minimum": 0 },
+        "water_g": { "type": "number", "minimum": 0 }
+      }
+    },
+    "portion": {
+      "type": "object",
+      "required": ["id", "label", "grams"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "Unique within the food; a meal item names it." },
+        "label": { "type": "string", "description": "What one of it is called: '1 large', '1 cup, sliced'." },
+        "grams": { "type": "number", "exclusiveMinimum": 0 },
+        "is_default": { "type": "boolean", "description": "The portion to assume when a person names the food without a size. At most one per food." }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string", "description": "e.g. USDA FoodData Central (SR Legacy)." },
+              "id": { "type": "string" },
+              "url": { "type": "string", "format": "uri" },
+              "license": { "type": "string", "description": "SPDX identifier where there is one." },
+              "retrieved_at": { "type": "string", "format": "date" }
+            }
+          }
+        },
+        "license": { "type": "string", "description": "The record's own licence, as an SPDX identifier." },
+        "generated": {
+          "type": "array",
+          "description": "JSON pointers to values a model produced rather than a source or a person.",
+          "items": { "type": "string", "pattern": "^(/[^/]*)*$" }
+        },
+        "review": { "enum": ["unreviewed", "reviewed"], "default": "unreviewed" }
+      }
+    }
+  }
+}

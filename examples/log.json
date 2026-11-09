@@ -1,0 +1,211 @@
+{
+  "$schema": "https://openfoodlog.org/schema/v0/log.json",
+  "exported_at": "2026-11-09T21:00:00Z",
+  "meals": [
+    {
+      "$schema": "https://openfoodlog.org/schema/v0/meal.json",
+      "id": "ml_01JCB9X2K7T1P",
+      "date": "2026-11-09",
+      "meal_type": "lunch",
+      "source": {
+        "kind": "app",
+        "client": "lifterclub",
+        "external_id": null
+      },
+      "items": [
+        {
+          "text": "lunch was about 650 calories",
+          "food": {
+            "id": null,
+            "name": "Lunch",
+            "match": "none"
+          },
+          "nutrients": {
+            "energy_kcal": 650
+          }
+        }
+      ]
+    },
+    {
+      "$schema": "https://openfoodlog.org/schema/v0/meal.json",
+      "id": "ml_01JCB2A7Q0S4M",
+      "eaten_at": "2026-11-09T07:30:00-06:00",
+      "meal_type": "breakfast",
+      "source": {
+        "kind": "mcp",
+        "client": "claude",
+        "external_id": null
+      },
+      "items": [
+        {
+          "text": "3 eggs",
+          "food": {
+            "id": "ofc:egg-whole-raw",
+            "name": "Egg, Whole, Raw",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "portion",
+            "portion": "large"
+          },
+          "grams": 150.0,
+          "nutrients": {
+            "energy_kcal": 214.5,
+            "protein_g": 18.84,
+            "fat_g": 14.27,
+            "saturated_fat_g": 4.69,
+            "monounsaturated_fat_g": 5.49,
+            "polyunsaturated_fat_g": 2.87,
+            "trans_fat_g": 0.06,
+            "cholesterol_mg": 558.0,
+            "carbohydrate_g": 1.08,
+            "fiber_g": 0.0,
+            "sugars_g": 0.56,
+            "sodium_mg": 213.0,
+            "potassium_mg": 207.0,
+            "calcium_mg": 84.0,
+            "iron_mg": 2.63,
+            "magnesium_mg": 18.0,
+            "zinc_mg": 1.94,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 3.0,
+            "vitamin_a_rae_ug": 240.0,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 114.23
+          }
+        },
+        {
+          "text": "half a cup of oats",
+          "food": {
+            "id": "ofc:oats-dry",
+            "name": "Oats, Dry",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "portion",
+            "portion": "cup"
+          },
+          "grams": 40.5,
+          "nutrients": {
+            "energy_kcal": 153.5,
+            "protein_g": 5.33,
+            "fat_g": 2.64,
+            "saturated_fat_g": 0.45,
+            "monounsaturated_fat_g": 0.8,
+            "polyunsaturated_fat_g": 0.93,
+            "cholesterol_mg": 0.0,
+            "carbohydrate_g": 27.42,
+            "fiber_g": 4.09,
+            "sugars_g": 0.4,
+            "sodium_mg": 2.43,
+            "potassium_mg": 146.61,
+            "calcium_mg": 21.06,
+            "iron_mg": 1.72,
+            "magnesium_mg": 55.89,
+            "zinc_mg": 1.47,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 0.0,
+            "vitamin_a_rae_ug": 0.0,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 4.39
+          }
+        },
+        {
+          "text": "a banana",
+          "food": {
+            "id": "ofc:banana-raw",
+            "name": "Banana, Raw",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "portion",
+            "portion": "medium"
+          },
+          "grams": 118.0,
+          "nutrients": {
+            "energy_kcal": 105.02,
+            "protein_g": 1.29,
+            "fat_g": 0.39,
+            "saturated_fat_g": 0.13,
+            "monounsaturated_fat_g": 0.04,
+            "polyunsaturated_fat_g": 0.09,
+            "trans_fat_g": 0.0,
+            "cholesterol_mg": 0.0,
+            "carbohydrate_g": 26.95,
+            "fiber_g": 3.07,
+            "sugars_g": 14.43,
+            "sodium_mg": 1.18,
+            "potassium_mg": 422.44,
+            "calcium_mg": 5.9,
+            "iron_mg": 0.31,
+            "magnesium_mg": 31.86,
+            "zinc_mg": 0.18,
+            "vitamin_c_mg": 10.27,
+            "vitamin_d_ug": 0.0,
+            "vitamin_a_rae_ug": 3.54,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 88.39
+          }
+        },
+        {
+          "text": "a splash of milk",
+          "food": {
+            "id": "ofc:milk-whole",
+            "name": "Milk, Whole (3.25%)",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "ml"
+          },
+          "grams": 30.93,
+          "nutrients": {
+            "energy_kcal": 18.87,
+            "protein_g": 0.97,
+            "fat_g": 1.01,
+            "saturated_fat_g": 0.58,
+            "monounsaturated_fat_g": 0.25,
+            "polyunsaturated_fat_g": 0.06,
+            "cholesterol_mg": 3.09,
+            "carbohydrate_g": 1.48,
+            "fiber_g": 0.0,
+            "sugars_g": 1.56,
+            "sodium_mg": 13.3,
+            "potassium_mg": 40.83,
+            "calcium_mg": 34.95,
+            "iron_mg": 0.01,
+            "magnesium_mg": 3.09,
+            "zinc_mg": 0.11,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 0.4,
+            "vitamin_a_rae_ug": 14.23,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 27.26
+          }
+        },
+        {
+          "text": "coffee with oat milk",
+          "food": {
+            "id": null,
+            "name": "coffee with oat milk",
+            "match": "unmatched"
+          }
+        }
+      ],
+      "estimates": [
+        "/items/0/amount/portion",
+        "/items/2/amount/portion",
+        "/items/3/amount"
+      ],
+      "notes": "Before the long run"
+    }
+  ],
+  "foods": []
+}
