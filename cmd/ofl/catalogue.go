@@ -63,6 +63,7 @@ type catalogueFood struct {
 	ID               string             `json:"id"`
 	Name             string             `json:"name"`
 	Kind             string             `json:"kind"`
+	Aliases          []aliasDoc         `json:"aliases,omitempty"`
 	NutrientsPer100g map[string]float64 `json:"nutrients_per_100g"`
 	Portions         []portionDoc       `json:"portions,omitempty"`
 	Identifiers      map[string]int     `json:"identifiers"`
@@ -77,17 +78,18 @@ type portionDoc struct {
 }
 
 type provenanceDoc struct {
-	Sources []sourceDoc `json:"sources"`
-	License string      `json:"license"`
-	Review  string      `json:"review"`
+	Sources   []sourceDoc `json:"sources"`
+	License   string      `json:"license"`
+	Generated []string    `json:"generated,omitempty"`
+	Review    string      `json:"review"`
 }
 
 type sourceDoc struct {
 	Name        string `json:"name"`
-	ID          string `json:"id"`
-	URL         string `json:"url"`
-	License     string `json:"license"`
-	RetrievedAt string `json:"retrieved_at"`
+	ID          string `json:"id,omitempty"`
+	URL         string `json:"url,omitempty"`
+	License     string `json:"license,omitempty"`
+	RetrievedAt string `json:"retrieved_at,omitempty"`
 }
 
 const retrieved = "2026-11-09"
@@ -174,6 +176,19 @@ func buildCatalogue(dir, root string) error {
 		ids = append(ids, id)
 	}
 	sort.Strings(ids)
+	model, err := readModelAliases(root)
+	if err != nil {
+		return err
+	}
+	var ruleCount, modelCount, withAliases int
+	for _, id := range ids {
+		r, g := attachAliases(byID[id], model)
+		ruleCount += r
+		modelCount += g
+		if r+g > 0 {
+			withAliases++
+		}
+	}
 	out := filepath.Join(root, "catalogue")
 	if err := os.MkdirAll(out, 0o755); err != nil {
 		return err
@@ -205,7 +220,7 @@ func buildCatalogue(dir, root string) error {
 		c := report[src.key]
 		fmt.Fprintf(&b, "| %s | %d | %d | %d | %d | %d | %d | %d |\n", src.label, c.read, c.kept, c.merged, c.branded, c.empty, c.noEnergy, c.noPortions)
 	}
-	fmt.Fprintf(&b, "\n%d foods in `foods.jsonl`.\n", len(ids))
+	fmt.Fprintf(&b, "\n%d foods in `foods.jsonl`, %d with aliases: %d from the names' own shape, %d suggested by a model (listed in each record's `provenance.generated`).\n", len(ids), withAliases, ruleCount, modelCount)
 	if err := os.WriteFile(filepath.Join(out, "REPORT.md"), []byte(b.String()), 0o644); err != nil {
 		return err
 	}

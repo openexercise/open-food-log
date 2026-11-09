@@ -26,10 +26,22 @@ The rules, so anyone can check a record against its source (`identifiers.fdc_id`
 - **Branded records** in SR Legacy (named in capitals: `KRAFT`, `SUBWAY`) are left out. Capitalised words used for generic foods (`USDA`, `BBQ`, `NFS`, `NFSMI`, `RTE`, `UHT`) don't count.
 - **Portions** keep FoodData Central's weights and wording. A survey food's "Quantity not specified" is its default portion: the amount to assume when someone names the food without one. The RACC is "1 serving (RACC)".
 - **IDs** are the name in lower case with runs of other characters made `-`.
+- **Aliases** say what people call a food, all of kind `common`:
+  - From the name's own shape, with no model: a two-part name with a plain modifier is also that modifier first ("Apple, raw" is "raw apple"), and "X, NFS" (not further specified) is "x".
+  - Suggested by Gemini (`cmd/aliases`), which is sent the names only and asked for names only. Its answers are kept in [`sources/aliases.jsonl`](../sources/aliases.jsonl) with the model and date, so building never calls it. Each alias it gave is listed in the record's `provenance.generated`, and the model is named in `provenance.sources`. An alias is kept only if it's short, lowercase, and has no digit the food's name lacks.
+  - An alias may belong to more than one food ("milk"). A matcher should then ask which one, not guess.
 
 ## Trust it accordingly
 
-The numbers are USDA's, but the records haven't been checked by a person, and names are USDA's descriptions ("Chicken, broilers or fryers, breast, meat only, cooked, roasted"), so a matcher will need aliases for what people actually say. Adding aliases and reviewing records are the main ways to contribute.
+The numbers are USDA's, but no record has been checked by a person, and most aliases come from a model. Reviewing records and aliases is the main way to contribute.
+
+## Ask the model again
+
+```bash
+OFL_GCP_PROJECT=<project> go run ./cmd/aliases
+```
+
+This asks only about foods `sources/aliases.jsonl` doesn't hold yet, 40 at a time, and appends the answers. Delete a food's line to ask about it again.
 
 ## Rebuild it
 
