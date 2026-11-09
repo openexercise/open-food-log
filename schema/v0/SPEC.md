@@ -1,7 +1,7 @@
 # Open Food Log v0
 
 **Status: draft, 2026-11-09.** Anything may change until v1. The key words MUST, SHOULD and MAY are
-used as in RFC 2119. Its home is `openfoodlog.org`, which serves nothing yet.
+used as in RFC 2119. Its home is [openfoodlog.org](https://openfoodlog.org).
 
 The Open Food Log (OFL) describes what a person ate so any app or assistant can record it, read it
 and carry it elsewhere, with every number's standing intact. It is the sister of the
