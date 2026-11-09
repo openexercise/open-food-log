@@ -14,8 +14,9 @@ An open format for a personal food log: what someone ate, the food it matched, h
 | `schema/v0/amount-vectors.json` | Worked cases every implementation must agree on: an amount on a food, as grams, then as nutrients |
 | `schema/CHANGELOG.md` | What changed in v0 |
 | `examples` | A food, a breakfast and a log, built from USDA FoodData Central (CC0) |
+| `catalogue` | The Open Food Catalogue: 12,442 generic foods with `ofc:` IDs from USDA FoodData Central, CC0. See its README |
 | `openfoodlog.go` | Package `openfoodlog`: the embedded schemas, a validator, and the reference calculation (`Grams`, `Nutrients`) |
-| `cmd/ofl` | `ofl validate`, which checks documents against the schemas, and `ofl site`, which builds the website |
+| `cmd/ofl` | `ofl validate`, which checks documents against the schemas; `ofl catalogue`, which rebuilds the catalogue from FoodData Central; and `ofl site`, which builds the website |
 
 ```bash
 go run ./cmd/ofl validate
@@ -25,4 +26,4 @@ go run ./cmd/ofl site dist
 
 Until v1 these files are published here from [Lifterclub](https://lifterclub.com), the reference implementation. Issues and proposals belong here.
 
-Licence: Apache-2.0. The example foods' numbers come from USDA FoodData Central, which is in the public domain (CC0 1.0).
+Licence: Apache-2.0 for the code and schemas. The catalogue is CC0 1.0, like USDA FoodData Central, where its numbers and the examples' come from.
