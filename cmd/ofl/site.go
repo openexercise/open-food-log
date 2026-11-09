@@ -135,6 +135,7 @@ func buildSite(root, out string) error {
 	for _, f := range files {
 		copies["schema/v0/"+filepath.Base(f)] = f
 	}
+	copies["catalogue/foods.jsonl"] = filepath.Join(root, "catalogue", "foods.jsonl")
 	examples, _ := filepath.Glob(filepath.Join(root, "examples", "*.json"))
 	for _, e := range examples {
 		copies["examples/"+filepath.Base(e)] = e

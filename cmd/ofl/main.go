@@ -15,7 +15,8 @@ import (
 
 const usage = `usage:
   ofl validate [path...]   validate documents (examples/ by default); each names its schema in $schema
-  ofl site [outdir]        build the website (dist/ by default)`
+  ofl site [outdir]        build the website (dist/ by default)
+  ofl catalogue <dir>      rebuild catalogue/ from the FoodData Central downloads in dir`
 
 func main() {
 	if len(os.Args) < 2 {
@@ -32,6 +33,12 @@ func main() {
 			out = os.Args[2]
 		}
 		err = buildSite(".", out)
+	case "catalogue":
+		if len(os.Args) < 3 {
+			err = errors.New("want the directory holding the FoodData Central downloads")
+			break
+		}
+		err = buildCatalogue(os.Args[2], ".")
 	default:
 		err = fmt.Errorf("unknown command %q\n%s", os.Args[1], usage)
 	}
