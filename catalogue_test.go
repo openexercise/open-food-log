@@ -4,11 +4,13 @@ import (
 	"bufio"
 	"encoding/json"
 	"os"
+	"strings"
 	"testing"
 )
 
 // TestCatalogue checks every record in catalogue/foods.jsonl: valid against the food schema, an
-// ofc: ID in order and used once, portions with unique IDs and at most one default.
+// ofc: ID in order and used once, portions with unique IDs and at most one default, and a source
+// for every density.
 func TestCatalogue(t *testing.T) {
 	f, err := os.Open("catalogue/foods.jsonl")
 	if err != nil {
@@ -18,7 +20,7 @@ func TestCatalogue(t *testing.T) {
 	v := validator(t)
 	scanner := bufio.NewScanner(f)
 	scanner.Buffer(make([]byte, 1<<20), 1<<20)
-	prev, count := "", 0
+	prev, count, densities := "", 0, 0
 	for scanner.Scan() {
 		line := scanner.Bytes()
 		count++
@@ -49,11 +51,25 @@ func TestCatalogue(t *testing.T) {
 		if _, ok := food.NutrientsPer100g["energy_kcal"]; !ok {
 			t.Errorf("%s: no energy", food.ID)
 		}
+		if food.DensityGPerML > 0 {
+			densities++
+			if !strings.Contains(string(line), `density_g_per_ml from `) {
+				t.Errorf("%s: a density with no source in provenance", food.ID)
+			}
+		}
+		if food.ID == "ofc:milk-whole" || food.ID == "ofc:milk-nfs" {
+			if food.DensityGPerML == 0 {
+				t.Errorf("%s: no density, so 250 ml can't be weighed", food.ID)
+			}
+		}
 	}
 	if err := scanner.Err(); err != nil {
 		t.Fatal(err)
 	}
 	if count < 10000 {
 		t.Errorf("only %d foods", count)
+	}
+	if densities < 1000 {
+		t.Errorf("only %d foods with a density", densities)
 	}
 }
