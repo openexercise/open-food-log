@@ -38,8 +38,14 @@ var fallbacks = map[string][]string{
 }
 
 type fdcFood struct {
-	FdcID         int    `json:"fdcId"`
-	Description   string `json:"description"`
+	FdcID        int    `json:"fdcId"`
+	Description  string `json:"description"`
+	FoodCategory struct {
+		Description string `json:"description"`
+	} `json:"foodCategory"`
+	WweiaFoodCategory struct {
+		Description string `json:"wweiaFoodCategoryDescription"`
+	} `json:"wweiaFoodCategory"`
 	FoodNutrients []struct {
 		Nutrient struct {
 			Number   string `json:"number"`
@@ -65,6 +71,7 @@ type catalogueFood struct {
 	Kind             string             `json:"kind"`
 	Aliases          []aliasDoc         `json:"aliases,omitempty"`
 	NutrientsPer100g map[string]float64 `json:"nutrients_per_100g"`
+	DensityGPerML    float64            `json:"density_g_per_ml,omitempty"`
 	Portions         []portionDoc       `json:"portions,omitempty"`
 	Identifiers      map[string]int     `json:"identifiers"`
 	Provenance       provenanceDoc      `json:"provenance"`
@@ -124,7 +131,8 @@ func buildCatalogue(dir, root string) error {
 		return err
 	}
 	byID := map[string]*catalogueFood{}
-	type counts struct{ read, kept, branded, empty, noEnergy, merged, noPortions int }
+	type counts struct{ read, kept, branded, empty, noEnergy, merged, noPortions, density int }
+	liquids, noDensity := 0, []string{}
 	report := map[string]*counts{}
 	for _, src := range sources {
 		foods, err := readSource(filepath.Join(dir, src.file), src.field)
@@ -165,6 +173,18 @@ func buildCatalogue(dir, root string) error {
 			}
 			if len(food.Portions) == 0 {
 				c.noPortions++
+			}
+			if isLiquid(f) {
+				liquids++
+				if d, how, ok := density(f, food); ok {
+					food.DensityGPerML = d
+					ds := sd
+					ds.Name = src.label + ": density_g_per_ml from " + how
+					food.Provenance.Sources = append(food.Provenance.Sources, ds)
+					c.density++
+				} else {
+					noDensity = append(noDensity, food.Name+": "+how)
+				}
 			}
 			byID[id] = food
 			c.kept++
@@ -221,6 +241,20 @@ func buildCatalogue(dir, root string) error {
 		fmt.Fprintf(&b, "| %s | %d | %d | %d | %d | %d | %d | %d |\n", src.label, c.read, c.kept, c.merged, c.branded, c.empty, c.noEnergy, c.noPortions)
 	}
 	fmt.Fprintf(&b, "\n%d foods in `foods.jsonl`, %d with aliases: %d from the names' own shape, %d suggested by a model (listed in each record's `provenance.generated`).\n", len(ids), withAliases, ruleCount, modelCount)
+	withDensity := 0
+	for _, src := range sources {
+		withDensity += report[src.key].density
+	}
+	fmt.Fprintf(&b, "\n## Densities\n\n%d foods are liquids by their FoodData Central category and name; %d have a `density_g_per_ml`, from a measured specific gravity or one of their own volume portions (each record's `provenance.sources` says which):\n\n", liquids, withDensity)
+	b.WriteString("| Source | With a density |\n| --- | --- |\n")
+	for _, src := range sources {
+		fmt.Fprintf(&b, "| %s | %d |\n", src.label, report[src.key].density)
+	}
+	sort.Strings(noDensity)
+	fmt.Fprintf(&b, "\n%d liquids have no density, and why:\n\n", len(noDensity))
+	for _, name := range noDensity {
+		b.WriteString("- " + name + "\n")
+	}
 	if err := os.WriteFile(filepath.Join(out, "REPORT.md"), []byte(b.String()), 0o644); err != nil {
 		return err
 	}
