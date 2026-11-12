@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openfoodlog.org/schema/v0/targets.json",
+  "title": "Open Food Log v0: targets",
+  "description": "The nutrition targets a person keeps: per nutrient a minimum, a maximum or a target, per day or per meal, on some weekdays, from a date. Set by the person (or someone they asked); OFL never prescribes one. How a day is judged against them is section 9 of the spec. v0.1; may change until v1.",
+  "type": "object",
+  "required": ["targets"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": {} },
+  "properties": {
+    "$schema": { "const": "https://openfoodlog.org/schema/v0/targets.json" },
+    "ofl_version": { "$ref": "food.json#/$defs/ofl_version" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "targets": { "type": "array", "items": {"$ref": "#/$defs/target"} }
+  },
+  "$defs": {
+    "target": {
+      "type": "object",
+      "required": ["nutrient", "per", "effective_from", "set_by"],
+      "anyOf": [{"required": ["min"]}, {"required": ["max"]}, {"required": ["target"]}],
+      "additionalProperties": false,
+      "patternProperties": { "^x-": {} },
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Assigned by the server; used to edit the target."
+        },
+        "nutrient": {
+          "type": "string",
+          "pattern": "^([a-z0-9_]+|x-[a-z0-9_-]+)$",
+          "description": "A key from nutrients.json, or a producer's x- key."
+        },
+        "per": {
+          "enum": ["day", "meal"],
+          "description": "day: the total of the person's local day. meal: each meal on its own."
+        },
+        "meal_type": {
+          "enum": ["breakfast", "lunch", "dinner", "snack"],
+          "description": "With per meal: only meals of this type. Absent means every meal."
+        },
+        "min": {
+          "type": "number",
+          "minimum": 0,
+          "description": "At least this much, in the nutrient's unit."
+        },
+        "max": {
+          "type": "number",
+          "minimum": 0,
+          "description": "At most this much."
+        },
+        "target": {
+          "type": "number",
+          "minimum": 0,
+          "description": "About this much. Alone, it is met within tolerance_percent either way; with min or max, those decide and this is the point to aim for."
+        },
+        "tolerance_percent": {
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "description": "For a target with no min or max: how far either side of it still counts as met."
+        },
+        "weekdays": {
+          "description": "The days it applies, ISO numbered (1 Monday to 7 Sunday). Absent means every day.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "integer", "minimum": 1, "maximum": 7 }
+        },
+        "effective_from": {
+          "type": "string",
+          "format": "date",
+          "description": "The first local day it applies."
+        },
+        "effective_to": {
+          "type": "string",
+          "format": "date",
+          "description": "The last local day it applies. Absent means until replaced."
+        },
+        "set_by": {
+          "enum": ["person", "professional", "app_suggestion"],
+          "description": "Who set it: the person, a professional they work with (a dietitian, a coach), or an app's suggestion the person accepted."
+        },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

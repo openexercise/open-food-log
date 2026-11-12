@@ -29,7 +29,7 @@ var Schemas embed.FS
 var Profile []byte
 
 // Kinds are the document kinds, by file name under schema/v0.
-var Kinds = []string{"food", "meal", "log"}
+var Kinds = []string{"food", "meal", "recipe", "targets", "log"}
 
 // Validator holds the compiled schemas, keyed by kind and by $id.
 type Validator struct {
@@ -76,7 +76,8 @@ func NewValidatorFS(fsys fs.FS) (*Validator, error) {
 	return v, nil
 }
 
-// ValidateAs returns every problem in a document of a kind ("food", "meal", "log"), whatever its
+// ValidateAs returns every problem in a document of a kind ("food", "meal", "recipe", "targets",
+// "log"), whatever its
 // $schema says.
 func (v *Validator) ValidateAs(kind string, data []byte) []string {
 	s, ok := v.byKind[kind]
@@ -123,11 +124,13 @@ func problems(s *jsonschema.Schema, doc any) []string {
 
 // Food is the part of a food document the calculation reads.
 type Food struct {
-	ID               string             `json:"id"`
-	Name             string             `json:"name"`
-	NutrientsPer100g map[string]float64 `json:"nutrients_per_100g"`
-	DensityGPerML    float64            `json:"density_g_per_ml,omitempty"`
-	Portions         []Portion          `json:"portions,omitempty"`
+	ID                string             `json:"id"`
+	Name              string             `json:"name"`
+	NutrientsPer100g  map[string]float64 `json:"nutrients_per_100g"`
+	NutrientsPer100ml map[string]float64 `json:"nutrients_per_100ml,omitempty"`
+	DensityGPerML     float64            `json:"density_g_per_ml,omitempty"`
+	Portions          []Portion          `json:"portions,omitempty"`
+	Label             *Label             `json:"label,omitempty"`
 }
 
 // Portion is a named measure of a food and what one weighs.
@@ -136,6 +139,20 @@ type Portion struct {
 	Label     string  `json:"label"`
 	Grams     float64 `json:"grams"`
 	IsDefault bool    `json:"is_default,omitempty"`
+}
+
+// Label is the part of a food's nutrition label the calculation reads: its declared serving and
+// what one serving holds.
+type Label struct {
+	Serving             *Serving           `json:"serving,omitempty"`
+	NutrientsPerServing map[string]float64 `json:"nutrients_per_serving,omitempty"`
+}
+
+// Serving is a label's declared serving, with its weight or volume where printed.
+type Serving struct {
+	Text  string  `json:"text"`
+	Grams float64 `json:"grams,omitempty"`
+	ML    float64 `json:"ml,omitempty"`
 }
 
 // Amount is how much of a food, in the measure the person used.
@@ -148,9 +165,11 @@ type Amount struct {
 // The errors an implementation reports instead of guessing. Their text is the code the
 // specification and the amount vectors use.
 var (
-	ErrDensityUnknown = errors.New("density_unknown")
-	ErrPortionUnknown = errors.New("portion_unknown")
-	ErrUnitUnknown    = errors.New("unit_unknown")
+	ErrDensityUnknown       = errors.New("density_unknown")
+	ErrPortionUnknown       = errors.New("portion_unknown")
+	ErrServingUnknown       = errors.New("serving_unknown")
+	ErrServingWeightUnknown = errors.New("serving_weight_unknown")
+	ErrUnitUnknown          = errors.New("unit_unknown")
 )
 
 var (
@@ -158,49 +177,117 @@ var (
 	mlPer    = map[string]float64{"ml": 1, "l": 1000, "fl_oz": 29.5735295625}
 )
 
-// Grams is an amount of a food as a weight (section 6). A volume needs the food's density and a
-// portion must be one of the food's; neither is ever assumed.
-func Grams(f Food, a Amount) (float64, error) {
-	if a.Unit == "portion" {
+// Measured is an amount worked out: its weight and volume where they can be known (nil where
+// not, which isn't an error for a drink known per 100 ml or a supplement), and what it held.
+type Measured struct {
+	Grams     *float64
+	ML        *float64
+	Nutrients map[string]float64
+}
+
+// Measure is section 6: the amount times share (0 for all of it) becomes grams, millilitres or
+// servings, and the nutrients come from the first of the food's sets the amount reaches: per
+// 100 g, per 100 ml, then per serving. A density, a portion or a serving is never assumed, and
+// nothing is rounded.
+func Measure(f Food, a Amount, share float64) (Measured, error) {
+	if share == 0 {
+		share = 1
+	}
+	v := a.Value * share
+	var m Measured
+	var servings *float64
+	switch {
+	case a.Unit == "portion":
 		i := slices.IndexFunc(f.Portions, func(p Portion) bool { return p.ID == a.Portion })
 		if i < 0 {
-			return 0, ErrPortionUnknown
+			return m, ErrPortionUnknown
 		}
-		return a.Value * f.Portions[i].Grams, nil
+		m.Grams = ptrTo(v * f.Portions[i].Grams)
+	case gramsPer[a.Unit] > 0:
+		m.Grams = ptrTo(v * gramsPer[a.Unit])
+	case mlPer[a.Unit] > 0:
+		m.ML = ptrTo(v * mlPer[a.Unit])
+	case a.Unit == "serving":
+		if f.Label == nil || f.Label.Serving == nil {
+			return m, ErrServingUnknown
+		}
+		servings = ptrTo(v)
+		if s := f.Label.Serving; s.Grams > 0 {
+			m.Grams = ptrTo(v * s.Grams)
+		}
+		if s := f.Label.Serving; s.ML > 0 {
+			m.ML = ptrTo(v * s.ML)
+		}
+	default:
+		return m, ErrUnitUnknown
 	}
-	if g, ok := gramsPer[a.Unit]; ok {
-		return a.Value * g, nil
+	if m.Grams == nil && m.ML != nil && f.DensityGPerML > 0 {
+		m.Grams = ptrTo(*m.ML * f.DensityGPerML)
 	}
-	ml, ok := mlPer[a.Unit]
-	if !ok {
-		return 0, ErrUnitUnknown
+	var perServing map[string]float64
+	if f.Label != nil {
+		perServing = f.Label.NutrientsPerServing
 	}
-	if f.DensityGPerML <= 0 {
-		return 0, ErrDensityUnknown
+	switch {
+	case m.Grams != nil && len(f.NutrientsPer100g) > 0:
+		m.Nutrients = scaled(f.NutrientsPer100g, *m.Grams/100)
+	case m.ML != nil && len(f.NutrientsPer100ml) > 0:
+		m.Nutrients = scaled(f.NutrientsPer100ml, *m.ML/100)
+	case servings != nil && len(perServing) > 0:
+		m.Nutrients = scaled(perServing, *servings)
+	case len(f.NutrientsPer100ml) > 0 || len(perServing) == 0:
+		return m, ErrDensityUnknown
+	default:
+		return m, ErrServingWeightUnknown
 	}
-	return a.Value * ml * f.DensityGPerML, nil
+	return m, nil
+}
+
+// Grams is an amount of a food as a weight (section 6), or ErrDensityUnknown when it can't be
+// weighed. Use Measure for drinks and supplements, which may have no weight.
+func Grams(f Food, a Amount) (float64, error) {
+	if a.Unit == "serving" || mlPer[a.Unit] > 0 || gramsPer[a.Unit] > 0 || a.Unit == "portion" {
+		m, err := Measure(f, a, 0)
+		if err != nil && m.Grams == nil {
+			return 0, err
+		}
+		if m.Grams == nil {
+			return 0, ErrDensityUnknown
+		}
+		return *m.Grams, nil
+	}
+	return 0, ErrUnitUnknown
 }
 
 // Nutrients is what grams of a food held: each nutrient the food has, scaled from 100 g. A
 // nutrient the food lacks stays absent, never zero. Nothing is rounded.
 func Nutrients(f Food, grams float64) map[string]float64 {
-	out := make(map[string]float64, len(f.NutrientsPer100g))
-	for k, per100 := range f.NutrientsPer100g {
-		out[k] = per100 * grams / 100
+	return scaled(f.NutrientsPer100g, grams/100)
+}
+
+func scaled(m map[string]float64, by float64) map[string]float64 {
+	out := make(map[string]float64, len(m))
+	for k, v := range m {
+		out[k] = v * by
 	}
 	return out
 }
+
+func ptrTo(v float64) *float64 { return &v }
 
 // Vectors is schema/v0/amount-vectors.json.
 type Vectors struct {
 	Foods []Food `json:"foods"`
 	Cases []struct {
-		Name   string `json:"name"`
-		Note   string `json:"note,omitempty"`
-		Food   string `json:"food"`
-		Amount Amount `json:"amount"`
+		Name   string  `json:"name"`
+		Note   string  `json:"note,omitempty"`
+		Food   string  `json:"food"`
+		Amount Amount  `json:"amount"`
+		Share  float64 `json:"share,omitempty"`
 		Expect struct {
+			// Grams is nil both when absent and when null (the amount can't be weighed).
 			Grams     *float64           `json:"grams,omitempty"`
+			ML        *float64           `json:"ml,omitempty"`
 			Nutrients map[string]float64 `json:"nutrients,omitempty"`
 			Error     string             `json:"error,omitempty"`
 		} `json:"expect"`

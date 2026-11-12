@@ -11,7 +11,7 @@ Each tool's `_meta` names its profile under `dev.openfoodlog/profile`, and serve
 mark when they list their tools:
 
 - **`core`**: `log_meal`, `get_meals`, `update_meal` (a meal, or an item, including confirming its
-  food), `delete_meal`, `search_foods` and `undo`, as section 9 of the specification names them.
+  food), `delete_meal`, `search_foods` and `undo`, as section 11 of the specification names them.
   None needs an LLM. A compatible server offers all of them, with these shapes.
 - **`lifterclub`**: the reference server's own extensions, which other servers may copy but need
   not: `log_meal_text` (sentence reading by an LLM) and `lookup_barcode` (packaged foods by barcode

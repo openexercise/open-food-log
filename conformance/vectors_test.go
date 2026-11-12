@@ -15,15 +15,16 @@ func calculate(_ context.Context, input json.RawMessage) (VectorResult, error) {
 	var c struct {
 		Food   openfoodlog.Food   `json:"food"`
 		Amount openfoodlog.Amount `json:"amount"`
+		Share  float64            `json:"share"`
 	}
 	if err := json.Unmarshal(input, &c); err != nil {
 		return VectorResult{}, err
 	}
-	g, err := openfoodlog.Grams(c.Food, c.Amount)
+	m, err := openfoodlog.Measure(c.Food, c.Amount, c.Share)
 	if err != nil {
 		return VectorResult{Error: err.Error()}, nil
 	}
-	return VectorResult{Grams: &g, Nutrients: openfoodlog.Nutrients(c.Food, g)}, nil
+	return VectorResult{Grams: m.Grams, ML: m.ML, Nutrients: m.Nutrients}, nil
 }
 
 func TestCheckVectors(t *testing.T) {
@@ -71,6 +72,20 @@ func TestCheckVectorsCatchesMistakes(t *testing.T) {
 			if r.Error == openfoodlog.ErrDensityUnknown.Error() {
 				g := 100.0
 				return VectorResult{Grams: &g}
+			}
+			return r
+		},
+		"weighs a drink": func(r VectorResult) VectorResult {
+			if r.Grams == nil && r.ML != nil {
+				g := *r.ML
+				r.Grams = &g
+			}
+			return r
+		},
+		"ml off": func(r VectorResult) VectorResult {
+			if r.ML != nil {
+				ml := *r.ML + 1
+				r.ML = &ml
 			}
 			return r
 		},

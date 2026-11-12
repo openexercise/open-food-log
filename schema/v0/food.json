@@ -2,22 +2,23 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openfoodlog.org/schema/v0/food.json",
   "title": "Open Food Log v0: food",
-  "description": "One food: what it is, what 100 g of it holds, and the portions people measure it in. Draft; may change until v1.",
+  "description": "One food: what it is, what 100 g (or 100 ml, or a serving) of it holds, and the portions people measure it in. v0.1; may change until v1.",
   "type": "object",
   "required": ["id", "name", "kind", "nutrients_per_100g"],
   "additionalProperties": false,
   "patternProperties": { "^x-": {} },
   "properties": {
     "$schema": { "const": "https://openfoodlog.org/schema/v0/food.json" },
+    "ofl_version": { "$ref": "#/$defs/ofl_version" },
     "id": {
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._-]+$",
-      "description": "namespace:slug. ofc: is the Open Food Catalogue; gtin: is a packaged product by its GTIN as 14 digits; usr: is one person's own food, meaningful only where it was made."
+      "description": "namespace:slug. ofc: is the Open Food Catalogue; gtin: is a packaged product by its GTIN as 14 digits; usr: is one person's own food and recipe: one person's recipe, each meaningful only where it was made."
     },
     "name": { "type": "string", "minLength": 1, "description": "The canonical name, in English for the catalogue." },
     "kind": {
-      "enum": ["generic", "branded", "restaurant", "custom"],
-      "description": "generic: a food as such (a raw egg). branded: a packaged product. restaurant: a dish as one restaurant serves it. custom: a person's own food."
+      "enum": ["generic", "branded", "restaurant", "custom", "supplement"],
+      "description": "generic: a food as such (a raw egg). branded: a packaged product. restaurant: a dish as one restaurant serves it. custom: a person's own food. supplement: a dietary supplement, dosed per serving (label.nutrients_per_serving) rather than weighed."
     },
     "brand": { "type": "string" },
     "gtin": {
@@ -44,9 +45,18 @@
     "status": { "enum": ["active", "deprecated", "replaced"], "default": "active" },
     "replaced_by": { "type": "string" },
     "previous_ids": { "type": "array", "items": { "type": "string" } },
+    "nutrients_basis": {
+      "enum": ["100g", "100ml", "serving"],
+      "default": "100g",
+      "description": "Which set of values the source declared: per 100 g (nutrients_per_100g), per 100 ml (nutrients_per_100ml, as drinks' labels give them) or per serving (label.nutrients_per_serving, as supplements' labels give them). The other sets, where present, were worked out from it."
+    },
     "nutrients_per_100g": {
       "$ref": "#/$defs/nutrients",
-      "description": "What 100 g of the food holds, as eaten in the state the name says (raw, cooked, dry). A nutrient left out is unknown, never zero."
+      "description": "What 100 g of the food holds, as eaten in the state the name says (raw, cooked, dry). A nutrient left out is unknown, never zero. Empty ({}) when the food's values are known only per 100 ml or per serving and it can't be weighed."
+    },
+    "nutrients_per_100ml": {
+      "$ref": "#/$defs/nutrients",
+      "description": "What 100 ml of the food holds, for a drink labelled that way. With density_g_per_ml, nutrients_per_100g should be given too (these divided by the density)."
     },
     "density_g_per_ml": {
       "type": "number",
@@ -58,6 +68,87 @@
       "description": "Named measures with their weight: '1 large' egg is 50 g, '1 cup' of oats 81 g. Cups and spoons are portions, because what they weigh depends on the food.",
       "items": { "$ref": "#/$defs/portion" }
     },
+    "label": { "$ref": "#/$defs/label" },
+    "category": {
+      "description": "What kind of food it is, in a named scheme.",
+      "type": "object",
+      "required": ["name", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "description": "e.g. Dairy and Egg Products." },
+        "code": { "type": "string", "description": "The category's code in the scheme, where it has one." },
+        "scheme": { "type": "string", "description": "Whose categories: fdc (FoodData Central food categories), gpc (GS1 Global Product Classification), off (Open Food Facts), or a producer's own x-<vendor>." },
+        "basis": { "$ref": "#/$defs/basis" }
+      }
+    },
+    "allergens": {
+      "description": "Allergens the food contains or may contain. An allergen not listed is unknown, never absent: OFL has no way to say a food is free of one.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["allergen", "presence", "basis"],
+        "additionalProperties": false,
+        "properties": {
+          "allergen": { "$ref": "#/$defs/allergen" },
+          "presence": { "enum": ["contains", "may_contain"], "description": "may_contain is a precautionary statement ('may contain traces of')." },
+          "basis": { "$ref": "#/$defs/basis" }
+        }
+      }
+    },
+    "diet_flags": {
+      "description": "Diets the food suits. A flag not listed is unknown, never a no.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["flag", "basis"],
+        "additionalProperties": false,
+        "properties": {
+          "flag": {
+            "anyOf": [
+              { "enum": ["vegan", "vegetarian", "gluten_free", "dairy_free", "halal", "kosher", "organic"] },
+              { "type": "string", "pattern": "^x-[a-z0-9]+-[a-z0-9_-]+$" }
+            ]
+          },
+          "certified_by": { "type": "string", "description": "The body that certified it, for a certified claim." },
+          "basis": { "$ref": "#/$defs/basis" }
+        }
+      }
+    },
+    "ingredients_text": {
+      "description": "The ingredients list as the label prints it.",
+      "type": "object",
+      "required": ["text", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "locale": { "type": "string", "description": "BCP 47 tag of the text's language." },
+        "basis": { "$ref": "#/$defs/basis" }
+      }
+    },
+    "glycemic_index": {
+      "description": "The food's glycemic index, against glucose = 100 unless reference says otherwise.",
+      "type": "object",
+      "required": ["value", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number", "minimum": 0 },
+        "reference": { "enum": ["glucose", "white_bread"], "default": "glucose" },
+        "source": { "type": "string", "description": "Where the value comes from, e.g. the International Tables of Glycemic Index (2021)." },
+        "basis": { "$ref": "#/$defs/basis" }
+      }
+    },
+    "glycemic_load": {
+      "description": "The glycemic load of a stated weight of the food: GI × available carbohydrate in that weight / 100.",
+      "type": "object",
+      "required": ["value", "grams", "basis"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number", "minimum": 0 },
+        "grams": { "type": "number", "exclusiveMinimum": 0, "description": "The weight the load is for, usually a serving." },
+        "source": { "type": "string" },
+        "basis": { "$ref": "#/$defs/basis" }
+      }
+    },
     "identifiers": {
       "type": "object",
       "description": "The food's IDs in other databases.",
@@ -65,39 +156,91 @@
       "patternProperties": { "^x-": {} },
       "properties": {
         "fdc_id": { "type": "integer", "description": "USDA FoodData Central." },
-        "off_code": { "type": "string", "description": "Open Food Facts product code." }
+        "off_code": { "type": "string", "description": "Open Food Facts product code." },
+        "dsld_id": { "type": "integer", "description": "NIH Dietary Supplement Label Database label ID, for a supplement." }
       }
     },
     "provenance": { "$ref": "#/$defs/provenance" }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "nutrients_basis": { "const": "100ml" } }, "required": ["nutrients_basis"] },
+      "then": { "required": ["nutrients_per_100ml"] }
+    },
+    {
+      "if": { "properties": { "nutrients_basis": { "const": "serving" } }, "required": ["nutrients_basis"] },
+      "then": { "required": ["label"], "properties": { "label": { "required": ["serving", "nutrients_per_serving"] } } }
+    }
+  ],
   "$defs": {
+    "ofl_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "The Open Food Log version the document was written to, as MAJOR.MINOR (\"0.1\"). A document without one is 0.0, the first draft."
+    },
+    "basis": {
+      "enum": ["declared", "inferred"],
+      "description": "declared: stated by the label, the maker or a database that measured it. inferred: worked out or guessed (from the name, the ingredients, a photo or a model)."
+    },
+    "allergen": {
+      "enum": ["gluten", "wheat", "crustaceans", "molluscs", "eggs", "fish", "peanuts", "soybeans", "milk", "tree_nuts", "celery", "mustard", "sesame", "sulphites", "lupin"],
+      "description": "The EU's 14 (Regulation 1169/2011, Annex II) and the US's 9 (FALCPA and the FASTER Act). The US's crustacean shellfish is crustaceans; wheat is listed apart from gluten because the US names it alone."
+    },
     "nutrients": {
-      "description": "Amounts keyed by nutrient, each in the unit its key names (nutrients.json). A key left out is unknown, never zero. x- keys are a producer's own.",
+      "description": "Amounts keyed by nutrient, each in the unit its key names (nutrients.json). A key left out is unknown, never zero. x- keys are a producer's own (x-<vendor>-<name>_<unit>).",
       "type": "object",
       "additionalProperties": false,
-      "patternProperties": { "^x-[a-z0-9_]+$": { "type": "number", "minimum": 0 } },
+      "patternProperties": { "^x-[a-z0-9_-]+$": { "type": "number", "minimum": 0 } },
       "properties": {
         "energy_kcal": { "type": "number", "minimum": 0 },
+        "energy_kj": { "type": "number", "minimum": 0 },
         "protein_g": { "type": "number", "minimum": 0 },
         "fat_g": { "type": "number", "minimum": 0 },
         "saturated_fat_g": { "type": "number", "minimum": 0 },
         "monounsaturated_fat_g": { "type": "number", "minimum": 0 },
         "polyunsaturated_fat_g": { "type": "number", "minimum": 0 },
         "trans_fat_g": { "type": "number", "minimum": 0 },
+        "ala_g": { "type": "number", "minimum": 0 },
+        "epa_g": { "type": "number", "minimum": 0 },
+        "dha_g": { "type": "number", "minimum": 0 },
         "cholesterol_mg": { "type": "number", "minimum": 0 },
         "carbohydrate_g": { "type": "number", "minimum": 0 },
+        "carbohydrate_available_g": { "type": "number", "minimum": 0 },
         "fiber_g": { "type": "number", "minimum": 0 },
         "sugars_g": { "type": "number", "minimum": 0 },
         "added_sugars_g": { "type": "number", "minimum": 0 },
+        "starch_g": { "type": "number", "minimum": 0 },
+        "polyols_g": { "type": "number", "minimum": 0 },
         "sodium_mg": { "type": "number", "minimum": 0 },
+        "salt_g": { "type": "number", "minimum": 0 },
         "potassium_mg": { "type": "number", "minimum": 0 },
         "calcium_mg": { "type": "number", "minimum": 0 },
         "iron_mg": { "type": "number", "minimum": 0 },
         "magnesium_mg": { "type": "number", "minimum": 0 },
+        "phosphorus_mg": { "type": "number", "minimum": 0 },
         "zinc_mg": { "type": "number", "minimum": 0 },
+        "copper_mg": { "type": "number", "minimum": 0 },
+        "manganese_mg": { "type": "number", "minimum": 0 },
+        "selenium_ug": { "type": "number", "minimum": 0 },
+        "iodine_ug": { "type": "number", "minimum": 0 },
+        "chromium_ug": { "type": "number", "minimum": 0 },
+        "molybdenum_ug": { "type": "number", "minimum": 0 },
+        "chloride_mg": { "type": "number", "minimum": 0 },
+        "vitamin_a_rae_ug": { "type": "number", "minimum": 0 },
         "vitamin_c_mg": { "type": "number", "minimum": 0 },
         "vitamin_d_ug": { "type": "number", "minimum": 0 },
-        "vitamin_a_rae_ug": { "type": "number", "minimum": 0 },
+        "vitamin_e_mg": { "type": "number", "minimum": 0 },
+        "vitamin_k_ug": { "type": "number", "minimum": 0 },
+        "thiamin_mg": { "type": "number", "minimum": 0 },
+        "riboflavin_mg": { "type": "number", "minimum": 0 },
+        "niacin_mg": { "type": "number", "minimum": 0 },
+        "pantothenic_acid_mg": { "type": "number", "minimum": 0 },
+        "vitamin_b6_mg": { "type": "number", "minimum": 0 },
+        "biotin_ug": { "type": "number", "minimum": 0 },
+        "folate_dfe_ug": { "type": "number", "minimum": 0 },
+        "folic_acid_ug": { "type": "number", "minimum": 0 },
+        "vitamin_b12_ug": { "type": "number", "minimum": 0 },
+        "choline_mg": { "type": "number", "minimum": 0 },
         "caffeine_mg": { "type": "number", "minimum": 0 },
         "alcohol_g": { "type": "number", "minimum": 0 },
         "water_g": { "type": "number", "minimum": 0 }
@@ -112,6 +255,41 @@
         "label": { "type": "string", "description": "What one of it is called: '1 large', '1 cup, sliced'." },
         "grams": { "type": "number", "exclusiveMinimum": 0 },
         "is_default": { "type": "boolean", "description": "The portion to assume when a person names the food without a size. At most one per food." }
+      }
+    },
+    "label": {
+      "description": "What the package's nutrition label declares, kept as printed. Its numbers are declared; nutrients_per_100g may be worked out from them.",
+      "type": "object",
+      "required": ["region"],
+      "additionalProperties": false,
+      "patternProperties": { "^x-": {} },
+      "properties": {
+        "region": {
+          "enum": ["us", "eu", "uk", "au", "ca"],
+          "description": "Whose labelling rules the label follows, which decides what carbohydrate means (us, ca: total, fibre included; eu, uk, au: available, fibre excluded) and which daily values the percentages are of."
+        },
+        "serving": {
+          "description": "The declared serving: its text as printed and, where the label gives one, its weight or volume.",
+          "type": "object",
+          "required": ["text"],
+          "additionalProperties": false,
+          "properties": {
+            "text": { "type": "string", "minLength": 1, "description": "e.g. '1 can (330 ml)', '2 capsules'." },
+            "grams": { "type": "number", "exclusiveMinimum": 0 },
+            "ml": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "servings_per_container": { "type": "number", "exclusiveMinimum": 0 },
+        "nutrients_per_serving": {
+          "$ref": "#/$defs/nutrients",
+          "description": "What one declared serving holds. For a supplement, the dose."
+        },
+        "percent_daily_values": {
+          "description": "The label's %DV (or %RI) per serving, keyed by nutrient key, as printed. Percentages of the region's reference values, not amounts.",
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": { "^([a-z0-9_]+|x-[a-z0-9_-]+)$": { "type": "number", "minimum": 0 } }
+        }
       }
     },
     "provenance": {

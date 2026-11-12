@@ -101,7 +101,7 @@ func runMCPConformance(args []string) error {
 }
 
 // runVectors runs every published amount case through a command: the runner contract. The command
-// gets one case on stdin, as JSON with its food and amount, and prints what it works out as JSON
+// gets one case on stdin, as JSON with its food, amount and share (when the case gives one), and prints what it works out as JSON
 // (conformance.VectorResult) on stdout; it runs once per case.
 func runVectors(args []string) error {
 	flags := flag.NewFlagSet("vectors", flag.ContinueOnError)
@@ -109,7 +109,7 @@ func runVectors(args []string) error {
 	timeout := flags.Duration("timeout", 10*time.Second, "give up on a case after this long")
 	flags.Usage = func() {
 		fmt.Fprintln(flags.Output(), "usage: ofl vectors [--json] -- <command> [args...]\n\n"+
-			"Runs the command once per case in schema/v0/amount-vectors.json, with {\"name\", \"food\", \"amount\"} on stdin,\n"+
+			"Runs the command once per case in schema/v0/amount-vectors.json, with {\"name\", \"food\", \"amount\", \"share\"} on stdin,\n"+
 			"and compares the JSON it prints: {\"grams\": number, \"nutrients\": {...}} or {\"error\": \"density_unknown\"}.")
 		flags.PrintDefaults()
 	}

@@ -12,21 +12,26 @@ import (
 )
 
 // VectorResult is what an implementation of the specification's section 6 works out for a case:
-// the amount as grams and the nutrients it held, or the error code it reports instead of guessing
-// (density_unknown, portion_unknown, unit_unknown).
+// the amount as grams and millilitres where they can be known, and the nutrients it held, or the
+// error code it reports instead of guessing (density_unknown, portion_unknown, serving_unknown,
+// serving_weight_unknown, unit_unknown). A drink known per 100 ml, or a supplement by the
+// serving, has no grams, and leaves Grams nil.
 type VectorResult struct {
 	Grams     *float64           `json:"grams,omitempty"`
+	ML        *float64           `json:"ml,omitempty"`
 	Nutrients map[string]float64 `json:"nutrients,omitempty"`
 	Error     string             `json:"error,omitempty"`
 }
 
 // VectorCase is one published case (schema/v0/amount-vectors.json). Input is the case as an
 // implementation receives it: its name, the whole food document the case names under "food",
-// and the amount; never the expectation.
+// the amount, and the share of it eaten when the case gives one; never the expectation.
+// GramsUnknown is a case expecting grams to stay unknown ("grams": null).
 type VectorCase struct {
-	Name  string
-	Input json.RawMessage
-	Want  VectorResult
+	Name         string
+	Input        json.RawMessage
+	Want         VectorResult
+	GramsUnknown bool
 }
 
 // vectorTolerance is how near a result must be: the cases are exact, and an implementation that
@@ -45,7 +50,8 @@ func AmountVectors() ([]VectorCase, error) {
 			Name   string          `json:"name"`
 			Food   string          `json:"food"`
 			Amount json.RawMessage `json:"amount"`
-			Expect VectorResult    `json:"expect"`
+			Share  float64         `json:"share,omitempty"`
+			Expect json.RawMessage `json:"expect"`
 		} `json:"cases"`
 	}
 	if err := json.Unmarshal(raw, &doc); err != nil {
@@ -67,11 +73,24 @@ func AmountVectors() ([]VectorCase, error) {
 		if !ok {
 			return nil, fmt.Errorf("amount vectors: %s names food %s, which isn't listed", c.Name, c.Food)
 		}
-		input, err := json.Marshal(map[string]any{"name": c.Name, "food": food, "amount": c.Amount})
+		in := map[string]any{"name": c.Name, "food": food, "amount": c.Amount}
+		if c.Share != 0 {
+			in["share"] = c.Share
+		}
+		input, err := json.Marshal(in)
 		if err != nil {
 			return nil, err
 		}
-		out = append(out, VectorCase{Name: c.Name, Input: input, Want: c.Expect})
+		var want VectorResult
+		var fields map[string]json.RawMessage
+		if err := json.Unmarshal(c.Expect, &want); err != nil {
+			return nil, fmt.Errorf("amount vectors: %s: %w", c.Name, err)
+		}
+		if err := json.Unmarshal(c.Expect, &fields); err != nil {
+			return nil, fmt.Errorf("amount vectors: %s: %w", c.Name, err)
+		}
+		grams, named := fields["grams"]
+		out = append(out, VectorCase{Name: c.Name, Input: input, Want: want, GramsUnknown: named && string(grams) == "null"})
 	}
 	return out, nil
 }
@@ -99,7 +118,7 @@ func CheckVectors(ctx context.Context, compute func(ctx context.Context, input j
 		res := Result{Name: c.Name, Status: Pass}
 		got, err := compute(ctx, c.Input)
 		if err == nil {
-			err = c.Want.compare(got)
+			err = c.compare(got)
 		}
 		if err != nil {
 			res.Status, res.Detail = Fail, err.Error()
@@ -109,9 +128,11 @@ func CheckVectors(ctx context.Context, compute func(ctx context.Context, input j
 	return report, nil
 }
 
-// compare says how got differs from want. A case expects an error or grams; nutrients are compared
-// only for the keys it lists, and a key it lists must be there.
-func (want VectorResult) compare(got VectorResult) error {
+// compare says how got differs from the case's expectation. A case expects an error, or grams
+// and millilitres where it names them (grams may be expected unknown); nutrients are compared only
+// for the keys it lists, and a key it lists must be there.
+func (c VectorCase) compare(got VectorResult) error {
+	want := c.Want
 	if want.Error != "" {
 		if got.Error != want.Error {
 			return fmt.Errorf("error = %q, want %q", got.Error, want.Error)
@@ -119,10 +140,16 @@ func (want VectorResult) compare(got VectorResult) error {
 		return nil
 	}
 	if got.Error != "" {
-		return fmt.Errorf("error = %q, want grams", got.Error)
+		return fmt.Errorf("error = %q, want a result", got.Error)
+	}
+	if c.GramsUnknown && got.Grams != nil {
+		return fmt.Errorf("grams = %g, want unknown", *got.Grams)
 	}
 	if want.Grams != nil && (got.Grams == nil || !near(*got.Grams, *want.Grams)) {
 		return fmt.Errorf("grams = %s, want %g", show(got.Grams), *want.Grams)
+	}
+	if want.ML != nil && (got.ML == nil || !near(*got.ML, *want.ML)) {
+		return fmt.Errorf("ml = %s, want %g", show(got.ML), *want.ML)
 	}
 	keys := make([]string, 0, len(want.Nutrients))
 	for k := range want.Nutrients {

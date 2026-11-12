@@ -1,6 +1,6 @@
 {
   "title": "Open Food Log v0: amount vectors",
-  "description": "Worked cases every implementation should agree on: an amount on a food becomes grams, then the item's nutrients. grams and nutrients are exact; an implementation that rounds what it stores (to two decimal places, say) agrees when it is within 0.01. Only four nutrients are listed per case; the rule is the same for all. An error is the code an implementation reports instead of guessing.",
+  "description": "Worked cases every implementation should agree on: an amount on a food becomes grams (or millilitres or servings), then the item's nutrients (section 6 of the spec). grams and nutrients are exact; an implementation that rounds what it stores (to two decimal places, say) agrees when it is within 0.01. A few nutrients are listed per case; the rule is the same for all. grams null means the amount can't be weighed, which isn't an error when the food's values are per 100 ml or per serving. share is the item's share. An error is the code an implementation reports instead of guessing. The foods' IDs in the example: namespace are illustrative, not real products.",
   "foods": [
     {
       "$schema": "https://openfoodlog.org/schema/v0/food.json",
@@ -307,6 +307,77 @@
         "license": "CC0-1.0",
         "review": "unreviewed"
       }
+    },
+    {
+      "$schema": "https://openfoodlog.org/schema/v0/food.json",
+      "ofl_version": "0.1",
+      "id": "example:cola-can",
+      "name": "Cola, Can",
+      "kind": "branded",
+      "brand": "Example",
+      "nutrients_basis": "100ml",
+      "nutrients_per_100g": {},
+      "nutrients_per_100ml": {
+        "energy_kcal": 42,
+        "energy_kj": 180,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "carbohydrate_available_g": 10.6,
+        "sugars_g": 10.6,
+        "fiber_g": 0,
+        "carbohydrate_g": 10.6,
+        "protein_g": 0,
+        "salt_g": 0.01,
+        "sodium_mg": 4,
+        "caffeine_mg": 10
+      },
+      "label": {
+        "region": "eu",
+        "serving": {
+          "text": "1 can (330 ml)",
+          "ml": 330
+        },
+        "servings_per_container": 1
+      },
+      "provenance": {
+        "sources": [
+          {
+            "name": "An illustrative EU label, not a real product"
+          }
+        ],
+        "review": "unreviewed"
+      }
+    },
+    {
+      "$schema": "https://openfoodlog.org/schema/v0/food.json",
+      "ofl_version": "0.1",
+      "id": "example:vitamin-d3-softgel",
+      "name": "Vitamin D3 1000 IU, Softgel",
+      "kind": "supplement",
+      "brand": "Example",
+      "nutrients_basis": "serving",
+      "nutrients_per_100g": {},
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 softgel"
+        },
+        "servings_per_container": 120,
+        "nutrients_per_serving": {
+          "vitamin_d_ug": 25
+        },
+        "percent_daily_values": {
+          "vitamin_d_ug": 125
+        }
+      },
+      "provenance": {
+        "sources": [
+          {
+            "name": "An illustrative US supplement facts label, not a real product"
+          }
+        ],
+        "review": "unreviewed"
+      }
     }
   ],
   "cases": [
@@ -490,6 +561,131 @@
       },
       "expect": {
         "error": "portion_unknown"
+      }
+    },
+    {
+      "name": "a drink by volume, without a density",
+      "note": "Known per 100 ml only, so it's counted from its volume and its grams stay unknown (null).",
+      "food": "example:cola-can",
+      "amount": {
+        "value": 250,
+        "unit": "ml"
+      },
+      "expect": {
+        "grams": null,
+        "ml": 250,
+        "nutrients": {
+          "energy_kcal": 105.0,
+          "carbohydrate_available_g": 26.5,
+          "sugars_g": 26.5,
+          "sodium_mg": 10.0
+        }
+      }
+    },
+    {
+      "name": "a drink's declared serving",
+      "food": "example:cola-can",
+      "amount": {
+        "value": 1,
+        "unit": "serving"
+      },
+      "expect": {
+        "grams": null,
+        "ml": 330,
+        "nutrients": {
+          "energy_kcal": 138.6,
+          "carbohydrate_available_g": 34.98,
+          "sugars_g": 34.98,
+          "sodium_mg": 13.2
+        }
+      }
+    },
+    {
+      "name": "a drink by weight, without a density",
+      "note": "Its values are per 100 ml and nothing says what 100 g is in ml.",
+      "food": "example:cola-can",
+      "amount": {
+        "value": 100,
+        "unit": "g"
+      },
+      "expect": {
+        "error": "density_unknown"
+      }
+    },
+    {
+      "name": "a supplement by the serving",
+      "note": "Dosed, not weighed: grams stay unknown.",
+      "food": "example:vitamin-d3-softgel",
+      "amount": {
+        "value": 2,
+        "unit": "serving"
+      },
+      "expect": {
+        "grams": null,
+        "nutrients": {
+          "vitamin_d_ug": 50
+        }
+      }
+    },
+    {
+      "name": "a supplement by weight",
+      "food": "example:vitamin-d3-softgel",
+      "amount": {
+        "value": 1,
+        "unit": "g"
+      },
+      "expect": {
+        "error": "serving_weight_unknown"
+      }
+    },
+    {
+      "name": "a serving the food doesn't declare",
+      "food": "ofc:oats-dry",
+      "amount": {
+        "value": 1,
+        "unit": "serving"
+      },
+      "expect": {
+        "error": "serving_unknown"
+      }
+    },
+    {
+      "name": "a share of a dish",
+      "note": "Half of six eggs: grams and nutrients are the person's part.",
+      "food": "ofc:egg-whole-raw",
+      "amount": {
+        "value": 6,
+        "unit": "portion",
+        "portion": "large"
+      },
+      "share": 0.5,
+      "expect": {
+        "grams": 150.0,
+        "nutrients": {
+          "energy_kcal": 214.5,
+          "protein_g": 18.84,
+          "fat_g": 14.265,
+          "carbohydrate_g": 1.08
+        }
+      }
+    },
+    {
+      "name": "a share of a drink",
+      "food": "example:cola-can",
+      "amount": {
+        "value": 1,
+        "unit": "serving"
+      },
+      "share": 0.5,
+      "expect": {
+        "grams": null,
+        "ml": 165.0,
+        "nutrients": {
+          "energy_kcal": 69.3,
+          "carbohydrate_available_g": 17.49,
+          "sugars_g": 17.49,
+          "sodium_mg": 6.6
+        }
       }
     }
   ]

@@ -1,7 +1,10 @@
 {
   "$schema": "https://openfoodlog.org/schema/v0/meal.json",
+  "ofl_version": "0.1",
   "id": "ml_01JCB2A7Q0S4M",
   "eaten_at": "2026-11-09T07:30:00-06:00",
+  "timezone": "America/Chicago",
+  "logged_at": "2026-11-09T07:41:12-06:00",
   "meal_type": "breakfast",
   "source": {
     "kind": "mcp",

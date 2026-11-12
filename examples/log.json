@@ -1,7 +1,140 @@
 {
   "$schema": "https://openfoodlog.org/schema/v0/log.json",
+  "ofl_version": "0.1",
   "exported_at": "2026-11-09T21:00:00Z",
   "meals": [
+    {
+      "id": "ml_01JCF7T3K9W2P",
+      "eaten_at": "2026-11-10T18:45:00-06:00",
+      "date": "2026-11-10",
+      "timezone": "America/Chicago",
+      "logged_at": "2026-11-10T21:05:00-06:00",
+      "meal_type": "dinner",
+      "label": "post-workout",
+      "recorded_by": "person",
+      "source": {
+        "kind": "app",
+        "client": "lifterclub",
+        "external_id": null
+      },
+      "media": [
+        {
+          "url": "https://example.com/media/ml_01JCF7T3K9W2P/1.jpg",
+          "media_type": "image/jpeg",
+          "taken_at": "2026-11-10T18:44:10-06:00"
+        }
+      ],
+      "items": [
+        {
+          "text": "split a 6-egg scramble with Sam",
+          "food": {
+            "id": "ofc:egg-whole-raw",
+            "name": "Egg, Whole, Raw",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 6,
+            "unit": "portion",
+            "portion": "large"
+          },
+          "share": 0.5,
+          "grams": 150.0,
+          "nutrients": {
+            "energy_kcal": 214.5,
+            "protein_g": 18.84,
+            "fat_g": 14.27,
+            "saturated_fat_g": 4.69,
+            "monounsaturated_fat_g": 5.49,
+            "polyunsaturated_fat_g": 2.87,
+            "trans_fat_g": 0.06,
+            "cholesterol_mg": 558.0,
+            "carbohydrate_g": 1.08,
+            "fiber_g": 0.0,
+            "sugars_g": 0.56,
+            "sodium_mg": 213.0,
+            "potassium_mg": 207.0,
+            "calcium_mg": 84.0,
+            "iron_mg": 2.62,
+            "magnesium_mg": 18.0,
+            "zinc_mg": 1.94,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 3.0,
+            "vitamin_a_rae_ug": 240.0,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 114.22
+          },
+          "confidence": 0.7
+        },
+        {
+          "text": "a can of cola",
+          "food": {
+            "id": "example:cola-can",
+            "name": "Cola, Can",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "serving"
+          },
+          "nutrients": {
+            "energy_kcal": 138.6,
+            "energy_kj": 594.0,
+            "fat_g": 0.0,
+            "saturated_fat_g": 0.0,
+            "carbohydrate_available_g": 34.98,
+            "sugars_g": 34.98,
+            "fiber_g": 0.0,
+            "carbohydrate_g": 34.98,
+            "protein_g": 0.0,
+            "salt_g": 0.03,
+            "sodium_mg": 13.2,
+            "caffeine_mg": 33.0
+          }
+        },
+        {
+          "text": "a bowl of overnight oats",
+          "food": {
+            "id": "recipe:overnight-oats",
+            "name": "Overnight oats",
+            "match": "custom"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "serving"
+          },
+          "grams": 221.5,
+          "nutrients": {
+            "alcohol_g": 0.0,
+            "caffeine_mg": 0.0,
+            "calcium_mg": 161.87,
+            "carbohydrate_g": 46.75,
+            "cholesterol_mg": 12.2,
+            "energy_kcal": 280.43,
+            "fat_g": 6.8,
+            "fiber_g": 5.62,
+            "iron_mg": 1.91,
+            "magnesium_mg": 84.02,
+            "monounsaturated_fat_g": 1.81,
+            "polyunsaturated_fat_g": 1.22,
+            "potassium_mg": 518.87,
+            "protein_g": 9.82,
+            "saturated_fat_g": 2.79,
+            "sodium_mg": 55.48,
+            "sugars_g": 13.78,
+            "vitamin_a_rae_ug": 57.89,
+            "vitamin_c_mg": 5.13,
+            "vitamin_d_ug": 1.58,
+            "water_g": 156.1,
+            "zinc_mg": 2.02
+          }
+        }
+      ],
+      "estimates": [
+        "/items/0/amount",
+        "/items/0/grams"
+      ]
+    },
     {
       "$schema": "https://openfoodlog.org/schema/v0/meal.json",
       "id": "ml_01JCB9X2K7T1P",
@@ -207,5 +340,265 @@
       "notes": "Before the long run"
     }
   ],
-  "foods": []
+  "foods": [],
+  "recipes": [
+    {
+      "id": "recipe:overnight-oats",
+      "name": "Overnight oats",
+      "lines": [
+        {
+          "text": "1 cup oats",
+          "food": {
+            "id": "ofc:oats-dry",
+            "name": "Oats, Dry",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "portion",
+            "portion": "cup"
+          },
+          "grams": 81,
+          "nutrients": {
+            "energy_kcal": 306.99,
+            "protein_g": 10.65,
+            "fat_g": 5.28,
+            "saturated_fat_g": 0.9,
+            "monounsaturated_fat_g": 1.6,
+            "polyunsaturated_fat_g": 1.86,
+            "cholesterol_mg": 0.0,
+            "carbohydrate_g": 54.84,
+            "fiber_g": 8.18,
+            "sugars_g": 0.8,
+            "sodium_mg": 4.86,
+            "potassium_mg": 293.22,
+            "calcium_mg": 42.12,
+            "iron_mg": 3.44,
+            "magnesium_mg": 111.78,
+            "zinc_mg": 2.95,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 0.0,
+            "vitamin_a_rae_ug": 0.0,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 8.78
+          }
+        },
+        {
+          "text": "1 cup whole milk",
+          "food": {
+            "id": "ofc:milk-whole",
+            "name": "Milk, Whole (3.25%)",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "portion",
+            "portion": "cup"
+          },
+          "grams": 244,
+          "nutrients": {
+            "energy_kcal": 148.84,
+            "protein_g": 7.69,
+            "fat_g": 7.93,
+            "saturated_fat_g": 4.55,
+            "monounsaturated_fat_g": 1.98,
+            "polyunsaturated_fat_g": 0.48,
+            "cholesterol_mg": 24.4,
+            "carbohydrate_g": 11.71,
+            "fiber_g": 0.0,
+            "sugars_g": 12.32,
+            "sodium_mg": 104.92,
+            "potassium_mg": 322.08,
+            "calcium_mg": 275.72,
+            "iron_mg": 0.07,
+            "magnesium_mg": 24.4,
+            "zinc_mg": 0.9,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 3.17,
+            "vitamin_a_rae_ug": 112.24,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 215.04
+          }
+        },
+        {
+          "text": "a banana",
+          "food": {
+            "id": "ofc:banana-raw",
+            "name": "Banana, Raw",
+            "match": "catalogue"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "portion",
+            "portion": "medium"
+          },
+          "grams": 118,
+          "nutrients": {
+            "energy_kcal": 105.02,
+            "protein_g": 1.29,
+            "fat_g": 0.39,
+            "saturated_fat_g": 0.13,
+            "monounsaturated_fat_g": 0.04,
+            "polyunsaturated_fat_g": 0.09,
+            "trans_fat_g": 0.0,
+            "cholesterol_mg": 0.0,
+            "carbohydrate_g": 26.95,
+            "fiber_g": 3.07,
+            "sugars_g": 14.43,
+            "sodium_mg": 1.18,
+            "potassium_mg": 422.44,
+            "calcium_mg": 5.9,
+            "iron_mg": 0.31,
+            "magnesium_mg": 31.86,
+            "zinc_mg": 0.18,
+            "vitamin_c_mg": 10.27,
+            "vitamin_d_ug": 0.0,
+            "vitamin_a_rae_ug": 3.54,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 88.39
+          }
+        }
+      ],
+      "servings": 2,
+      "notes": "Soak overnight in the fridge.",
+      "source": {
+        "kind": "app",
+        "client": "lifterclub",
+        "external_id": null
+      },
+      "updated_at": "2026-11-12T08:00:00Z",
+      "nutrients_per_100g": {
+        "alcohol_g": 0.0,
+        "caffeine_mg": 0.0,
+        "calcium_mg": 73.08,
+        "carbohydrate_g": 21.11,
+        "cholesterol_mg": 5.51,
+        "energy_kcal": 126.6,
+        "fat_g": 3.07,
+        "fiber_g": 2.54,
+        "iron_mg": 0.86,
+        "magnesium_mg": 37.93,
+        "monounsaturated_fat_g": 0.82,
+        "polyunsaturated_fat_g": 0.55,
+        "potassium_mg": 234.25,
+        "protein_g": 4.43,
+        "saturated_fat_g": 1.26,
+        "sodium_mg": 25.05,
+        "sugars_g": 6.22,
+        "vitamin_a_rae_ug": 26.14,
+        "vitamin_c_mg": 2.32,
+        "vitamin_d_ug": 0.72,
+        "water_g": 70.48,
+        "zinc_mg": 0.91
+      },
+      "nutrients_per_serving": {
+        "alcohol_g": 0.0,
+        "caffeine_mg": 0.0,
+        "calcium_mg": 161.87,
+        "carbohydrate_g": 46.75,
+        "cholesterol_mg": 12.2,
+        "energy_kcal": 280.43,
+        "fat_g": 6.8,
+        "fiber_g": 5.62,
+        "iron_mg": 1.91,
+        "magnesium_mg": 84.02,
+        "monounsaturated_fat_g": 1.81,
+        "polyunsaturated_fat_g": 1.22,
+        "potassium_mg": 518.87,
+        "protein_g": 9.82,
+        "saturated_fat_g": 2.79,
+        "sodium_mg": 55.48,
+        "sugars_g": 13.78,
+        "vitamin_a_rae_ug": 57.89,
+        "vitamin_c_mg": 5.13,
+        "vitamin_d_ug": 1.58,
+        "water_g": 156.1,
+        "zinc_mg": 2.02
+      }
+    }
+  ],
+  "targets": {
+    "targets": [
+      {
+        "nutrient": "protein_g",
+        "per": "day",
+        "min": 140,
+        "effective_from": "2026-10-01",
+        "set_by": "person",
+        "id": "tg_01"
+      },
+      {
+        "nutrient": "protein_g",
+        "per": "day",
+        "min": 160,
+        "effective_from": "2026-11-01",
+        "set_by": "person",
+        "note": "More while training for the meet.",
+        "id": "tg_02"
+      },
+      {
+        "nutrient": "energy_kcal",
+        "per": "day",
+        "target": 2600,
+        "effective_from": "2026-11-01",
+        "set_by": "professional",
+        "id": "tg_03"
+      },
+      {
+        "nutrient": "energy_kcal",
+        "per": "day",
+        "target": 3000,
+        "weekdays": [
+          1,
+          3,
+          5
+        ],
+        "effective_from": "2026-11-01",
+        "set_by": "professional",
+        "note": "Training days.",
+        "id": "tg_04"
+      },
+      {
+        "nutrient": "sodium_mg",
+        "per": "day",
+        "max": 2300,
+        "effective_from": "2026-11-01",
+        "set_by": "app_suggestion",
+        "id": "tg_05"
+      },
+      {
+        "nutrient": "fiber_g",
+        "per": "day",
+        "min": 25,
+        "max": 45,
+        "target": 35,
+        "effective_from": "2026-11-01",
+        "effective_to": "2026-11-30",
+        "set_by": "person",
+        "id": "tg_06"
+      },
+      {
+        "nutrient": "protein_g",
+        "per": "meal",
+        "meal_type": "breakfast",
+        "min": 30,
+        "effective_from": "2026-11-01",
+        "set_by": "person",
+        "id": "tg_07"
+      },
+      {
+        "nutrient": "energy_kcal",
+        "per": "day",
+        "target": 2400,
+        "effective_from": "2026-12-01",
+        "set_by": "person",
+        "note": "A new every-day target; the training-day one still holds on its days.",
+        "id": "tg_08"
+      }
+    ],
+    "updated_at": "2026-11-01T09:00:00-05:00"
+  }
 }
