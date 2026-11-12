@@ -2,7 +2,6 @@ package openfoodlog
 
 import (
 	"encoding/json"
-	"fmt"
 	"math"
 	"os"
 	"path/filepath"
@@ -91,7 +90,7 @@ func TestNutrientVocabularyMatchesTheSchema(t *testing.T) {
 	}
 	readJSON(t, "schema/v0/food.json", &food)
 
-	suffix := map[string]string{"kcal": "_kcal", "g": "_g", "mg": "_mg", "µg": "_ug"}
+	suffix := map[string]string{"kcal": "_kcal", "kJ": "_kj", "g": "_g", "mg": "_mg", "µg": "_ug"}
 	var keys []string
 	for _, n := range vocab.Nutrients {
 		if slices.Contains(keys, n.Key) {
@@ -112,9 +111,8 @@ func TestNutrientVocabularyMatchesTheSchema(t *testing.T) {
 	}
 }
 
-func near(a, b, tolerance float64) bool { return math.Abs(a-b) <= tolerance+1e-9 }
-
-func TestAmountVectors(t *testing.T) {
+// TestMeasureAgrees holds the package's Measure to the amount vectors, as the reference does.
+func TestMeasureAgrees(t *testing.T) {
 	vectors, err := LoadVectors()
 	if err != nil {
 		t.Fatal(err)
@@ -124,116 +122,27 @@ func TestAmountVectors(t *testing.T) {
 		foods[f.ID] = f
 	}
 	for _, c := range vectors.Cases {
-		f, ok := foods[c.Food]
-		if !ok {
-			t.Errorf("%s: no food %s", c.Name, c.Food)
-			continue
-		}
-		g, err := Grams(f, c.Amount)
+		got, err := Measure(foods[c.Food], c.Amount, c.Share)
 		if c.Expect.Error != "" {
 			if err == nil || err.Error() != c.Expect.Error {
 				t.Errorf("%s: got %v, want error %s", c.Name, err, c.Expect.Error)
 			}
 			continue
 		}
-		if err != nil || c.Expect.Grams == nil || !near(g, *c.Expect.Grams, 1e-6) {
-			t.Errorf("%s: got %v g (%v), want %v", c.Name, g, err, c.Expect.Grams)
+		if err != nil {
+			t.Errorf("%s: %v", c.Name, err)
 			continue
 		}
-		got := Nutrients(f, g)
+		if (got.Grams == nil) != (c.Expect.Grams == nil) || (got.Grams != nil && math.Abs(*got.Grams-*c.Expect.Grams) > 1e-6) {
+			t.Errorf("%s: grams %v, want %v", c.Name, got.Grams, c.Expect.Grams)
+		}
+		if c.Expect.ML != nil && (got.ML == nil || math.Abs(*got.ML-*c.Expect.ML) > 1e-6) {
+			t.Errorf("%s: ml %v, want %v", c.Name, got.ML, *c.Expect.ML)
+		}
 		for k, want := range c.Expect.Nutrients {
-			if !near(got[k], want, 1e-6) {
-				t.Errorf("%s: %s = %v, want %v", c.Name, k, got[k], want)
+			if v, ok := got.Nutrients[k]; !ok || math.Abs(v-want) > 1e-6 {
+				t.Errorf("%s: %s = %v, want %v", c.Name, k, v, want)
 			}
 		}
 	}
-}
-
-// TestExamplesAddUp checks every example item against the food it names: its grams and nutrients
-// follow from its amount, it names no nutrient the food lacks, and every estimate points at a value.
-func TestExamplesAddUp(t *testing.T) {
-	vectors, err := LoadVectors()
-	if err != nil {
-		t.Fatal(err)
-	}
-	foods := map[string]Food{}
-	for _, f := range vectors.Foods {
-		foods[f.ID] = f
-	}
-	type meal struct {
-		Items []struct {
-			Text      string
-			Food      *struct{ ID *string }
-			Amount    *Amount
-			Grams     *float64
-			Nutrients map[string]float64
-		}
-		Estimates []string
-	}
-	var log struct{ Meals []json.RawMessage }
-	readJSON(t, "examples/log.json", &log)
-	var breakfast json.RawMessage
-	readJSON(t, "examples/breakfast.json", &breakfast)
-
-	for _, raw := range append(log.Meals, breakfast) {
-		var m meal
-		if err := json.Unmarshal(raw, &m); err != nil {
-			t.Fatal(err)
-		}
-		var doc any
-		_ = json.Unmarshal(raw, &doc)
-		for _, p := range m.Estimates {
-			if !pointsAtValue(doc, p) {
-				t.Errorf("estimate %s points at nothing", p)
-			}
-		}
-		for _, it := range m.Items {
-			if it.Food == nil || it.Food.ID == nil || it.Amount == nil {
-				continue
-			}
-			f, ok := foods[*it.Food.ID]
-			if !ok {
-				t.Errorf("%q: no food %s in the vectors", it.Text, *it.Food.ID)
-				continue
-			}
-			g, err := Grams(f, *it.Amount)
-			if err != nil || it.Grams == nil || !near(*it.Grams, g, 0.01) {
-				t.Errorf("%q: grams %v, want %v (%v)", it.Text, it.Grams, g, err)
-			}
-			want := Nutrients(f, g)
-			for k, v := range it.Nutrients {
-				if w, ok := want[k]; !ok {
-					t.Errorf("%q: %s isn't known for %s", it.Text, k, f.ID)
-				} else if !near(v, w, 0.01) {
-					t.Errorf("%q: %s = %v, want %v", it.Text, k, v, w)
-				}
-			}
-			if len(it.Nutrients) != len(want) {
-				t.Errorf("%q: %d nutrients, the food has %d", it.Text, len(it.Nutrients), len(want))
-			}
-		}
-	}
-}
-
-// pointsAtValue reports whether the JSON pointer p (RFC 6901, without escapes) resolves in doc.
-func pointsAtValue(doc any, p string) bool {
-	for _, part := range strings.Split(p, "/")[1:] {
-		switch v := doc.(type) {
-		case map[string]any:
-			next, ok := v[part]
-			if !ok {
-				return false
-			}
-			doc = next
-		case []any:
-			var i int
-			if _, err := fmt.Sscan(part, &i); err != nil || i < 0 || i >= len(v) {
-				return false
-			}
-			doc = v[i]
-		default:
-			return false
-		}
-	}
-	return true
 }

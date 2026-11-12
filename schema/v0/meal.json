@@ -2,27 +2,80 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openfoodlog.org/schema/v0/meal.json",
   "title": "Open Food Log v0: meal",
-  "description": "One meal or snack: what the person said they ate, the food each item was matched to, how much, what it held, and where the record came from. Draft; may change until v1.",
+  "description": "One meal or snack: what the person said they ate, the food each item was matched to, how much, what it held, and where the record came from. v0.1; may change until v1.",
   "type": "object",
   "required": ["source", "items"],
-  "anyOf": [{ "required": ["eaten_at"] }, { "required": ["date"] }],
+  "anyOf": [{"required": ["eaten_at"]}, {"required": ["date"]}],
   "additionalProperties": false,
   "patternProperties": { "^x-": {} },
   "properties": {
     "$schema": { "const": "https://openfoodlog.org/schema/v0/meal.json" },
-    "id": { "type": "string", "description": "Assigned by the server that stores the meal." },
-    "eaten_at": { "type": "string", "format": "date-time", "description": "When it was eaten, with an offset." },
+    "ofl_version": { "$ref": "food.json#/$defs/ofl_version" },
+    "id": {
+      "type": "string",
+      "description": "Assigned by the server that stores the meal."
+    },
+    "eaten_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When it was eaten, with an offset."
+    },
     "date": {
       "type": "string",
       "format": "date",
       "description": "The person's local day, for a meal logged without a time. With eaten_at as well, it must be eaten_at's day in the person's time zone."
     },
+    "timezone": {
+      "type": "string",
+      "pattern": "^(UTC|[A-Za-z]+(/[A-Za-z0-9_+-]+)+)$",
+      "description": "The person's IANA time zone when they ate (America/Chicago), beside eaten_at's offset, so a reader can tell which local day the meal belongs to and keep it there across daylight-saving changes."
+    },
+    "logged_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the meal was recorded, with an offset, which may be long after eaten_at (a lunch logged that evening)."
+    },
     "meal_type": { "enum": ["breakfast", "lunch", "dinner", "snack"] },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The person's own name for the occasion (pre-workout, second breakfast, iftar), beside or instead of meal_type. A reader that groups by the four meal types puts a meal with only a label under its own heading or with snacks."
+    },
     "title": { "type": "string" },
     "notes": { "type": "string" },
-    "updated_at": { "type": "string", "format": "date-time", "description": "When the stored record last changed, by the server's clock. For mirroring; absent from a document that was never stored." },
+    "recorded_by": {
+      "enum": ["person", "professional", "app"],
+      "description": "Who recorded it: the person who ate it, a professional on their behalf (a dietitian, a coach, a clinic), or an app on its own (a smart scale, a meal service). Absent means the person."
+    },
+    "media": {
+      "description": "Photos or other media of the meal that the producer keeps. OFL carries references, never the media itself; a producer that doesn't keep them leaves this out.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["url", "media_type"],
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Where the producer serves it; it may need the producer's authorization."
+          },
+          "media_type": {
+            "type": "string",
+            "pattern": "^[a-z]+/[A-Za-z0-9.+-]+$",
+            "description": "e.g. image/jpeg."
+          },
+          "taken_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the stored record last changed, by the server's clock. For mirroring; absent from a document that was never stored."
+    },
     "source": { "$ref": "#/$defs/source" },
-    "items": { "type": "array", "items": { "$ref": "#/$defs/item" } },
+    "items": { "type": "array", "items": {"$ref": "#/$defs/item"} },
     "estimates": {
       "description": "JSON pointers (RFC 6901) to values that were inferred or assumed rather than given: a size the person didn't say, a weight read from a photo, a food's numbers a model guessed.",
       "type": "array",
@@ -37,8 +90,14 @@
       "additionalProperties": false,
       "properties": {
         "kind": { "enum": ["app", "mcp", "api", "import"] },
-        "client": { "type": "string", "description": "The client or app, e.g. claude, myfitnesspal, cronometer." },
-        "external_id": { "type": ["string", "null"], "description": "The meal's ID in the app it came from." }
+        "client": {
+          "type": "string",
+          "description": "The client or app, e.g. claude, myfitnesspal, cronometer."
+        },
+        "external_id": {
+          "type": ["string", "null"],
+          "description": "The meal's ID in the app it came from."
+        }
       }
     },
     "item": {
@@ -48,25 +107,51 @@
       "additionalProperties": false,
       "patternProperties": { "^x-": {} },
       "properties": {
-        "id": { "type": "string", "description": "Assigned by the server; used to edit the item." },
-        "text": { "type": "string", "minLength": 1, "description": "What the person called it, in their words." },
+        "id": {
+          "type": "string",
+          "description": "Assigned by the server; used to edit the item."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What the person called it, in their words."
+        },
         "food": { "$ref": "#/$defs/food" },
         "amount": { "$ref": "#/$defs/amount" },
-        "grams": { "type": "number", "minimum": 0, "description": "The amount as a weight, worked out from amount and the food's portions or density (section 6 of the spec)." },
+        "grams": {
+          "type": "number",
+          "minimum": 0,
+          "description": "The amount as a weight, worked out from amount and the food's portions, density or label (section 6 of the spec); with share, this person's part of it. Absent when the amount can't be weighed (a drink known only per 100 ml, a supplement)."
+        },
+        "share": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "For a dish shared with others: the part of amount this person ate (0.25 for a quarter of a pizza). grams and nutrients are already this person's part, amount × share."
+        },
         "nutrients": {
           "$ref": "food.json#/$defs/nutrients",
           "description": "What this item held, as counted when it was logged. It does not change when the food's record later does. A key left out is unknown, never zero."
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "How sure the producer is of the item as recorded (its food and amount), 0 to 1, as a photo or a model reports it. It doesn't replace estimates, and two producers' confidences can't be compared."
         },
         "notes": { "type": "string" }
       }
     },
     "food": {
-      "description": "The food an item was matched to. catalogue and custom are confirmed; close and unmatched need the person to confirm; none means there is nothing to match, because the person gave the numbers themselves ('about 600 calories').",
+      "description": "The food an item was matched to. catalogue and custom are confirmed (custom covers the person's own foods and recipes); close and unmatched need the person to confirm; none means there is nothing to match, because the person gave the numbers themselves ('about 600 calories').",
       "type": "object",
       "required": ["id", "name", "match"],
       "additionalProperties": false,
       "properties": {
-        "id": { "type": ["string", "null"], "description": "A food ID (ofc:, gtin:, usr: or another namespace); null when nothing matched." },
+        "id": {
+          "type": ["string", "null"],
+          "description": "A food ID (ofc:, gtin:, usr:, recipe: or another namespace); null when nothing matched."
+        },
         "name": { "type": "string" },
         "match": { "enum": ["catalogue", "close", "custom", "unmatched", "none"] }
       }
@@ -78,12 +163,18 @@
       "additionalProperties": false,
       "properties": {
         "value": { "type": "number", "exclusiveMinimum": 0 },
-        "unit": { "enum": ["g", "kg", "oz", "lb", "ml", "l", "fl_oz", "portion"] },
-        "portion": { "type": "string", "description": "With unit portion: the id of one of the food's portions." }
+        "unit": {
+          "enum": ["g", "kg", "oz", "lb", "ml", "l", "fl_oz", "portion", "serving"],
+          "description": "serving is the food's declared serving (label.serving) or a recipe's serving (yield_g / servings)."
+        },
+        "portion": {
+          "type": "string",
+          "description": "With unit portion: the id of one of the food's portions."
+        }
       },
-      "if": { "properties": { "unit": { "const": "portion" } } },
+      "if": { "properties": {"unit": {"const": "portion"}} },
       "then": { "required": ["portion"] },
-      "else": { "not": { "required": ["portion"] } }
+      "else": { "not": {"required": ["portion"]} }
     }
   }
 }

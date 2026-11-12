@@ -1,0 +1,142 @@
+{
+  "$schema": "https://openfoodlog.org/schema/v0/food.json",
+  "ofl_version": "0.1",
+  "id": "example:honey-oat-granola-bar",
+  "name": "Granola Bar, Honey Oat",
+  "kind": "branded",
+  "brand": "Example",
+  "nutrients_basis": "serving",
+  "nutrients_per_100g": {
+    "energy_kcal": 475.0,
+    "fat_g": 17.5,
+    "saturated_fat_g": 2.5,
+    "trans_fat_g": 0.0,
+    "cholesterol_mg": 0.0,
+    "sodium_mg": 237.5,
+    "carbohydrate_g": 72.5,
+    "fiber_g": 7.5,
+    "sugars_g": 30.0,
+    "added_sugars_g": 27.5,
+    "protein_g": 10.0,
+    "vitamin_d_ug": 0.0,
+    "calcium_mg": 50.0,
+    "iron_mg": 2.75,
+    "potassium_mg": 350.0
+  },
+  "portions": [
+    {
+      "id": "bar",
+      "label": "1 bar",
+      "grams": 40,
+      "is_default": true
+    }
+  ],
+  "label": {
+    "region": "us",
+    "serving": {
+      "text": "1 bar (40g)",
+      "grams": 40
+    },
+    "servings_per_container": 6,
+    "nutrients_per_serving": {
+      "energy_kcal": 190,
+      "fat_g": 7,
+      "saturated_fat_g": 1,
+      "trans_fat_g": 0,
+      "cholesterol_mg": 0,
+      "sodium_mg": 95,
+      "carbohydrate_g": 29,
+      "fiber_g": 3,
+      "sugars_g": 12,
+      "added_sugars_g": 11,
+      "protein_g": 4,
+      "vitamin_d_ug": 0,
+      "calcium_mg": 20,
+      "iron_mg": 1.1,
+      "potassium_mg": 140
+    },
+    "percent_daily_values": {
+      "fat_g": 9,
+      "saturated_fat_g": 5,
+      "cholesterol_mg": 0,
+      "sodium_mg": 4,
+      "carbohydrate_g": 11,
+      "fiber_g": 11,
+      "added_sugars_g": 22,
+      "vitamin_d_ug": 0,
+      "calcium_mg": 2,
+      "iron_mg": 6,
+      "potassium_mg": 2
+    }
+  },
+  "category": {
+    "name": "Cereal bars",
+    "code": "en:cereal-bars",
+    "scheme": "off",
+    "basis": "inferred"
+  },
+  "allergens": [
+    {
+      "allergen": "wheat",
+      "presence": "contains",
+      "basis": "declared"
+    },
+    {
+      "allergen": "gluten",
+      "presence": "contains",
+      "basis": "inferred"
+    },
+    {
+      "allergen": "soybeans",
+      "presence": "contains",
+      "basis": "declared"
+    },
+    {
+      "allergen": "milk",
+      "presence": "may_contain",
+      "basis": "declared"
+    },
+    {
+      "allergen": "tree_nuts",
+      "presence": "may_contain",
+      "basis": "declared"
+    }
+  ],
+  "diet_flags": [
+    {
+      "flag": "vegetarian",
+      "basis": "inferred"
+    }
+  ],
+  "ingredients_text": {
+    "text": "Whole grain oats, sugar, whole wheat flour, canola oil, honey, salt, soy lecithin, baking soda, natural flavor. Contains wheat and soy ingredients. May contain milk and tree nuts.",
+    "locale": "en-US",
+    "basis": "declared"
+  },
+  "glycemic_index": {
+    "value": 61,
+    "reference": "glucose",
+    "source": "An illustrative value, not a measurement",
+    "basis": "inferred"
+  },
+  "glycemic_load": {
+    "value": 15.86,
+    "grams": 40,
+    "source": "GI 61 × 26 g of available carbohydrate in a bar / 100",
+    "basis": "inferred"
+  },
+  "provenance": {
+    "sources": [
+      {
+        "name": "An illustrative US nutrition facts label, not a real product"
+      }
+    ],
+    "generated": [
+      "/glycemic_index",
+      "/category",
+      "/diet_flags",
+      "/allergens/1"
+    ],
+    "review": "unreviewed"
+  }
+}

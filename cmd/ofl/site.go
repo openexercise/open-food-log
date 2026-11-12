@@ -62,7 +62,7 @@ type propertyDoc struct {
 }
 
 // documentOrder puts the schemas in reading order on the site.
-var documentOrder = []string{"meal", "food", "log"}
+var documentOrder = []string{"meal", "food", "recipe", "targets", "log"}
 
 func buildSite(root, out string) error {
 	v0 := filepath.Join(root, "schema", "v0")
@@ -119,7 +119,7 @@ func buildSite(root, out string) error {
 		{"", "home.html", page{Title: "Open Food Log", Description: "An open format for a food log: what someone ate, the food it matched, how much, and which numbers were guessed.", Schemas: schemas}},
 		// The specification sits beside the schemas, so its links to them work as written.
 		{"schema/v0", "doc.html", page{Title: "Specification", Description: "The Open Food Log specification, version 0 draft.", HTML: spec}},
-		{"schema", "schema.html", page{Title: "Schema", Description: "The Open Food Log schemas, field by field: a meal, a food and a log.", Schemas: schemas}},
+		{"schema", "schema.html", page{Title: "Schema", Description: "The Open Food Log schemas, field by field: a meal, a food, a recipe, targets and a log.", Schemas: schemas}},
 		{"nutrients", "nutrients.html", page{Title: "Nutrients", Description: "The nutrient keys, their units, and the matching INFOODS tagnames, FoodData Central numbers, and Health Connect and HealthKit fields.", Nutrients: vocab.Nutrients}},
 		{"changelog", "doc.html", page{Title: "Changelog", Description: "What changed in the Open Food Log.", HTML: changelog}},
 	}

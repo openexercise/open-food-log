@@ -1,0 +1,347 @@
+{
+  "title": "Open Food Log v0: recipe vectors",
+  "description": "Worked recipes every implementation should agree on (section 8 of the spec). Each line is a meal item on a food from amount-vectors.json, and its grams and nutrients follow from section 6. A recipe's nutrients are its lines' nutrients summed, over its yield: yield_g, else the lines' grams times cooking_yield_factor, else the lines' grams. A nutrient one line lacks is left out of the recipe's (absent), since the sum would be a lower bound. A serving weighs yield_g / servings. Values are exact; within 0.01 agrees.",
+  "recipes": [
+    {
+      "$schema": "https://openfoodlog.org/schema/v0/recipe.json",
+      "ofl_version": "0.1",
+      "id": "recipe:overnight-oats",
+      "name": "Overnight oats",
+      "lines": [
+        {
+          "text": "1 cup oats",
+          "food": { "id": "ofc:oats-dry", "name": "Oats, Dry", "match": "catalogue" },
+          "amount": { "value": 1, "unit": "portion", "portion": "cup" },
+          "grams": 81,
+          "nutrients": {
+            "energy_kcal": 306.99,
+            "protein_g": 10.6515,
+            "fat_g": 5.2812,
+            "saturated_fat_g": 0.8991000000000001,
+            "monounsaturated_fat_g": 1.6038,
+            "polyunsaturated_fat_g": 1.8629999999999998,
+            "cholesterol_mg": 0.0,
+            "carbohydrate_g": 54.836999999999996,
+            "fiber_g": 8.181000000000001,
+            "sugars_g": 0.8019,
+            "sodium_mg": 4.86,
+            "potassium_mg": 293.22,
+            "calcium_mg": 42.12,
+            "iron_mg": 3.4425,
+            "magnesium_mg": 111.78,
+            "zinc_mg": 2.9484000000000004,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 0.0,
+            "vitamin_a_rae_ug": 0.0,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 8.7804
+          }
+        },
+        {
+          "text": "1 cup whole milk",
+          "food": { "id": "ofc:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
+          "amount": { "value": 1, "unit": "portion", "portion": "cup" },
+          "grams": 244,
+          "nutrients": {
+            "energy_kcal": 148.84,
+            "protein_g": 7.686,
+            "fat_g": 7.93,
+            "saturated_fat_g": 4.5506,
+            "monounsaturated_fat_g": 1.9812800000000002,
+            "polyunsaturated_fat_g": 0.4758,
+            "cholesterol_mg": 24.4,
+            "carbohydrate_g": 11.712,
+            "fiber_g": 0.0,
+            "sugars_g": 12.322000000000001,
+            "sodium_mg": 104.92,
+            "potassium_mg": 322.08,
+            "calcium_mg": 275.72,
+            "iron_mg": 0.07319999999999999,
+            "magnesium_mg": 24.4,
+            "zinc_mg": 0.9028,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 3.1719999999999997,
+            "vitamin_a_rae_ug": 112.24,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 215.03719999999998
+          }
+        },
+        {
+          "text": "a banana",
+          "food": { "id": "ofc:banana-raw", "name": "Banana, Raw", "match": "catalogue" },
+          "amount": { "value": 1, "unit": "portion", "portion": "medium" },
+          "grams": 118,
+          "nutrients": {
+            "energy_kcal": 105.02,
+            "protein_g": 1.2862,
+            "fat_g": 0.3894,
+            "saturated_fat_g": 0.13216,
+            "monounsaturated_fat_g": 0.03776,
+            "polyunsaturated_fat_g": 0.08614,
+            "trans_fat_g": 0.0,
+            "cholesterol_mg": 0.0,
+            "carbohydrate_g": 26.9512,
+            "fiber_g": 3.068,
+            "sugars_g": 14.431400000000002,
+            "sodium_mg": 1.18,
+            "potassium_mg": 422.44,
+            "calcium_mg": 5.9,
+            "iron_mg": 0.3068,
+            "magnesium_mg": 31.86,
+            "zinc_mg": 0.177,
+            "vitamin_c_mg": 10.265999999999998,
+            "vitamin_d_ug": 0.0,
+            "vitamin_a_rae_ug": 3.54,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 88.3938
+          }
+        }
+      ],
+      "servings": 2
+    },
+    {
+      "$schema": "https://openfoodlog.org/schema/v0/recipe.json",
+      "ofl_version": "0.1",
+      "id": "recipe:baked-egg-cups",
+      "name": "Baked egg cups",
+      "lines": [
+        {
+          "text": "6 eggs",
+          "food": { "id": "ofc:egg-whole-raw", "name": "Egg, Whole, Raw", "match": "catalogue" },
+          "amount": { "value": 6, "unit": "portion", "portion": "large" },
+          "grams": 300,
+          "nutrients": {
+            "energy_kcal": 429.0,
+            "protein_g": 37.68,
+            "fat_g": 28.53,
+            "saturated_fat_g": 9.378,
+            "monounsaturated_fat_g": 10.973999999999998,
+            "polyunsaturated_fat_g": 5.733,
+            "trans_fat_g": 0.114,
+            "cholesterol_mg": 1116.0,
+            "carbohydrate_g": 2.16,
+            "fiber_g": 0.0,
+            "sugars_g": 1.11,
+            "sodium_mg": 426.0,
+            "potassium_mg": 414.0,
+            "calcium_mg": 168.0,
+            "iron_mg": 5.25,
+            "magnesium_mg": 36.0,
+            "zinc_mg": 3.87,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 6.0,
+            "vitamin_a_rae_ug": 480.0,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 228.45
+          }
+        },
+        {
+          "text": "60 ml milk",
+          "food": { "id": "ofc:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
+          "amount": { "value": 60, "unit": "ml" },
+          "grams": 61.85999999999999,
+          "nutrients": {
+            "energy_kcal": 37.73459999999999,
+            "protein_g": 1.9485899999999998,
+            "fat_g": 2.01045,
+            "saturated_fat_g": 1.1536889999999997,
+            "monounsaturated_fat_g": 0.5023032,
+            "polyunsaturated_fat_g": 0.120627,
+            "cholesterol_mg": 6.185999999999999,
+            "carbohydrate_g": 2.9692799999999995,
+            "fiber_g": 0.0,
+            "sugars_g": 3.1239299999999997,
+            "sodium_mg": 26.599799999999995,
+            "potassium_mg": 81.65519999999998,
+            "calcium_mg": 69.9018,
+            "iron_mg": 0.018557999999999998,
+            "magnesium_mg": 6.185999999999999,
+            "zinc_mg": 0.22888199999999997,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 0.8041799999999999,
+            "vitamin_a_rae_ug": 28.455599999999993,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 54.51721799999999
+          }
+        }
+      ],
+      "servings": 6,
+      "cooking_yield_factor": 0.9
+    },
+    {
+      "$schema": "https://openfoodlog.org/schema/v0/recipe.json",
+      "ofl_version": "0.1",
+      "id": "recipe:porridge",
+      "name": "Porridge with milk",
+      "lines": [
+        {
+          "text": "80 g oats",
+          "food": { "id": "ofc:oats-dry", "name": "Oats, Dry", "match": "catalogue" },
+          "amount": { "value": 80, "unit": "g" },
+          "grams": 80,
+          "nutrients": {
+            "energy_kcal": 303.2,
+            "protein_g": 10.52,
+            "fat_g": 5.215999999999999,
+            "saturated_fat_g": 0.8880000000000001,
+            "monounsaturated_fat_g": 1.584,
+            "polyunsaturated_fat_g": 1.84,
+            "cholesterol_mg": 0.0,
+            "carbohydrate_g": 54.16,
+            "fiber_g": 8.08,
+            "sugars_g": 0.792,
+            "sodium_mg": 4.8,
+            "potassium_mg": 289.6,
+            "calcium_mg": 41.6,
+            "iron_mg": 3.4,
+            "magnesium_mg": 110.4,
+            "zinc_mg": 2.912,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 0.0,
+            "vitamin_a_rae_ug": 0.0,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 8.672
+          }
+        },
+        {
+          "text": "300 ml milk",
+          "food": { "id": "ofc:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
+          "amount": { "value": 300, "unit": "ml" },
+          "grams": 309.29999999999995,
+          "nutrients": {
+            "energy_kcal": 188.67299999999994,
+            "protein_g": 9.742949999999999,
+            "fat_g": 10.052249999999999,
+            "saturated_fat_g": 5.768444999999999,
+            "monounsaturated_fat_g": 2.511516,
+            "polyunsaturated_fat_g": 0.6031349999999999,
+            "cholesterol_mg": 30.929999999999996,
+            "carbohydrate_g": 14.846399999999996,
+            "fiber_g": 0.0,
+            "sugars_g": 15.619649999999996,
+            "sodium_mg": 132.99899999999997,
+            "potassium_mg": 408.2759999999999,
+            "calcium_mg": 349.50899999999996,
+            "iron_mg": 0.09278999999999998,
+            "magnesium_mg": 30.929999999999996,
+            "zinc_mg": 1.14441,
+            "vitamin_c_mg": 0.0,
+            "vitamin_d_ug": 4.0209,
+            "vitamin_a_rae_ug": 142.27799999999996,
+            "caffeine_mg": 0.0,
+            "alcohol_g": 0.0,
+            "water_g": 272.58608999999996
+          }
+        }
+      ],
+      "servings": 2,
+      "yield_g": 400
+    }
+  ],
+  "cases": [
+    {
+      "name": "no yield: the lines' raw weight",
+      "note": "Oats and milk have no trans fat value, so the recipe has none.",
+      "recipe": "recipe:overnight-oats",
+      "expect": {
+        "yield_g": 443,
+        "nutrients_per_100g": {
+          "energy_kcal": 126.60270880361173,
+          "protein_g": 4.429729119638826,
+          "fat_g": 3.070112866817156,
+          "carbohydrate_g": 21.10613995485327
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 280.425,
+          "protein_g": 9.81185,
+          "fat_g": 6.8003,
+          "carbohydrate_g": 46.750099999999996
+        },
+        "absent": ["trans_fat_g"]
+      }
+    },
+    {
+      "name": "a cooking yield factor",
+      "note": "Baking loses a tenth of the weight: the same nutrients over less weight.",
+      "recipe": "recipe:baked-egg-cups",
+      "expect": {
+        "yield_g": 325.67400000000004,
+        "nutrients_per_100g": {
+          "energy_kcal": 143.313436135522,
+          "protein_g": 12.168177379833821,
+          "fat_g": 9.377613810129146,
+          "carbohydrate_g": 1.5749737467528877
+        },
+        "nutrients_per_serving": { "energy_kcal": 77.7891, "protein_g": 6.604765, "fat_g": 5.090075, "carbohydrate_g": 0.85488 }
+      }
+    },
+    {
+      "name": "a stated yield",
+      "note": "Cooking took up water: 80 g of oats and 309.3 g of milk made 400 g.",
+      "recipe": "recipe:porridge",
+      "expect": {
+        "yield_g": 400,
+        "nutrients_per_100g": {
+          "energy_kcal": 122.96824999999998,
+          "protein_g": 5.065737499999999,
+          "fat_g": 3.8170624999999996,
+          "carbohydrate_g": 17.251599999999996
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 245.93649999999997,
+          "protein_g": 10.131474999999998,
+          "fat_g": 7.634124999999999,
+          "carbohydrate_g": 34.50319999999999
+        }
+      }
+    },
+    {
+      "name": "a serving of a recipe",
+      "recipe": "recipe:overnight-oats",
+      "amount": { "value": 1, "unit": "serving" },
+      "expect": {
+        "grams": 221.5,
+        "nutrients": {
+          "energy_kcal": 280.425,
+          "protein_g": 9.81185,
+          "fat_g": 6.8003,
+          "carbohydrate_g": 46.750099999999996
+        }
+      }
+    },
+    {
+      "name": "a recipe by weight",
+      "recipe": "recipe:porridge",
+      "amount": { "value": 150, "unit": "g" },
+      "expect": {
+        "grams": 150,
+        "nutrients": {
+          "energy_kcal": 184.452375,
+          "protein_g": 7.59860625,
+          "fat_g": 5.725593749999999,
+          "carbohydrate_g": 25.877399999999994
+        }
+      }
+    },
+    {
+      "name": "two servings of a cooked recipe",
+      "recipe": "recipe:baked-egg-cups",
+      "amount": { "value": 2, "unit": "serving" },
+      "expect": {
+        "grams": 108.558,
+        "nutrients": {
+          "energy_kcal": 155.5782,
+          "protein_g": 13.209529999999999,
+          "fat_g": 10.18015,
+          "carbohydrate_g": 1.70976
+        }
+      }
+    }
+  ]
+}

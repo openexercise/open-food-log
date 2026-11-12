@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openfoodlog.org/schema/v0/recipe.json",
+  "title": "Open Food Log v0: recipe",
+  "description": "A food made of other foods: its ingredient lines, shaped like meal items, what the whole makes, and how many servings. A meal item names it by its id like any food. Its nutrients follow from its lines (section 8 of the spec). v0.1; may change until v1.",
+  "type": "object",
+  "required": ["id", "name", "lines", "servings"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": {} },
+  "properties": {
+    "$schema": { "const": "https://openfoodlog.org/schema/v0/recipe.json" },
+    "ofl_version": { "$ref": "food.json#/$defs/ofl_version" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._-]+$",
+      "description": "namespace:slug. recipe: is one person's recipe, meaningful only inside the system that made it; a publisher uses its own namespace."
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "notes": { "type": "string" },
+    "instructions": { "type": "string", "description": "How to make it, as free text." },
+    "lines": {
+      "description": "The ingredients, raw as they went in, each like a meal item: the person's words, the food, the amount, its grams and what it held.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "meal.json#/$defs/item" }
+    },
+    "servings": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "How many servings the whole makes. One serving weighs yield_g / servings."
+    },
+    "yield_g": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "What the whole weighs when made (cooked pasta takes up water, a roast loses it). Absent means the lines' grams times cooking_yield_factor, or the lines' grams when there's no factor either."
+    },
+    "cooking_yield_factor": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Made weight over the lines' raw weight (0.75 for a roast that loses a quarter of its weight). Used only when yield_g is absent. Cooking changes weight; OFL doesn't adjust nutrients for what cooking destroys."
+    },
+    "nutrients_per_100g": {
+      "$ref": "food.json#/$defs/nutrients",
+      "description": "Worked out from the lines: their summed nutrients × 100 / yield_g. A producer may include it; a reader may recompute it. A nutrient one line lacks is left out, since the sum would be a lower bound."
+    },
+    "nutrients_per_serving": {
+      "$ref": "food.json#/$defs/nutrients",
+      "description": "Worked out from the lines: their summed nutrients / servings, under the same rule."
+    },
+    "source": { "$ref": "meal.json#/$defs/source" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "estimates": {
+      "description": "JSON pointers to values inferred or assumed rather than given, as in a meal.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(/[^/]*)*$" }
+    }
+  }
+}

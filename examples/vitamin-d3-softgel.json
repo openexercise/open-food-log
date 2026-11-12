@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openfoodlog.org/schema/v0/food.json",
+  "ofl_version": "0.1",
+  "id": "example:vitamin-d3-softgel",
+  "name": "Vitamin D3 1000 IU, Softgel",
+  "kind": "supplement",
+  "brand": "Example",
+  "nutrients_basis": "serving",
+  "nutrients_per_100g": {},
+  "label": {
+    "region": "us",
+    "serving": {
+      "text": "1 softgel"
+    },
+    "servings_per_container": 120,
+    "nutrients_per_serving": {
+      "vitamin_d_ug": 25
+    },
+    "percent_daily_values": {
+      "vitamin_d_ug": 125
+    }
+  },
+  "provenance": {
+    "sources": [
+      {
+        "name": "An illustrative US supplement facts label, not a real product"
+      }
+    ],
+    "review": "unreviewed"
+  }
+}

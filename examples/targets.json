@@ -1,0 +1,83 @@
+{
+  "$schema": "https://openfoodlog.org/schema/v0/targets.json",
+  "ofl_version": "0.1",
+  "targets": [
+    {
+      "nutrient": "protein_g",
+      "per": "day",
+      "min": 140,
+      "effective_from": "2026-10-01",
+      "set_by": "person",
+      "id": "tg_01"
+    },
+    {
+      "nutrient": "protein_g",
+      "per": "day",
+      "min": 160,
+      "effective_from": "2026-11-01",
+      "set_by": "person",
+      "note": "More while training for the meet.",
+      "id": "tg_02"
+    },
+    {
+      "nutrient": "energy_kcal",
+      "per": "day",
+      "target": 2600,
+      "effective_from": "2026-11-01",
+      "set_by": "professional",
+      "id": "tg_03"
+    },
+    {
+      "nutrient": "energy_kcal",
+      "per": "day",
+      "target": 3000,
+      "weekdays": [
+        1,
+        3,
+        5
+      ],
+      "effective_from": "2026-11-01",
+      "set_by": "professional",
+      "note": "Training days.",
+      "id": "tg_04"
+    },
+    {
+      "nutrient": "sodium_mg",
+      "per": "day",
+      "max": 2300,
+      "effective_from": "2026-11-01",
+      "set_by": "app_suggestion",
+      "id": "tg_05"
+    },
+    {
+      "nutrient": "fiber_g",
+      "per": "day",
+      "min": 25,
+      "max": 45,
+      "target": 35,
+      "effective_from": "2026-11-01",
+      "effective_to": "2026-11-30",
+      "set_by": "person",
+      "id": "tg_06"
+    },
+    {
+      "nutrient": "protein_g",
+      "per": "meal",
+      "meal_type": "breakfast",
+      "min": 30,
+      "effective_from": "2026-11-01",
+      "set_by": "person",
+      "id": "tg_07"
+    },
+    {
+      "nutrient": "energy_kcal",
+      "per": "day",
+      "target": 2400,
+      "effective_from": "2026-12-01",
+      "set_by": "person",
+      "note": "A new every-day target; the training-day one still holds on its days.",
+      "id": "tg_08"
+    }
+  ],
+  "updated_at": "2026-11-01T09:00:00-05:00"
+}
