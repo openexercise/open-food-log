@@ -3,6 +3,7 @@ package openfoodlog
 import (
 	"bufio"
 	"encoding/json"
+	"math"
 	"os"
 	"strings"
 	"testing"
@@ -51,6 +52,7 @@ func TestCatalogue(t *testing.T) {
 		if _, ok := food.NutrientsPer100g["energy_kcal"]; !ok {
 			t.Errorf("%s: no energy", food.ID)
 		}
+		checkWorkedOut(t, food, string(line))
 		if food.DensityGPerML > 0 {
 			densities++
 			if !strings.Contains(string(line), `density_g_per_ml from `) {
@@ -71,5 +73,32 @@ func TestCatalogue(t *testing.T) {
 	}
 	if densities < 1000 {
 		t.Errorf("only %d foods with a density", densities)
+	}
+}
+
+// checkWorkedOut holds the values the catalogue works out to section 4's rules: salt is sodium ×
+// 2.5, available carbohydrate is carbohydrate less fibre, and each needs what it's worked out from.
+func checkWorkedOut(t *testing.T, food Food, line string) {
+	t.Helper()
+	n := food.NutrientsPer100g
+	if salt, ok := n["salt_g"]; ok {
+		if na, has := n["sodium_mg"]; !has || math.Abs(salt-na*0.0025) > 0.00001 {
+			t.Errorf("%s: salt_g %v isn't sodium × 2.5", food.ID, salt)
+		}
+	}
+	if avail, ok := n["carbohydrate_available_g"]; ok {
+		carb, hasCarb := n["carbohydrate_g"]
+		fiber, hasFiber := n["fiber_g"]
+		if !hasCarb || !hasFiber || math.Abs(avail-(carb-fiber)) > 0.001 {
+			t.Errorf("%s: carbohydrate_available_g %v isn't carbohydrate − fibre", food.ID, avail)
+		}
+	}
+	// FoodData Central's own kJ stands even where it disagrees with its kcal (SR Legacy's brown rice
+	// flour is 1580 kJ and 363 kcal); only a worked-out value must be kcal × 4.184.
+	// The build names the keys it worked out first in a source's name ("…: energy_kj, salt_g …").
+	if strings.Contains(line, `: energy_kj`) {
+		if kj := n["energy_kj"]; math.Abs(kj-n["energy_kcal"]*4.184) > 0.05 {
+			t.Errorf("%s: worked-out energy_kj %v isn't energy_kcal × 4.184", food.ID, kj)
+		}
 	}
 }

@@ -1,5 +1,25 @@
 # Changelog
 
+## Catalogue v0.6.0, 2026-11-12
+
+The catalogue fills OFL v0.1. Every food keeps its `ofc:` ID, name, aliases, portions and density,
+and every value it had is unchanged; nothing is removed.
+
+- **Nutrients:** every one of the 52 keys that FoodData Central gives for a food, read by its number in
+  `nutrients.json`: the B vitamins (folate as DFE, folic acid apart), vitamins E and K, phosphorus,
+  copper, manganese, selenium, iodine, molybdenum, choline, ALA, EPA, DHA and starch. Folate DFE is
+  on 11,298 foods, vitamin K on 9,859, choline on 9,502. A key FoodData Central doesn't give stays
+  absent: added sugars, polyols, chromium and chloride aren't in these downloads at all.
+- **Worked out by section 4 only:** `energy_kj` (kcal × 4.184) where FoodData Central gives no kJ,
+  `salt_g` (sodium × 2.5) and `carbohydrate_available_g` (carbohydrate − fibre), each named in the
+  record's `provenance.sources`.
+- **Category:** FoodData Central's food category, or a survey food's WWEIA category, on all 12,442
+  foods, scheme `fdc`, basis `inferred`. No allergens, diet flags or glycemic values: no CC0 source in
+  hand states them.
+- `catalogue/REPORT.md` counts every key per source and says why each missing one is missing. The
+  FoodData Central releases are the same as v0.3.0's, retrieved again on 2026-11-12. The schemas are
+  unchanged.
+
 ## v0.1 draft, 2026-11-12
 
 A complete schema: everything here is optional and additive, so every v0 document stays valid.

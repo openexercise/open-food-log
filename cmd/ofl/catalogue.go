@@ -46,6 +46,10 @@ type fdcFood struct {
 	WweiaFoodCategory struct {
 		Description string `json:"wweiaFoodCategoryDescription"`
 	} `json:"wweiaFoodCategory"`
+	FoodAttributes []struct {
+		Name  string `json:"name"`
+		Value string `json:"value"`
+	} `json:"foodAttributes"`
 	FoodNutrients []struct {
 		Nutrient struct {
 			Number   string `json:"number"`
@@ -73,8 +77,16 @@ type catalogueFood struct {
 	NutrientsPer100g map[string]float64 `json:"nutrients_per_100g"`
 	DensityGPerML    float64            `json:"density_g_per_ml,omitempty"`
 	Portions         []portionDoc       `json:"portions,omitempty"`
+	Category         *categoryDoc       `json:"category,omitempty"`
 	Identifiers      map[string]int     `json:"identifiers"`
 	Provenance       provenanceDoc      `json:"provenance"`
+}
+
+type categoryDoc struct {
+	Name   string `json:"name"`
+	Code   string `json:"code,omitempty"`
+	Scheme string `json:"scheme"`
+	Basis  string `json:"basis"`
 }
 
 type portionDoc struct {
@@ -99,7 +111,7 @@ type sourceDoc struct {
 	RetrievedAt string `json:"retrieved_at,omitempty"`
 }
 
-const retrieved = "2026-11-09"
+const retrieved = "2026-11-12"
 
 var (
 	nonSlug = regexp.MustCompile(`[^a-z0-9]+`)
@@ -133,6 +145,11 @@ func buildCatalogue(dir, root string) error {
 	byID := map[string]*catalogueFood{}
 	type counts struct{ read, kept, branded, empty, noEnergy, merged, noPortions, density int }
 	liquids, noDensity := 0, []string{}
+	derived, withCategory := map[string]int{}, map[string]int{}
+	coverage := map[string]map[string]int{}
+	for _, v := range vocab {
+		coverage[v.Key] = map[string]int{}
+	}
 	report := map[string]*counts{}
 	for _, src := range sources {
 		foods, err := readSource(filepath.Join(dir, src.file), src.field)
@@ -167,9 +184,23 @@ func buildCatalogue(dir, root string) error {
 			}
 			food := &catalogueFood{
 				Schema: "https://openfoodlog.org/schema/v0/food.json", ID: id, Name: f.Description, Kind: "generic",
-				NutrientsPer100g: nutrients, Portions: portions(f),
+				NutrientsPer100g: nutrients, Portions: portions(f), Category: category(f),
 				Identifiers: map[string]int{"fdc_id": f.FdcID},
 				Provenance:  provenanceDoc{Sources: []sourceDoc{sd}, License: "CC0-1.0", Review: "unreviewed"},
+			}
+			if worked := deriveNutrients(nutrients); len(worked) > 0 {
+				ws := sd
+				ws.Name = src.label + ": " + strings.Join(worked, ", ") + " worked out by OFL v0 section 4"
+				food.Provenance.Sources = append(food.Provenance.Sources, ws)
+				for _, k := range worked {
+					derived[k]++
+				}
+			}
+			if food.Category != nil {
+				withCategory[src.key]++
+			}
+			for k := range nutrients {
+				coverage[k][src.key]++
 			}
 			if len(food.Portions) == 0 {
 				c.noPortions++
@@ -255,6 +286,7 @@ func buildCatalogue(dir, root string) error {
 	for _, name := range noDensity {
 		b.WriteString("- " + name + "\n")
 	}
+	writeCoverage(&b, vocab, coverage, derived, withCategory, len(ids))
 	if err := os.WriteFile(filepath.Join(out, "REPORT.md"), []byte(b.String()), 0o644); err != nil {
 		return err
 	}
@@ -313,7 +345,7 @@ func mapNutrients(f fdcFood, vocab []vocabEntry) map[string]float64 {
 			continue
 		}
 		for _, number := range append([]string{*v.FDC}, fallbacks[v.Key]...) {
-			if amount, ok := have[number]; ok && units[number] == v.Unit {
+			if amount, ok := have[number]; ok && units[number] == strings.ToLower(v.Unit) {
 				out[v.Key] = amount
 				break
 			}
