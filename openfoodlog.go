@@ -1,5 +1,5 @@
-// Package openfoodlog carries the Open Food Log schemas, a validator for its documents, and the
-// reference calculation of the specification's section 6: an amount on a food, as grams, then as
+// Package openfoodlog carries the Open Food Log schemas and MCP tool profile, a validator for its
+// documents, and the reference calculation of the specification's section 6: an amount on a food, as grams, then as
 // the nutrients it held.
 package openfoodlog
 
@@ -21,6 +21,12 @@ import (
 //
 //go:embed schema/v0/*.json
 var Schemas embed.FS
+
+// Profile is mcp/tools.json, the MCP tool profile: the tools a compatible server lists, their
+// input schemas and annotations, and the error codes their failures start with.
+//
+//go:embed mcp/tools.json
+var Profile []byte
 
 // Kinds are the document kinds, by file name under schema/v0.
 var Kinds = []string{"food", "meal", "log"}
