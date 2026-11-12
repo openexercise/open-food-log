@@ -1,0 +1,322 @@
+{
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "description": "Keeps a person's food log in the Open Food Log: logs meals from their words or from an Open Food Log meal, looks foods up by name or barcode, reads their meals back, and keeps their own nutrition targets with a summary of days against them. Numbers are only what the person stated; anything assumed is listed as an estimate, and unsure foods are asked about before they count.",
+  "documentationUrl": "https://lifterclub.com/developers",
+  "name": "Lifterclub nutrition agent",
+  "provider": {
+    "organization": "Lifterclub",
+    "url": "https://lifterclub.com"
+  },
+  "version": "v0",
+  "skills": [
+    {
+      "description": "Save a meal or snack to the person's food log. Send the person's own words as a text part, or an Open Food Log meal (https://openfoodlog.org/schema/v0/meal.json) as a data part. Amounts are only what was stated; an item without one is logged at the food's default portion and listed in the meal's estimates. When a food isn't certain, the task asks for input with candidates: answer on the same task with a data part {\"confirmations\": [{\"item_id\", \"food_id\"}]}. The result is the logged meal as an Open Food Log meal in a data part, with a one-line summary. Retrying a message with the same messageId never logs twice.",
+      "examples": [
+        "two eggs and toast for breakfast",
+        "a banana and 200 ml of oat milk",
+        "lunch, about 600 calories"
+      ],
+      "id": "log-meal",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "name": "Log a meal",
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:write"
+              ]
+            }
+          }
+        }
+      ],
+      "tags": [
+        "nutrition",
+        "food log",
+        "open food log",
+        "openfoodlog:core"
+      ],
+      "security": [
+        {
+          "oauth": [
+            "meals:write"
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Find foods by name, best match first, with each food's ID, nutrients per 100 g and portions: a data part {\"query\": \"greek yogurt\", \"limit\": 10}, or the name as text. A packaged food by its barcode: {\"barcode\": \"0012345678905\"}, or the digits as text. Use a food's ID in a meal's item to log exactly that food.",
+      "examples": [
+        "greek yogurt",
+        "0012345678905"
+      ],
+      "id": "food-lookup",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "name": "Look up a food",
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:read"
+              ]
+            }
+          }
+        }
+      ],
+      "tags": [
+        "nutrition",
+        "foods",
+        "barcode",
+        "open food log",
+        "openfoodlog:core"
+      ],
+      "security": [
+        {
+          "oauth": [
+            "meals:read"
+          ]
+        }
+      ]
+    },
+    {
+      "description": "List the person's meals on some days, earliest first, as Open Food Log meals, with each day's totals: a data part {\"from\": \"2026-11-09\", \"to\": \"2026-11-12\"} (days in the person's timezone; at most 92 days; both default to today). Totals are left out when the person has asked not to see them: don't work them out.",
+      "examples": [
+        "{\"from\": \"2026-11-09\", \"to\": \"2026-11-12\"}"
+      ],
+      "id": "get-meals",
+      "inputModes": [
+        "application/json"
+      ],
+      "name": "Get meals",
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:read"
+              ]
+            }
+          }
+        }
+      ],
+      "tags": [
+        "nutrition",
+        "food log",
+        "open food log",
+        "openfoodlog:core"
+      ],
+      "security": [
+        {
+          "oauth": [
+            "meals:read"
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Each day's totals over a range, each of the person's targets that applied as met, under, above or unknown, and the days at target: a data part {\"from\": \"2026-11-06\", \"to\": \"2026-11-12\"} with metadata.skill \"nutrition-summary\" (to defaults to today, from to six days before). A total that isn't complete (something lacks the nutrient, or the day isn't over) is a lower bound, never under. Numbers are left out when the person has asked not to see them: don't work them out.",
+      "examples": [
+        "{\"from\": \"2026-11-06\", \"to\": \"2026-11-12\"}"
+      ],
+      "id": "nutrition-summary",
+      "inputModes": [
+        "application/json"
+      ],
+      "name": "Nutrition summary",
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:read"
+              ]
+            }
+          }
+        }
+      ],
+      "tags": [
+        "nutrition",
+        "targets",
+        "open food log",
+        "openfoodlog:core"
+      ],
+      "security": [
+        {
+          "oauth": [
+            "meals:read"
+          ]
+        }
+      ]
+    },
+    {
+      "description": "The person's own nutrition targets as an Open Food Log targets document (https://openfoodlog.org/schema/v0/targets.json): per nutrient a min, max or target, per day or per meal. With metadata.skill \"targets\" and an empty data part {}, read them. Send a data part {\"targets\": [...]} to replace the whole list: read first and send back the ones to keep, with their ids. Set only what the person asked for, in their numbers; never suggest a target. To change one from some day on, end it with effective_to and add a new one.",
+      "examples": [
+        "{\"targets\": [{\"nutrient\": \"protein_g\", \"per\": \"day\", \"min\": 140}]}"
+      ],
+      "id": "targets",
+      "inputModes": [
+        "application/json"
+      ],
+      "name": "Nutrition targets",
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:read"
+              ]
+            }
+          }
+        },
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:write"
+              ]
+            }
+          }
+        }
+      ],
+      "tags": [
+        "nutrition",
+        "targets",
+        "open food log",
+        "openfoodlog:core"
+      ],
+      "security": [
+        {
+          "oauth": [
+            "meals:read"
+          ]
+        },
+        {
+          "oauth": [
+            "meals:write"
+          ]
+        }
+      ]
+    }
+  ],
+  "securitySchemes": {
+    "oauth": {
+      "type": "oauth2",
+      "description": "OAuth 2.1 with PKCE. Register at the authorization server's registration endpoint (RFC 7591) or with a client ID metadata document, and ask for a token for this agent's URL as the resource (RFC 8707).",
+      "oauth2MetadataUrl": "https://api.lifterclub.com/.well-known/oauth-authorization-server",
+      "flows": {
+        "authorizationCode": {
+          "authorizationUrl": "https://api.lifterclub.com/oauth/authorize",
+          "refreshUrl": "https://api.lifterclub.com/oauth/token",
+          "scopes": {
+            "meals:read": "See the person's meals and the foods they've added",
+            "meals:write": "Add and change the person's meals and their own foods"
+          },
+          "tokenUrl": "https://api.lifterclub.com/oauth/token",
+          "pkceRequired": true
+        }
+      }
+    }
+  },
+  "capabilities": {
+    "extensions": [
+      {
+        "description": "Open Food Log A2A profile v0: which skills are the core every compatible agent offers.",
+        "params": {
+          "core_skills": [
+            "log-meal",
+            "food-lookup",
+            "get-meals",
+            "nutrition-summary",
+            "targets"
+          ],
+          "extension_skills": [],
+          "version": "v0"
+        },
+        "uri": "https://openfoodlog.org/a2a/v0"
+      }
+    ],
+    "pushNotifications": false,
+    "streaming": true
+  },
+  "supportedInterfaces": [
+    {
+      "url": "https://mcp.lifterclub.com/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    },
+    {
+      "url": "https://mcp.lifterclub.com/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "0.3"
+    }
+  ],
+  "securityRequirements": [
+    {
+      "schemes": {
+        "oauth": {
+          "list": [
+            "meals:read"
+          ]
+        }
+      }
+    },
+    {
+      "schemes": {
+        "oauth": {
+          "list": [
+            "meals:write"
+          ]
+        }
+      }
+    }
+  ],
+  "url": "https://mcp.lifterclub.com/a2a",
+  "protocolVersion": "0.3",
+  "preferredTransport": "JSONRPC",
+  "security": [
+    {
+      "oauth": [
+        "meals:read"
+      ]
+    },
+    {
+      "oauth": [
+        "meals:write"
+      ]
+    }
+  ]
+}

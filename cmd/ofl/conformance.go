@@ -170,3 +170,47 @@ func printReport(report any, results []conformance.Result, asJSON bool, noun str
 	fmt.Printf("%d %s: %d passed, %d failed, %d skipped\n", len(results), noun, counts[conformance.Pass], counts[conformance.Fail], counts[conformance.Skip])
 	return nil
 }
+
+// runA2AConformance checks an A2A nutrition agent against the A2A profile's core. The tokens come
+// from flags or OFL_TOKEN and OFL_READ_TOKEN.
+func runA2AConformance(args []string) error {
+	flags := flag.NewFlagSet("conformance a2a", flag.ContinueOnError)
+	token := flags.String("token", "", "OAuth access token for the agent with meals:read and meals:write (default $OFL_TOKEN)")
+	readToken := flags.String("read-token", "", "a meals:read token for the same person (default $OFL_READ_TOKEN); without one, read-only access isn't checked and the agent can't pass")
+	asJSON := flags.Bool("json", false, "print the report as JSON")
+	timeout := flags.Duration("timeout", 2*time.Minute, "give up after this long")
+	flags.Usage = func() {
+		fmt.Fprintln(flags.Output(), "usage: ofl conformance a2a [--json] [--token T] [--read-token R] <agent-url>\n\n"+
+			"Reads the agent card at <agent-url>/.well-known/agent-card.json, then logs one meal in the token's account with the\n"+
+			"profile's core skills and checks the agent's behaviour with it. A2A has no delete, so the meal stays: use a test account.")
+		flags.PrintDefaults()
+	}
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if flags.NArg() != 1 {
+		flags.Usage()
+		return errors.New("want the URL the agent card is served from, such as https://mcp.lifterclub.com")
+	}
+	if *token == "" {
+		*token = os.Getenv("OFL_TOKEN")
+	}
+	if *readToken == "" {
+		*readToken = os.Getenv("OFL_READ_TOKEN")
+	}
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+	ctx, cancel := context.WithTimeout(ctx, *timeout)
+	defer cancel()
+	report, err := conformance.RunA2A(ctx, conformance.A2AConfig{URL: flags.Arg(0), Token: *token, ReadOnlyToken: *readToken})
+	if err != nil {
+		return err
+	}
+	if err := printReport(report, report.Results, *asJSON, "checks"); err != nil {
+		return err
+	}
+	if !report.Passed() {
+		return errors.New("not conformant")
+	}
+	return nil
+}

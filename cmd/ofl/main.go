@@ -19,6 +19,8 @@ const usage = `usage:
   ofl conformance [--json] [--token T] <base-url>        check a server's REST API
   ofl conformance mcp [--json] [--token T] [--read-token R] <mcp-url>
                                                          check a server's MCP tools
+  ofl conformance a2a [--json] [--token T] [--read-token R] <agent-url>
+                                                         check an A2A nutrition agent
   ofl vectors [--json] -- <command> [args...]            check an amount calculation against the vectors
   ofl site [outdir]                                      build the website (dist/ by default)
   ofl catalogue <dir>                                    rebuild catalogue/ from the FoodData Central downloads in dir`
@@ -33,9 +35,12 @@ func main() {
 	case "validate":
 		err = validate(os.Args[2:])
 	case "conformance":
-		if len(os.Args) > 2 && os.Args[2] == "mcp" {
+		switch {
+		case len(os.Args) > 2 && os.Args[2] == "mcp":
 			err = runMCPConformance(os.Args[3:])
-		} else {
+		case len(os.Args) > 2 && os.Args[2] == "a2a":
+			err = runA2AConformance(os.Args[3:])
+		default:
 			err = runConformance(os.Args[2:])
 		}
 	case "vectors":
