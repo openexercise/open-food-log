@@ -10,7 +10,7 @@ The catalogue is dedicated to the public domain under [CC0 1.0](https://creative
 
 ## Where the numbers come from
 
-Every record is built from [USDA FoodData Central](https://fdc.nal.usda.gov) (public domain, CC0 1.0), retrieved 2026-11-09, by `ofl catalogue`:
+Every record is built from [USDA FoodData Central](https://fdc.nal.usda.gov) (public domain, CC0 1.0), retrieved 2026-11-12, by `ofl catalogue`:
 
 | Source | Release | What it adds |
 | --- | --- | --- |
@@ -20,8 +20,14 @@ Every record is built from [USDA FoodData Central](https://fdc.nal.usda.gov) (pu
 
 The rules, so anyone can check a record against its source (`identifiers.fdc_id` and `provenance.sources`):
 
-- **One record per name.** When two sources describe a food by the same name, the first in the table above wins; the others are listed in `provenance.sources` but their numbers aren't used. [REPORT.md](REPORT.md) counts every case.
-- **Nutrients** are read by the FoodData Central numbers in [`nutrients.json`](../schema/v0/nutrients.json), in the vocabulary's unit only. Where a food lacks one, a stated alternative is read instead: energy from Atwater specific (958) then general (957) factors, fat from NLEA total fat (298), carbohydrate by summation (205.2), sugars (269.3) and fibre (293) by newer methods. Nothing missing is filled in or calculated.
+- **One record per name.** When two sources describe a food by the same name, the first in the table above wins; the others are listed in `provenance.sources` but their numbers aren't used. [REPORT.md](REPORT.md) counts every case, and how many foods have each nutrient.
+- **Nutrients** are every key of the v0.1 vocabulary that FoodData Central gives for the food, read by the FoodData Central numbers in [`nutrients.json`](../schema/v0/nutrients.json), in the vocabulary's unit only: the B vitamins (folate as DFE, folic acid apart), vitamins E and K, phosphorus, copper, manganese, selenium, iodine, molybdenum, choline, ALA, EPA and DHA, starch and the rest. Where a food lacks one, a stated alternative is read instead: energy from Atwater specific (958) then general (957) factors, fat from NLEA total fat (298), carbohydrate by summation (205.2, which like the total by difference includes fibre), sugars (269.3) and fibre (293) by newer methods. Nothing missing is filled in, and an amount in another unit (IU) isn't converted. A key a food doesn't have is unknown, never zero.
+- **Three keys are worked out**, by the rules of [section 4 of the spec](../schema/v0/SPEC.md#4-nutrients) and no others, and each record that has one names them in `provenance.sources`:
+  - `energy_kj` is `energy_kcal` × 4.184 where FoodData Central gives no kilojoules (268). SR Legacy and some Foundation Foods give them; survey foods don't.
+  - `salt_g` is sodium × 2.5, as EU and UK labels declare it (`sodium_mg` × 0.0025).
+  - `carbohydrate_available_g` is `carbohydrate_g` − `fiber_g`, where both are given and fibre isn't above the total.
+- **Category** is FoodData Central's own: SR Legacy's and Foundation Foods' food category ("Dairy and Egg Products"), or a survey food's WWEIA category with its number ("Milk, whole", `1002`), all with `scheme` `fdc`. It's `inferred`: FoodData Central files the food under it, but no label or analysis declares it.
+- **Allergens, diet flags, ingredients and glycemic index or load** are left out: FoodData Central's generic foods don't state them, and the catalogue has no other CC0 source that does. Working them out from names would be guessing.
 - **Foods with no energy value** in any of those forms are left out, rather than given one.
 - **Branded records** in SR Legacy (named in capitals: `KRAFT`, `SUBWAY`) are left out. Capitalised words used for generic foods (`USDA`, `BBQ`, `NFS`, `NFSMI`, `RTE`, `UHT`) don't count.
 - **Portions** keep FoodData Central's weights and wording. A survey food's "Quantity not specified" is its default portion: the amount to assume when someone names the food without one. The RACC is "1 serving (RACC)".
