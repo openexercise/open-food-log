@@ -34,6 +34,16 @@ A complete schema: everything here is optional and additive, so every v0 documen
   Connect, HealthKit and FHIR.
 - Examples: a packaged food with its label and attributes, a supplement, a dinner with a shared dish,
   a drink and a recipe, the recipe, targets, and the log holding them.
+- **The API core** (`api/core.yaml`): the REST routes any Open Food Log server serves over a person's
+  food log (foods, meals and their change feed, targets and the nutrition summary, the export and
+  webhooks, whose meal events are signed in `OFL-Signature`), generated from the reference server. A
+  meal's `external_id` replays for the app that sent it, and one the person deleted stays deleted.
+- **Conformance:** `ofl conformance <base-url>` and `ofl conformance mcp <mcp-url>` check a server
+  against the core and the MCP profile as one test person; `ofl vectors` checks an amount calculation
+  against the amount vectors, passing each case's `share` and comparing `ml` and grams left
+  unknown (package `conformance`). The reference server runs all three in its tests.
+- **Clients:** a Go client for the core (`clients/go`); the TypeScript one is
+  `@openexercise/open-workout-client/openfoodlog`.
 
 ## Catalogue v0.3.0, 2026-11-10
 
