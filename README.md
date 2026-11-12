@@ -20,10 +20,11 @@ An open format for a personal food log: what someone ate, the food it matched, h
 | `examples` | Foods (generic, packaged with its label, a supplement), meals, a recipe, targets and a log |
 | `api/core.yaml` | The Open Food Log API core (OpenAPI 3.1): the REST routes any server serves over a person's food log — foods, meals and their change feed, targets and the nutrition summary, the export and webhooks |
 | `mcp/tools.json` | The MCP tool profile: the tools a compatible server lists, their input schemas, and the error codes their failures start with |
+| `a2a` | The A2A agent profile: the reference nutrition agent's card (`agent-card.json`), whose `https://openfoodlog.org/a2a/v0` extension lists the core skills, and what a compatible agent serves |
 | `conformance` | Package `conformance`: the checks behind `ofl conformance` and `ofl vectors`, and `VerifySignature` for webhook deliveries |
 | `clients/go` | A Go client for the API core on the standard library alone (a module of its own) |
 | `catalogue` | The Open Food Catalogue: 12,442 generic foods with `ofc:` IDs from USDA FoodData Central, CC0. See its README |
-| `openfoodlog.go` | Package `openfoodlog`: the embedded schemas and MCP profile, a validator, and the reference calculation of section 6 (`Measure`; `Grams` and `Nutrients` for weighed amounts) |
+| `openfoodlog.go` | Package `openfoodlog`: the embedded schemas, MCP profile and A2A profile, a validator, and the reference calculation of section 6 (`Measure`; `Grams` and `Nutrients` for weighed amounts) |
 | `cmd/ofl` | `ofl validate`, which checks documents against the schemas; `ofl conformance`, which checks a server; `ofl vectors`, which checks an amount calculation; `ofl catalogue`, which rebuilds the catalogue from FoodData Central; and `ofl site`, which builds the website |
 
 ```bash
@@ -34,21 +35,27 @@ go run ./cmd/ofl site dist
 
 ## Conformance
 
-A server that keeps a food log can check itself against the API core and the MCP profile, as one
-test person (use a test account: each run logs one meal and deletes it):
+A server that keeps a food log can check itself against the API core, the MCP profile and the A2A
+profile, as one test person (use a test account: each run logs one meal, and deletes it except
+over A2A, which has no delete):
 
 ```bash
 OFL_TOKEN=… go run ./cmd/ofl conformance https://api.example.com
 OFL_TOKEN=… OFL_READ_TOKEN=… go run ./cmd/ofl conformance mcp https://mcp.example.com
+OFL_TOKEN=… OFL_READ_TOKEN=… go run ./cmd/ofl conformance a2a https://agent.example.com
 ```
 
 The REST script logs a meal, reads it back, replays its `Idempotency-Key` and `external_id`,
 changes it, finds it in the change feed, validates the export, deletes it, finds its tombstone,
 checks its `external_id` stays deleted, and subscribes and removes a webhook. The MCP script checks
 the core tools' input schemas against `mcp/tools.json`, then logs, reads, changes, deletes and
-undoes through them. `ofl vectors -- <command>` runs every amount vector through an implementation:
+undoes through them. The A2A script reads the agent card (it must name every core skill and OAuth
+with the meals scopes), then over A2A 1.0 JSON-RPC logs an OFL meal holding a food no catalogue
+knows, replays the message, checks the task asks for input and stays waiting after a wrong answer,
+cancels it, reads it back with `GetTask`, finds the meal with `get-meals`, asks `food-lookup`,
+`nutrition-summary` and `targets`, and checks refusals and a read-only token. `ofl vectors -- <command>` runs every amount vector through an implementation:
 the command gets `{"name", "food", "amount"}` on stdin and prints `{"grams", "nutrients"}` or
-`{"error"}`. A server's own Go tests can call `conformance.Run`, `RunMCP` and `CheckVectors`
+`{"error"}`. A server's own Go tests can call `conformance.Run`, `RunMCP`, `RunA2A` and `CheckVectors`
 directly, as Lifterclub's do. "Conformant" is self-reported.
 
 Until v1 these files are published here from [Lifterclub](https://lifterclub.com), the reference implementation. Issues and proposals belong here.

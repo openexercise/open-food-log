@@ -28,6 +28,12 @@ var Schemas embed.FS
 //go:embed mcp/tools.json
 var Profile []byte
 
+// A2AProfile is a2a/agent-card.json, the A2A agent profile: the reference agent's card, whose
+// https://openfoodlog.org/a2a/v0 extension lists the core skills a compatible agent offers.
+//
+//go:embed a2a/agent-card.json
+var A2AProfile []byte
+
 // Kinds are the document kinds, by file name under schema/v0.
 var Kinds = []string{"food", "meal", "recipe", "targets", "log"}
 
