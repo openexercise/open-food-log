@@ -14,7 +14,7 @@ An open format for a personal food log: what someone ate, the food it matched, h
 | `schema/v0/amount-vectors.json` | Worked cases every implementation must agree on: an amount on a food, as grams, then as nutrients |
 | `schema/CHANGELOG.md` | What changed in v0 |
 | `examples` | A food, a breakfast and a log, built from USDA FoodData Central (CC0) |
-| `api/core.yaml` | The Open Food Log API core (OpenAPI 3.1): the REST routes any server serves over a person's food log — foods, meals and their change feed, the export and webhooks |
+| `api/core.yaml` | The Open Food Log API core (OpenAPI 3.1): the REST routes any server serves over a person's food log — foods, meals and their change feed, targets and the nutrition summary, the export and webhooks |
 | `mcp/tools.json` | The MCP tool profile: the tools a compatible server lists, their input schemas, and the error codes their failures start with |
 | `conformance` | Package `conformance`: the checks behind `ofl conformance` and `ofl vectors`, and `VerifySignature` for webhook deliveries |
 | `clients/go` | A Go client for the API core on the standard library alone (a module of its own) |

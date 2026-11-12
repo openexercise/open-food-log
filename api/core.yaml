@@ -420,6 +420,90 @@ paths:
         "403": {$ref: "#/components/responses/Forbidden"}
         "404": {$ref: "#/components/responses/NotFound"}
         "429": {$ref: "#/components/responses/RateLimited"}
+  /v1/targets:
+    get:
+      operationId: getTargets
+      summary: The user's nutrition targets
+      description: |
+        The user's own targets, current and past, as an Open Food Log targets document
+        (https://openfoodlog.org/schema/v0/targets.json). Hiding numbers from the person doesn't
+        hide them: they're the person's settings, and what's hidden is progress against them
+        (`GET /v1/nutrition/summary`). `updated_at` is the latest change to any target, absent when
+        there are none. (Lifterclub never sets or suggests one.)
+      tags: [Meals]
+      security: [{oauth2: ['meals:read']}]
+      responses:
+        "200":
+          description: The targets.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Targets"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "429": {$ref: "#/components/responses/RateLimited"}
+    put:
+      operationId: setTargets
+      summary: Replace the user's nutrition targets
+      description: |
+        Replaces the whole list, in order (a server may cap its length; Lifterclub: 100). An entry
+        with an `id` keeps it and must be one of the user's targets; one without gets a new one;
+        targets left out are removed, so to change a target from some day on, end the old one with
+        `effective_to` and add a new one. `effective_from` defaults to today in the user's timezone
+        and `set_by` to `person`. `$schema`, `ofl_version` and `updated_at` are accepted, so a read
+        can be sent back, and ignored. A server may ask for consent before storing health data.
+      tags: [Meals]
+      security: [{oauth2: ['meals:write']}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/TargetsInput"}
+      responses:
+        "200":
+          description: The targets as saved.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Targets"}
+        "400": {$ref: "#/components/responses/BadRequest"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "429": {$ref: "#/components/responses/RateLimited"}
+  /v1/nutrition/summary:
+    get:
+      operationId: getNutritionSummary
+      summary: Totals per day and how each target went
+      description: |
+        Each day's totals from `from` to `to` (inclusive, in the user's timezone; `to` defaults to
+        today and `from` to the six days before it; a server may limit the span, Lifterclub to 92
+        days), each target that applied to the day or to one of its meals with its status, per
+        target how many days or meals it applied to and was met, and the days at target: those
+        where every target that applied was met.
+
+        A status is `met`, `under`, `above` or `unknown`, as Open Food Log section 9 judges it: a
+        `min` is met at or past it, a `max` up to it, and a lone `target` within
+        `tolerance_percent` (10 by default) either way. A total is a lower bound when something
+        logged lacks the nutrient, no meal was logged, or the day isn't over (today): such a total
+        is never `under`, and is `unknown` where what's missing could change the answer. When
+        several targets apply, the one for some weekdays wins, then one for a meal type, then the
+        latest `effective_from`, then the later entry.
+
+        When the person asked not to see numbers (Lifterclub's calm mode) it holds none:
+        `calm_mode` is true and each day has only its date and meal count.
+      tags: [Meals]
+      security: [{oauth2: ['meals:read']}]
+      parameters:
+        - {name: from, in: query, schema: {type: string, format: date}}
+        - {name: to, in: query, schema: {type: string, format: date}}
+      responses:
+        "200":
+          description: The summary.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/NutritionSummary"}
+        "400": {$ref: "#/components/responses/BadRequest"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "403": {$ref: "#/components/responses/Forbidden"}
+        "429": {$ref: "#/components/responses/RateLimited"}
   /v1/foods/{id}:
     parameters:
       - name: id
@@ -764,32 +848,175 @@ components:
       properties:
         deleted_at: {type: string, format: date-time}
         restore_until: {type: string, format: date-time}
+    Target:
+      description: One target of an Open Food Log targets document (https://openfoodlog.org/schema/v0/targets.json).
+      type: object
+      required: [nutrient, per, effective_from, set_by]
+      properties:
+        id: {type: string, format: uuid, description: Assigned by the server; send it back to keep the target.}
+        nutrient: {type: string, description: "A nutrient key, as in `FoodNutrients`."}
+        per: {type: string, enum: [day, meal], description: "day: the total of the user's local day. meal: each meal on its own."}
+        meal_type: {type: string, enum: [breakfast, lunch, dinner, snack], description: "With `per: meal`, only meals of this type; absent means every meal."}
+        min: {type: number, minimum: 0, description: At least this much, in the nutrient's unit.: ''}
+        max: {type: number, minimum: 0, description: At most this much.}
+        target: {type: number, minimum: 0, description: "About this much. Alone, it's met within `tolerance_percent` either way; with `min` or `max`, those decide."}
+        tolerance_percent: {type: number, minimum: 0, maximum: 100, description: "For a lone `target`: how far either side still counts as met; 10 when absent."}
+        weekdays:
+          description: ISO weekdays it applies on, 1 Monday to 7 Sunday; absent means every day.
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items: {type: integer, minimum: 1, maximum: 7}
+        effective_from: {type: string, format: date, description: The first local day it applies.}
+        effective_to: {type: string, format: date, description: The last local day it applies; absent means until replaced.}
+        set_by: {type: string, enum: [person, professional, app_suggestion]}
+        note: {type: string, maxLength: 2000}
+    TargetInput:
+      description: A target to save; `effective_from` defaults to today and `set_by` to `person`.
+      type: object
+      required: [nutrient, per]
+      anyOf: [{required: [min]}, {required: [max]}, {required: [target]}]
+      properties:
+        id: {type: string, format: uuid, description: Assigned by the server; send it back to keep the target.}
+        nutrient: {type: string, description: "A nutrient key, as in `FoodNutrients`."}
+        per: {type: string, enum: [day, meal], description: "day: the total of the user's local day. meal: each meal on its own."}
+        meal_type: {type: string, enum: [breakfast, lunch, dinner, snack], description: "With `per: meal`, only meals of this type; absent means every meal."}
+        min: {type: number, minimum: 0, description: At least this much, in the nutrient's unit.: ''}
+        max: {type: number, minimum: 0, description: At most this much.}
+        target: {type: number, minimum: 0, description: "About this much. Alone, it's met within `tolerance_percent` either way; with `min` or `max`, those decide."}
+        tolerance_percent: {type: number, minimum: 0, maximum: 100, description: "For a lone `target`: how far either side still counts as met; 10 when absent."}
+        weekdays:
+          description: ISO weekdays it applies on, 1 Monday to 7 Sunday; absent means every day.
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items: {type: integer, minimum: 1, maximum: 7}
+        effective_from: {type: string, format: date, description: The first local day it applies.}
+        effective_to: {type: string, format: date, description: The last local day it applies; absent means until replaced.}
+        set_by: {type: string, enum: [person, professional, app_suggestion]}
+        note: {type: string, maxLength: 2000}
+    Targets:
+      description: An Open Food Log targets document (https://openfoodlog.org/schema/v0/targets.json).
+      type: object
+      required: [$schema, ofl_version, targets]
+      properties:
+        $schema: {type: string, const: "https://openfoodlog.org/schema/v0/targets.json"}
+        ofl_version: {type: string, const: "0.1"}
+        updated_at: {type: string, format: date-time}
+        targets: {type: array, items: {$ref: "#/components/schemas/Target"}}
+    TargetsInput:
+      type: object
+      required: [targets]
+      additionalProperties: false
+      properties:
+        $schema: {type: string}
+        ofl_version: {type: string}
+        updated_at: {type: string, format: date-time}
+        targets:
+          type: array
+          maxItems: 100
+          items: {$ref: "#/components/schemas/TargetInput"}
+    TargetProgress:
+      description: One target against a day's or a meal's total of its nutrient.
+      type: object
+      required: [target_id, nutrient, per, is_complete, status]
+      properties:
+        target_id: {type: string, format: uuid}
+        nutrient: {type: string}
+        per: {type: string, enum: [day, meal]}
+        meal_id: {type: string, format: uuid, description: "For `per: meal`."}
+        meal_type: {type: string, enum: [breakfast, lunch, dinner, snack]}
+        total: {type: number, description: Absent when nothing logged has the nutrient.}
+        is_complete: {type: boolean, description: "False when something logged lacks the nutrient, no meal was logged, or the day isn't over: `total` is a lower bound."}
+        status: {type: string, enum: [met, under, above, unknown]}
+    NutritionSummary:
+      type: object
+      required: [from, to, calm_mode, days]
+      properties:
+        from: {type: string, format: date}
+        to: {type: string, format: date}
+        calm_mode: {type: boolean, description: "When true (the person asked not to see numbers: Lifterclub's calm mode), the summary holds no numbers but meal counts."}
+        days:
+          description: Every day from `from` to `to`, earliest first.
+          type: array
+          items:
+            type: object
+            required: [date, meal_count]
+            properties:
+              date: {type: string, format: date}
+              meal_count: {type: integer, minimum: 0}
+              totals: {$ref: "#/components/schemas/MealTotals", description: Absent with no meals or when calm_mode is true.}
+              targets: {type: array, items: {$ref: "#/components/schemas/TargetProgress"}, description: The day targets that applied.}
+              meal_targets: {type: array, items: {$ref: "#/components/schemas/TargetProgress"}, description: The meal targets that applied, per meal.: ''}
+              is_at_target: {type: boolean, description: Every target that applied was met; absent when none applied.}
+              is_underway: {type: boolean, description: "The day isn't over (today, in the user's timezone): its totals are lower bounds."}
+        targets:
+          description: Per target, how many days (per day) or meals (per meal) it applied to and was met. Absent when calm_mode is true.
+          type: array
+          items:
+            type: object
+            required: [target_id, nutrient, per, applied, met]
+            properties:
+              target_id: {type: string, format: uuid}
+              nutrient: {type: string}
+              per: {type: string, enum: [day, meal]}
+              applied: {type: integer, minimum: 0}
+              met: {type: integer, minimum: 0}
+        days_at_target: {type: integer, minimum: 0, description: Days where every target that applied was met. Absent when calm_mode is true.}
     FoodNutrients:
       description: Amounts keyed by nutrient, each in the unit its key ends in (https://openfoodlog.org/nutrients/). A key left out is unknown, never zero.
       type: object
       additionalProperties: false
       properties:
         energy_kcal: {type: number, minimum: 0}
+        energy_kj: {type: number, minimum: 0}
         protein_g: {type: number, minimum: 0}
         fat_g: {type: number, minimum: 0}
         saturated_fat_g: {type: number, minimum: 0}
         monounsaturated_fat_g: {type: number, minimum: 0}
         polyunsaturated_fat_g: {type: number, minimum: 0}
         trans_fat_g: {type: number, minimum: 0}
+        ala_g: {type: number, minimum: 0}
+        epa_g: {type: number, minimum: 0}
+        dha_g: {type: number, minimum: 0}
         cholesterol_mg: {type: number, minimum: 0}
         carbohydrate_g: {type: number, minimum: 0}
+        carbohydrate_available_g: {type: number, minimum: 0}
         fiber_g: {type: number, minimum: 0}
         sugars_g: {type: number, minimum: 0}
         added_sugars_g: {type: number, minimum: 0}
+        starch_g: {type: number, minimum: 0}
+        polyols_g: {type: number, minimum: 0}
         sodium_mg: {type: number, minimum: 0}
+        salt_g: {type: number, minimum: 0}
         potassium_mg: {type: number, minimum: 0}
         calcium_mg: {type: number, minimum: 0}
         iron_mg: {type: number, minimum: 0}
         magnesium_mg: {type: number, minimum: 0}
+        phosphorus_mg: {type: number, minimum: 0}
         zinc_mg: {type: number, minimum: 0}
+        copper_mg: {type: number, minimum: 0}
+        manganese_mg: {type: number, minimum: 0}
+        selenium_ug: {type: number, minimum: 0}
+        iodine_ug: {type: number, minimum: 0}
+        chromium_ug: {type: number, minimum: 0}
+        molybdenum_ug: {type: number, minimum: 0}
+        chloride_mg: {type: number, minimum: 0}
+        vitamin_a_rae_ug: {type: number, minimum: 0}
         vitamin_c_mg: {type: number, minimum: 0}
         vitamin_d_ug: {type: number, minimum: 0}
-        vitamin_a_rae_ug: {type: number, minimum: 0}
+        vitamin_e_mg: {type: number, minimum: 0}
+        vitamin_k_ug: {type: number, minimum: 0}
+        thiamin_mg: {type: number, minimum: 0}
+        riboflavin_mg: {type: number, minimum: 0}
+        niacin_mg: {type: number, minimum: 0}
+        pantothenic_acid_mg: {type: number, minimum: 0}
+        vitamin_b6_mg: {type: number, minimum: 0}
+        biotin_ug: {type: number, minimum: 0}
+        folate_dfe_ug: {type: number, minimum: 0}
+        folic_acid_ug: {type: number, minimum: 0}
+        vitamin_b12_ug: {type: number, minimum: 0}
+        choline_mg: {type: number, minimum: 0}
         caffeine_mg: {type: number, minimum: 0}
         alcohol_g: {type: number, minimum: 0}
         water_g: {type: number, minimum: 0}
