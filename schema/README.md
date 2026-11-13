@@ -4,7 +4,7 @@ A draft open standard for a personal food log, the nutrition sister of the Open 
 (`docs/ows`) and the Open Exercise Schema. Why it exists and what else is out there:
 [`docs/research/nutrition.md`](../research/nutrition.md).
 
-**Status: v0.1 draft, 2026-11-12** (v0 2026-11-09). Lifterclub implements v0 and is the first
+**Status: v0.2 draft, 2026-11-13** (v0.1 2026-11-12, v0 2026-11-09). Lifterclub implements v0 and is the first
 implementation (`docs/nutrition.md`). Published to
 [`openexercise/open-food-log`](https://github.com/openexercise/open-food-log) by
 `scripts/publish-openfoodlog.sh` and served at [openfoodlog.org](https://openfoodlog.org); this
@@ -13,10 +13,10 @@ directory stays the source of truth until v1.
 | | |
 | --- | --- |
 | [`v0/SPEC.md`](v0/SPEC.md) | The specification |
-| [`v0/food.json`](v0/food.json), [`v0/meal.json`](v0/meal.json), [`v0/recipe.json`](v0/recipe.json), [`v0/targets.json`](v0/targets.json), [`v0/log.json`](v0/log.json) | JSON Schemas (draft 2020-12) |
+| [`v0/food.json`](v0/food.json), [`v0/meal.json`](v0/meal.json), [`v0/recipe.json`](v0/recipe.json), [`v0/saved-meal.json`](v0/saved-meal.json) (v0.2), [`v0/targets.json`](v0/targets.json), [`v0/log.json`](v0/log.json) | JSON Schemas (draft 2020-12) |
 | [`v0/nutrients.json`](v0/nutrients.json) | 52 nutrient keys, mapped to INFOODS, FoodData Central, Health Connect and HealthKit |
 | [`v0/amount-vectors.json`](v0/amount-vectors.json), [`v0/recipe-vectors.json`](v0/recipe-vectors.json), [`v0/target-vectors.json`](v0/target-vectors.json) | Cases every implementation must agree on: amounts to grams to nutrients, recipes, and targets met or not |
-| [`examples`](../examples) | Foods (generic, packaged with a label, a supplement), meals, a recipe, targets and a log |
+| [`examples`](../examples) | Foods (generic, packaged with a label, a supplement), meals, a recipe, a saved meal, targets and a log |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed |
 
 `go test ./internal/ofl` checks that the schemas compile, every example validates and adds up, every
@@ -33,7 +33,7 @@ v1.2), and the Health Connect and HealthKit references.
 
 ## Versions
 
-Documents name the version they were written to in `ofl_version` (`"0.1"`); none means 0.0. A
+Documents name the version they were written to in `ofl_version` (`"0.2"`); none means 0.0. A
 minor version only adds: optional members, nutrient keys, enum values, documents. A document valid
 under one 0.x stays valid under the next, and a reader keeps what it doesn't understand rather than
 dropping it. Breaking changes before v1 are rare, fix mistakes, and are marked in the changelog.

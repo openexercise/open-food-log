@@ -28,7 +28,10 @@ Its `params.core_skills` lists the core; each skill also carries the tag `openfo
   - `targets`: an empty data part `{}` with `metadata.skill` reads the person's targets as an OFL
     targets document ([targets.json](../schema/v0/targets.json)); `{"targets": [...]}` replaces the whole
     list (`meals:write`). An agent sets only what the person asked for, never a suggestion.
-- **Extensions**: none yet in the reference agent. Planned: photos on `log-meal` (estimates).
+- **Extensions** in the reference agent: `log-meal-photo`, a photo of a meal as a raw part (with its
+  `mediaType`), read by a model into a draft whose every amount is an estimate. Nothing is saved
+  unless the message's `metadata.save` is true; then it logs as `log-meal` does. A photo by URL is
+  never fetched.
 
 Descriptions of core skills name no product.
 
@@ -57,6 +60,12 @@ Descriptions of core skills name no product.
   `parse_unsure`, `not_found`, `idempotency_conflict`, `barcode_unavailable`, `internal_error`),
   plus `insufficient_scope` for a write with a read-only grant. A call over the rate limit is an HTTP 429 with
   `Retry-After` and a JSON-RPC error whose `data.code` is `rate_limited`.
+
+## Checking an agent
+
+`ofl conformance a2a <agent-url>` (open-food-log's `conformance.RunA2A`) checks an agent against
+this profile as one test person: the card, discovery, logging with confirmation, replay, cancel,
+the core skills' answers, refusals and a read-only token. A2A has no delete, so use a test account.
 
 ## What a compatible agent keeps to
 

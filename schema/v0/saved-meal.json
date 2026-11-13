@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openfoodlog.org/schema/v0/saved-meal.json",
+  "title": "Open Food Log v0: saved meal",
+  "description": "A meal a person keeps to log again (\"my usual breakfast\"): a name and items shaped like meal items. Logging it makes a new meal whose items are counted again, from the foods as they are then (section 8). v0.2; may change until v1.",
+  "type": "object",
+  "required": ["id", "name", "items"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": {} },
+  "properties": {
+    "$schema": { "const": "https://openfoodlog.org/schema/v0/saved-meal.json" },
+    "ofl_version": { "$ref": "food.json#/$defs/ofl_version" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._-]+$",
+      "description": "namespace:slug. saved: is one person's saved meal, meaningful only inside the system that made it."
+    },
+    "name": { "type": "string", "minLength": 1, "description": "What the person calls it; a sentence naming it logs it." },
+    "meal_type": { "enum": ["breakfast", "lunch", "dinner", "snack"], "description": "The meal type to log it as when the person names none." },
+    "label": { "type": "string", "minLength": 1, "description": "A free label, as on a meal." },
+    "notes": { "type": "string" },
+    "items": {
+      "description": "What it holds, each like a meal item: the person's words, the food and the amount. grams and nutrients, where present, are what the item counted when it was saved; logging counts again.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "meal.json#/$defs/item" }
+    },
+    "source": { "$ref": "meal.json#/$defs/source" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "estimates": {
+      "description": "JSON pointers to values inferred or assumed rather than given, as in a meal. An item whose amount is listed is logged with its amount marked estimated.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(/[^/]*)*$" }
+    }
+  }
+}
