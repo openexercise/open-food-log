@@ -27,10 +27,14 @@ type foodLog struct {
 	skip       string // a core tool left out
 	noRestore  bool
 	confirmAll bool // nothing goes to needs_confirmation
+
+	saved         map[string]map[string]any
+	againUntitled bool // log_meal_again leaves out the saved meal's name
 }
 
 func newFoodLog() *foodLog {
-	return &foodLog{meals: map[string]map[string]any{}, deleted: map[string]bool{}, keys: map[string]string{}, undos: map[string]string{}}
+	return &foodLog{meals: map[string]map[string]any{}, deleted: map[string]bool{}, keys: map[string]string{}, undos: map[string]string{},
+		saved: map[string]map[string]any{}}
 }
 
 func (f *foodLog) handler(t *testing.T) http.Handler {
@@ -114,6 +118,43 @@ func (f *foodLog) tool(name string) mcp.ToolHandler {
 			return ok("Restored.", map[string]any{"meal": f.meals[id], "needs_confirmation": []any{}})
 		case "search_foods":
 			return ok("No foods.", map[string]any{"foods": []any{}})
+		case "save_meal":
+			from, found := f.meals[fmt.Sprint(args["meal_id"])]
+			if !found {
+				return failed("not_found: no meal with that ID")
+			}
+			f.next++
+			id := fmt.Sprintf("saved:%d", f.next)
+			f.saved[id] = map[string]any{"id": id, "name": args["name"], "items": from["items"]}
+			return ok("Saved.", f.saved[id])
+		case "get_saved_meals":
+			list := []any{}
+			for _, sm := range f.saved {
+				list = append(list, sm)
+			}
+			return ok("Your saved meals.", map[string]any{"saved_meals": list})
+		case "delete_saved_meal":
+			id := fmt.Sprint(args["saved_meal_id"])
+			if _, found := f.saved[id]; !found {
+				return failed("not_found: no saved meal with that ID")
+			}
+			delete(f.saved, id)
+			return ok("Deleted.", map[string]any{"id": id})
+		case "log_meal_again":
+			sm, found := f.saved[fmt.Sprint(args["saved_meal_id"])]
+			if !found {
+				return failed("not_found: no saved meal with that ID")
+			}
+			items := []any{}
+			for _, it := range sm["items"].([]any) {
+				it := it.(map[string]any)
+				items = append(items, map[string]any{"text": it["text"], "nutrients": map[string]any{"energy_kcal": 1}})
+			}
+			again := map[string]any{"items": items, "idempotency_key": args["idempotency_key"]}
+			if !f.againUntitled {
+				again["title"] = sm["name"]
+			}
+			return f.logMeal(again)
 		}
 		return failed("invalid_input: unknown tool")
 	}
@@ -144,6 +185,9 @@ func (f *foodLog) logMeal(args map[string]any) (*mcp.CallToolResult, error) {
 	m := map[string]any{
 		"$schema": "https://openfoodlog.org/schema/v0/meal.json", "id": id, "date": "2026-11-12",
 		"source": map[string]any{"kind": "mcp", "external_id": nil}, "items": items, "estimates": []any{},
+	}
+	if title, ok := args["title"]; ok {
+		m["title"] = title
 	}
 	f.meals[id] = m
 	if key != "" {
@@ -204,6 +248,7 @@ func TestMCPChecksCatchTheirBehaviour(t *testing.T) {
 		{"a core write missing", func(f *foodLog) { f.skip = "update_meal" }, []string{"tools", "update"}},
 		{"an unknown food logged as sure", func(f *foodLog) { f.confirmAll = true }, []string{"needs-confirmation"}},
 		{"undo restores nothing", func(f *foodLog) { f.noRestore = true }, []string{"undo"}},
+		{"a saved meal logged without its name", func(f *foodLog) { f.againUntitled = true }, []string{"again"}},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

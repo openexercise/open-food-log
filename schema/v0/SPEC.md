@@ -199,7 +199,7 @@ supplement); that isn't an error.
 - **Hydration** is `water_g` summed over everything eaten and drunk. Plain water is an item like any
   other (`ofc:water`); there is no separate water log.
 
-## 8. Recipes
+## 8. Recipes and saved meals
 
 [`recipe.json`](recipe.json) is a food made of other foods. Its `lines` are shaped like meal items
 (text, food, amount, grams, nutrients), raw as they went in, and it says how many `servings` it
@@ -214,6 +214,26 @@ makes. A meal item names a recipe by its `id` like any food.
   `nutrients_per_100g` and `nutrients_per_serving`; a reader MAY recompute them.
 - An item on a recipe is weighed (`g`, `kg`, `oz`, `lb`) or counted in `serving`s. The
   [recipe vectors](recipe-vectors.json) hold the cases.
+
+### Saved meals (v0.2)
+
+[`saved-meal.json`](saved-meal.json) is a meal a person keeps to log again ("my usual breakfast"):
+a `name` and `items` shaped like meal items, with an optional `meal_type`, `label` and `notes`. It
+differs from a recipe in what a log holds: a recipe logs as one item, a saved meal as its items, each
+counted on its own.
+
+- Logging a saved meal makes a new meal. Each item keeps its `text`, food and amount, and its grams
+  and nutrients are counted again from the food as it is then (section 6), since the log holds what
+  was counted when it was logged (section 7). An item naming no food (`match: none`) keeps its
+  nutrients as given.
+- An item whose amount the saved meal lists in `estimates` is logged with its amount, grams and
+  nutrients marked estimated.
+- `grams` and `nutrients` on a saved meal's items, where present, are what they counted when it was
+  saved: a preview, never a log.
+- A sentence that names a saved meal by its name (with or without "my") MAY log its items in place
+  of matching the words as one food.
+- Logging a meal again ("the same as yesterday's lunch") works the same way from a meal: its items'
+  text, food and amount, counted again.
 
 ## 9. Targets
 
@@ -243,8 +263,9 @@ prescribes one.
 ## 10. The log
 
 [`log.json`](log.json) is a whole log as one file, what an export holds and an import reads:
-`exported_at`, `meals` (newest first), `foods` (at least the `usr:` foods the meals and recipes
-name), `recipes` (at least those the meals name), `targets` and `deleted_meals`. A server MAY add
+`exported_at`, `meals` (newest first), `foods` (at least the `usr:` foods the meals, recipes and
+saved meals name), `recipes` (at least those the meals and saved meals name), `saved_meals`,
+`targets` and `deleted_meals`. A server MAY add
 more of the person's record (a profile, the OWS workouts) beside these keys; readers ignore keys they
 don't know.
 
@@ -262,7 +283,7 @@ is generated from the first implementation: a neutral core of `log_meal`, `get_m
 
 Apps reach a server's food log over its REST API: the
 [API core](https://github.com/openexercise/open-food-log/blob/main/api/core.yaml) is the routes
-every server serves (foods, meals and their change feed, the export as a log document, and
+every server serves (foods, meals and their change feed, targets and the nutrition summary, the export as a log document, and
 webhooks signed in `OFL-Signature`), where a meal's `external_id` replays for the app that sent it
 and one the person deleted stays deleted. `ofl conformance` checks a server against the core and
 `ofl conformance mcp` against the tool profile; a server that passes both may say it is conformant.
@@ -293,7 +314,7 @@ both by volume; `water_g` in foods maps to neither.
 
 ## 13. Versions and extensions
 
-- `ofl_version` names the version a document was written to, as `MAJOR.MINOR` (`"0.1"`). A document
+- `ofl_version` names the version a document was written to, as `MAJOR.MINOR` (`"0.2"`). A document
   without one is `0.0`, the first draft. The schemas' `$id`s stay `…/schema/v0/` for every 0.x.
 - **A minor version only adds**: new optional members, nutrient keys, enum values and documents. It
   never removes or renames a member, never changes a unit or what a value means, and never makes an

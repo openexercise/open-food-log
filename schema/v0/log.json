@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openfoodlog.org/schema/v0/log.json",
   "title": "Open Food Log v0: log",
-  "description": "A person's whole food log as one file: what an export holds and an import can read. A server may add more of the person's record beside these keys; readers ignore keys they don't know. v0.1; may change until v1.",
+  "description": "A person's whole food log as one file: what an export holds and an import can read. A server may add more of the person's record beside these keys; readers ignore keys they don't know. v0.2; may change until v1.",
   "type": "object",
   "required": ["exported_at", "meals"],
   "properties": {
@@ -23,6 +23,11 @@
       "description": "The person's recipes. An export MUST include the recipes its meals name, and the foods their lines name.",
       "type": "array",
       "items": { "$ref": "recipe.json" }
+    },
+    "saved_meals": {
+      "description": "Meals the person keeps to log again (v0.2). An export MUST include the foods and recipes their items name.",
+      "type": "array",
+      "items": { "$ref": "saved-meal.json" }
     },
     "targets": {
       "$ref": "targets.json",

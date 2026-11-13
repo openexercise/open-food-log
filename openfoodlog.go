@@ -35,7 +35,7 @@ var Profile []byte
 var A2AProfile []byte
 
 // Kinds are the document kinds, by file name under schema/v0.
-var Kinds = []string{"food", "meal", "recipe", "targets", "log"}
+var Kinds = []string{"food", "meal", "recipe", "saved-meal", "targets", "log"}
 
 // Validator holds the compiled schemas, keyed by kind and by $id.
 type Validator struct {
@@ -82,9 +82,8 @@ func NewValidatorFS(fsys fs.FS) (*Validator, error) {
 	return v, nil
 }
 
-// ValidateAs returns every problem in a document of a kind ("food", "meal", "recipe", "targets",
-// "log"), whatever its
-// $schema says.
+// ValidateAs returns every problem in a document of a kind ("food", "meal", "recipe", "saved-meal",
+// "targets", "log"), whatever its $schema says.
 func (v *Validator) ValidateAs(kind string, data []byte) []string {
 	s, ok := v.byKind[kind]
 	if !ok {

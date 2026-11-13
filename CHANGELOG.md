@@ -3,7 +3,7 @@
 The running record of this repository: the Open Food Log format, the Open Food Catalogue, the `ofl`
 command, the conformance suite and the Go client. Releases are git tags `vX.Y.Z` (semantic
 versioning; there is no version file). Tags number the package and the catalogue; the schema's own
-version is `ofl_version` (`"0.1"` today). Until v1 the format may still change, and a release says
+version is `ofl_version` (`"0.2"` today). Until v1 the format may still change, and a release says
 so when it does.
 
 [`schema/CHANGELOG.md`](schema/CHANGELOG.md) is the format's own changelog, published from
@@ -22,12 +22,26 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 - **69 liquids have no density** (`catalogue/REPORT.md`).
 - **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
   allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
-- **A2A photo estimates:** photos on `log-meal` are planned, not in the reference agent
-  ([`a2a/README.md`](a2a/README.md), Extensions).
 - **v1:** freezes when the first application outside Lifterclub writes the format in production
   ([README.md](README.md)).
 
 ## Unreleased
+
+## v0.7.0 — 2026-11-13
+
+Open Food Log v0.2: saved meals, and recipes, saved meals and logging again in the API core, the MCP
+profile and the conformance suite. Additive: every v0.1 document stays valid.
+
+- **Added:** `schema/v0/saved-meal.json`, a meal a person keeps to log again (spec section 8), with
+  `saved_meals` in the log and an example; `ofl validate` and the site know it.
+- **Added:** the API core's `/v1/recipes`, `/v1/saved-meals` (and `.../log`) and
+  `POST /v1/meals/{id}/copy`, and the MCP profile's `save_recipe`, `get_recipes`, `delete_recipe`,
+  `save_meal`, `get_saved_meals`, `delete_saved_meal` and `log_meal_again` in the core.
+- **Added:** conformance checks `copy`, `saved-meal` and `recipe` (`ofl conformance`) and `again`
+  (`ofl conformance mcp`). A server that passed v0.6.0's suite must now serve these too to pass.
+- **Added:** the Go client's recipe, saved meal and log-again calls.
+- **Changed:** the A2A profile documents the reference agent's `log-meal-photo` extension and how to
+  check an agent; the API core's wording catches up with the reference server.
 
 ## v0.6.0 — 2026-11-12
 

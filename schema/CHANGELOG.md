@@ -1,5 +1,38 @@
 # Changelog
 
+## Unreleased
+
+## v0.2 draft, 2026-11-13
+
+Saved meals, and the API core and MCP profile for recipes, saved meals and logging a meal again.
+Only additions: every v0.1 document stays valid.
+
+- **v0.2: saved meals.** `saved-meal.json` is a meal a person keeps to log again: a `name` and
+  items shaped like meal items, with an optional `meal_type`, `label` and `notes`. Logging one makes
+  a new meal whose items are counted again from their foods (section 8); an estimated amount stays
+  estimated. A log holds them in `saved_meals`. Logging a meal again works the same way.
+- The API core has recipes (`/v1/recipes`), saved meals (`/v1/saved-meals`, `.../log`) and
+  `POST /v1/meals/{id}/copy`; the MCP profile's core adds `save_recipe`, `get_recipes`,
+  `delete_recipe`, `save_meal`, `get_saved_meals`, `delete_saved_meal` and `log_meal_again`.
+- The API core holds Open Food Log alone: the exercise candidates on a problem, the workout and
+  sentence-parser error codes and their warnings, and the reference server's limits and extras in
+  the prose are gone. A problem's `code` is one of `invalid_input`, `consent_required`,
+  `not_found`, `undo_unavailable`, `rate_limited`, `idempotency_conflict`, `unauthenticated` and
+  `internal_error`; a server may send more, which a client treats as the closest of these.
+- The API core (`api/core.yaml`): the REST routes any Open Food Log server serves over a person's
+  food log (foods, meals and their change feed, targets and the nutrition summary, the export and webhooks, whose meal events are
+  signed in `OFL-Signature`), generated from the reference server. A meal's `external_id` replays
+  for the app that sent it, and one the person deleted stays deleted.
+- `ofl conformance <base-url>` and `ofl conformance mcp <mcp-url>` check a server against the core
+  and the MCP profile as one test person; `ofl vectors` checks an amount calculation against the
+  amount vectors (package `conformance`). The reference server runs all three in its tests.
+- A Go client for the core (`clients/go`); the TypeScript one is `@openexercise/open-workout-client/openfoodlog`.
+- Catalogue: 1,283 liquids gain `density_g_per_ml`, so an amount in ml, l or fl oz can be weighed
+  (whole milk is 1.0313 g/ml). Each comes from FoodData Central: a measured specific gravity, or the
+  weight of one of the food's own volume portions over its volume, named in `provenance.sources`.
+  Liquids with no volume portion, or one outside any liquid's density, have none; `catalogue/REPORT.md`
+  lists them. The schemas are unchanged.
+
 ## Catalogue v0.6.0, 2026-11-12
 
 The catalogue fills OFL v0.1. Every food keeps its `ofc:` ID, name, aliases, portions and density,
@@ -54,16 +87,6 @@ A complete schema: everything here is optional and additive, so every v0 documen
   Connect, HealthKit and FHIR.
 - Examples: a packaged food with its label and attributes, a supplement, a dinner with a shared dish,
   a drink and a recipe, the recipe, targets, and the log holding them.
-- **The API core** (`api/core.yaml`): the REST routes any Open Food Log server serves over a person's
-  food log (foods, meals and their change feed, targets and the nutrition summary, the export and
-  webhooks, whose meal events are signed in `OFL-Signature`), generated from the reference server. A
-  meal's `external_id` replays for the app that sent it, and one the person deleted stays deleted.
-- **Conformance:** `ofl conformance <base-url>` and `ofl conformance mcp <mcp-url>` check a server
-  against the core and the MCP profile as one test person; `ofl vectors` checks an amount calculation
-  against the amount vectors, passing each case's `share` and comparing `ml` and grams left
-  unknown (package `conformance`). The reference server runs all three in its tests.
-- **Clients:** a Go client for the core (`clients/go`); the TypeScript one is
-  `@openexercise/open-workout-client/openfoodlog`.
 
 ## Catalogue v0.3.0, 2026-11-10
 

@@ -230,6 +230,50 @@
           ]
         }
       ]
+    },
+    {
+      "description": "Read a photo of a meal (a raw part, JPEG, PNG, HEIC, HEIF or WebP, at most 8 MB, with its mediaType) and any words sent with it into a draft meal: every food and amount read from the photo is an estimate. By default nothing is saved: show the person the draft. Send it again with metadata.save true to log it, as log-meal does, with unsure foods asked about on the task. Lifterclub reads the photo with Gemini and keeps it in memory only: it isn't stored.",
+      "examples": [
+        "a photo of lunch, with the text \"about half of this\""
+      ],
+      "id": "log-meal-photo",
+      "inputModes": [
+        "text/plain",
+        "image/jpeg",
+        "image/png",
+        "image/heic",
+        "image/heif",
+        "image/webp"
+      ],
+      "name": "Log a meal from a photo",
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:write"
+              ]
+            }
+          }
+        }
+      ],
+      "tags": [
+        "nutrition",
+        "food log",
+        "photo",
+        "openfoodlog:lifterclub"
+      ],
+      "security": [
+        {
+          "oauth": [
+            "meals:write"
+          ]
+        }
+      ]
     }
   ],
   "securitySchemes": {
@@ -263,7 +307,9 @@
             "nutrition-summary",
             "targets"
           ],
-          "extension_skills": [],
+          "extension_skills": [
+            "log-meal-photo"
+          ],
           "version": "v0"
         },
         "uri": "https://openfoodlog.org/a2a/v0"

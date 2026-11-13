@@ -26,11 +26,17 @@ type reference struct {
 
 	noChallenge, noReplay, noExternalReplay, revives, loseNotes, badExport bool
 	noFeed, noTombstones, listsSecret, loseNutrients                       bool
+
+	saved   map[string]map[string]any
+	recipes map[string]map[string]any
+	// Broken v0.2 behaviour: a copy that ignores its key, a saved meal logged without its name, a
+	// recipe counted per 100 g rather than per serving.
+	copyIgnoresKey, savedUntitled, recipeMiscounts bool
 }
 
 func newReference() *reference {
 	return &reference{byID: map[string]map[string]any{}, keys: map[string]string{}, external: map[string]string{}, deleted: map[string]bool{},
-		deletedAt: map[string]string{}, hooks: map[string]bool{}}
+		deletedAt: map[string]string{}, hooks: map[string]bool{}, saved: map[string]map[string]any{}, recipes: map[string]map[string]any{}}
 }
 
 func (s *reference) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +58,12 @@ func (s *reference) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		s.webhooks(w, r)
 	case r.Method == http.MethodGet && r.URL.Path == "/v1/export":
 		s.export(w)
+	case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/v1/meals/") && strings.HasSuffix(r.URL.Path, "/copy"):
+		s.copyMeal(w, r, strings.TrimSuffix(strings.TrimPrefix(r.URL.Path, "/v1/meals/"), "/copy"))
+	case strings.HasPrefix(r.URL.Path, "/v1/saved-meals"):
+		s.savedMeals(w, r)
+	case strings.HasPrefix(r.URL.Path, "/v1/recipes"):
+		s.recipesRoute(w, r)
 	case strings.HasPrefix(r.URL.Path, "/v1/meals/"):
 		id := strings.TrimPrefix(r.URL.Path, "/v1/meals/")
 		m, ok := s.byID[id]
@@ -112,6 +124,16 @@ func (s *reference) create(w http.ResponseWriter, r *http.Request) {
 		if n, ok := it["nutrients"]; ok && !s.loseNutrients {
 			item["nutrients"] = n
 		}
+		if foodID, _ := it["food_id"].(string); foodID != "" {
+			if rec, ok := s.recipes[foodID]; ok {
+				item["food"] = map[string]any{"id": foodID, "name": rec["name"], "match": "custom"}
+				item["amount"] = it["amount"]
+				item["nutrients"] = rec["nutrients_per_serving"]
+				if s.recipeMiscounts {
+					item["nutrients"] = rec["nutrients_per_100g"]
+				}
+			}
+		}
 		items = append(items, item)
 	}
 	at, _ := time.Parse(time.RFC3339, in["eaten_at"].(string))
@@ -121,6 +143,12 @@ func (s *reference) create(w http.ResponseWriter, r *http.Request) {
 		"updated_at": time.Now().UTC().Format(time.RFC3339Nano),
 		"source":     map[string]any{"kind": "api", "client": "test", "external_id": ext},
 		"items":      items, "estimates": []any{},
+	}
+	// A field the request left out is absent, not null.
+	for _, k := range []string{"title", "notes", "meal_type"} {
+		if m[k] == nil {
+			delete(m, k)
+		}
 	}
 	s.byID[id], s.keys[key] = m, id
 	if _, ok := s.external[ext]; !ok {
@@ -227,7 +255,7 @@ func TestReferenceServerPasses(t *testing.T) {
 		}
 		t.Fatal("the reference server should pass")
 	}
-	// The run cleans up after itself: its one meal is deleted, and its webhook removed.
+	// The run cleans up after itself: its meals are deleted, and its webhook, saved meal and recipe removed.
 	for id := range s.byID {
 		if !s.deleted[id] {
 			t.Errorf("%s left stored", id)
@@ -235,6 +263,9 @@ func TestReferenceServerPasses(t *testing.T) {
 	}
 	if len(s.hooks) > 0 {
 		t.Errorf("webhooks left subscribed: %v", s.hooks)
+	}
+	if len(s.saved) > 0 || len(s.recipes) > 0 {
+		t.Errorf("left behind: %d saved meals, %d recipes", len(s.saved), len(s.recipes))
 	}
 }
 
@@ -249,7 +280,8 @@ func TestEachCheckCatchesItsBehaviour(t *testing.T) {
 		{"no replay", func(s *reference) { s.noReplay = true }, []string{"replay"}},
 		// Without external IDs, a deleted meal's ID can't stay deleted either.
 		{"no external replay", func(s *reference) { s.noExternalReplay = true }, []string{"external-id", "stays-deleted"}},
-		{"nutrients not stored", func(s *reference) { s.loseNutrients = true }, []string{"create"}},
+		// Logging again and saved meals keep the items' nutrients, so they catch it too.
+		{"nutrients not stored", func(s *reference) { s.loseNutrients = true }, []string{"create", "copy", "saved-meal"}},
 		{"notes not changed", func(s *reference) { s.loseNotes = true }, []string{"update"}},
 		{"invalid export", func(s *reference) { s.badExport = true }, []string{"export"}},
 		{"deleted comes back", func(s *reference) { s.revives = true }, []string{"stays-deleted"}},
@@ -302,7 +334,7 @@ func TestCreateFailureSkipsTheRest(t *testing.T) {
 	}
 	for _, name := range Checks[2:] {
 		want := Skip
-		if name == "webhooks" { // needs no meal, so it runs, and fails here like everything else
+		if name == "webhooks" || name == "recipe" { // need no meal, so they run, and fail here like everything else
 			want = Fail
 		}
 		if got[name] != want {

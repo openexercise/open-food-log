@@ -1,15 +1,16 @@
 // Package conformance checks that a server offers the Open Food Log API core and MCP profile.
 //
 // Run checks the REST API by running a fixed script against it as one person: log a meal, read it
-// back equal, replay the Idempotency-Key and the external ID, change it, find it in the change
+// back equal, replay the Idempotency-Key and the external ID, change it, log it again, save it as a
+// saved meal and log that, make a recipe and log a serving of it (v0.2), find it in the change
 // feed, export the log and validate every meal in it, delete it, find its tombstone, check a
 // deleted external ID stays deleted, and subscribe a webhook and remove it. RunMCP checks an MCP
 // server against the tool profile (mcp.go), and CheckVectors checks an implementation of the
 // amount calculation against the published cases (vectors.go). VerifySignature checks a webhook
 // delivery's OFL-Signature.
 //
-// The script writes one meal to the account and deletes it at the end, also when a check fails
-// part way. Use a test account: the token needs meals:read and meals:write, for a person who has
+// The script writes a few meals, a saved meal and a recipe to the account and deletes them at the
+// end, also when a check fails part way. Use a test account: the token needs meals:read and meals:write, for a person who has
 // given whatever consent the server asks before it stores health data.
 //
 // "Conformant" is self-reported: a server that passes may say so. The reference implementation
@@ -39,8 +40,8 @@ import (
 
 // Checks are the script's steps, in the order they run.
 var Checks = []string{
-	"discovery", "create", "read", "replay", "external-id", "update", "change-feed", "export", "delete", "tombstone",
-	"stays-deleted", "webhooks",
+	"discovery", "create", "read", "replay", "external-id", "update", "copy", "saved-meal", "recipe", "change-feed",
+	"export", "delete", "tombstone", "stays-deleted", "webhooks",
 }
 
 // Status is a check's outcome.
@@ -113,8 +114,8 @@ func Run(ctx context.Context, cfg Config) (Report, error) {
 	r.input = r.mealInput()
 	report := Report{BaseURL: base.String()}
 	steps := []func(context.Context) error{
-		r.discovery, r.create, r.read, r.replay, r.externalID, r.update, r.changeFeed, r.export, r.delete, r.tombstone,
-		r.staysDeleted, r.webhooks,
+		r.discovery, r.create, r.read, r.replay, r.externalID, r.update, r.copyMeal, r.savedMeal, r.recipe, r.changeFeed,
+		r.export, r.delete, r.tombstone, r.staysDeleted, r.webhooks,
 	}
 	for i, step := range steps {
 		res := Result{Name: Checks[i], Status: Pass}
@@ -126,13 +127,14 @@ func Run(ctx context.Context, cfg Config) (Report, error) {
 		report.Results = append(report.Results, res)
 	}
 	r.cleanUp(ctx)
+	r.cleanUpAgain(ctx)
 	return report, nil
 }
 
 // blocked says why a check can't run, when one it depends on failed.
 func (r *runner) blocked(check string) string {
 	switch {
-	case check == "discovery" || check == "create" || check == "webhooks":
+	case check == "discovery" || check == "create" || check == "recipe" || check == "webhooks":
 		return ""
 	case r.id == "":
 		return "needs a meal, which create didn't store"
@@ -157,6 +159,11 @@ type runner struct {
 	stored  map[string]any // the meal as create returned it
 	since   time.Time      // the change feed's start: just before the server stored the meal
 	deleted bool
+
+	// What the v0.2 checks made, removed at the end if a check left it.
+	extraMeals []string
+	savedID    string
+	recipeID   string
 }
 
 const (

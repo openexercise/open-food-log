@@ -18,7 +18,8 @@ import (
 
 // MCPChecks are the MCP script's steps, in the order they run.
 var MCPChecks = []string{
-	"discovery", "tools", "log", "replay", "needs-confirmation", "read", "update", "errors", "read-only", "delete", "undo",
+	"discovery", "tools", "log", "replay", "needs-confirmation", "read", "update", "again", "errors", "read-only", "delete",
+	"undo",
 }
 
 // profileKey is the _meta key naming the profile a tool belongs to.
@@ -94,7 +95,8 @@ func RunMCP(ctx context.Context, cfg MCPConfig) (MCPReport, error) {
 	}
 	report := MCPReport{URL: endpoint.String()}
 	steps := []func(context.Context) error{
-		m.discovery, m.tools, m.log, m.replay, m.needsConfirmation, m.read, m.update, m.errors, m.readOnly, m.delete, m.undo,
+		m.discovery, m.tools, m.log, m.replay, m.needsConfirmation, m.read, m.update, m.again, m.errors, m.readOnly, m.delete,
+		m.undo,
 	}
 	for i, step := range steps {
 		res := Result{Name: MCPChecks[i], Status: Pass}
@@ -127,6 +129,8 @@ type mcpRunner struct {
 	unmatched string         // the item ID of the food no catalogue knows
 	undoToken string         // from delete_meal
 	deleted   bool
+	savedID   string // again's saved meal, until it deletes it
+	againID   string // the meal logged from it, until it deletes it
 }
 
 func (m *mcpRunner) blocked(check string) string {
@@ -485,11 +489,73 @@ func (m *mcpRunner) undo(ctx context.Context) error {
 	return nil
 }
 
+// again (v0.2): save_meal keeps the logged meal under a name; log_meal_again logs it as a new meal
+// titled with that name; get_saved_meals lists it; delete_saved_meal removes it.
+func (m *mcpRunner) again(ctx context.Context) error {
+	name := "ofl conformance saved " + m.run
+	out, err := m.call(ctx, m.session, "save_meal", map[string]any{"name": name, "meal_id": m.id})
+	if err != nil {
+		return err
+	}
+	m.savedID, _ = out["id"].(string)
+	if m.savedID == "" {
+		return errors.New("save_meal returned no id")
+	}
+	out, err = m.call(ctx, m.session, "log_meal_again", map[string]any{"saved_meal_id": m.savedID, "idempotency_key": "ofl-conformance-again-" + m.run})
+	if err != nil {
+		return err
+	}
+	meal, err := m.meal(out)
+	if err != nil {
+		return fmt.Errorf("log_meal_again: %w", err)
+	}
+	m.againID = meal.ID
+	if meal.ID == m.id {
+		return errors.New("log_meal_again returned the saved meal's source meal, not a new one")
+	}
+	if meal.Title != name {
+		return fmt.Errorf("the meal logged from a saved meal has title %q, want its name %q", meal.Title, name)
+	}
+	out, err = m.call(ctx, m.session, "get_saved_meals", map[string]any{})
+	if err != nil {
+		return err
+	}
+	list, _ := out["saved_meals"].([]any)
+	found := false
+	for _, sm := range list {
+		if obj, _ := sm.(map[string]any); obj["id"] == m.savedID {
+			found = true
+		}
+	}
+	if !found {
+		return fmt.Errorf("get_saved_meals doesn't list %s", m.savedID)
+	}
+	if _, err := m.call(ctx, m.session, "delete_meal", map[string]any{"meal_id": m.againID}); err != nil {
+		return err
+	}
+	m.againID = ""
+	if _, err := m.call(ctx, m.session, "delete_saved_meal", map[string]any{"saved_meal_id": m.savedID}); err != nil {
+		return err
+	}
+	m.savedID = ""
+	return nil
+}
+
 func (m *mcpRunner) cleanUp(ctx context.Context) {
-	if m.id == "" || m.deleted || m.session == nil {
+	if m.session == nil {
 		return
 	}
-	_, _ = m.call(context.WithoutCancel(ctx), m.session, "delete_meal", map[string]any{"meal_id": m.id})
+	ctx = context.WithoutCancel(ctx)
+	if m.againID != "" {
+		_, _ = m.call(ctx, m.session, "delete_meal", map[string]any{"meal_id": m.againID})
+	}
+	if m.savedID != "" {
+		_, _ = m.call(ctx, m.session, "delete_saved_meal", map[string]any{"saved_meal_id": m.savedID})
+	}
+	if m.id == "" || m.deleted {
+		return
+	}
+	_, _ = m.call(ctx, m.session, "delete_meal", map[string]any{"meal_id": m.id})
 }
 
 // call runs a tool that should succeed and returns its result as JSON, checking the shape the

@@ -262,6 +262,8 @@ type Log struct {
 	Meals        []Meal        `json:"meals"`
 	Foods        []Food        `json:"foods,omitempty"`
 	DeletedMeals []DeletedMeal `json:"deleted_meals,omitempty"`
+	Recipes      []Recipe      `json:"recipes,omitempty"`
+	SavedMeals   []SavedMeal   `json:"saved_meals,omitempty"`
 }
 
 // DeletedMeal is a meal the person deleted, in the export.

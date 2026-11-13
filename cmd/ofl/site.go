@@ -62,7 +62,7 @@ type propertyDoc struct {
 }
 
 // documentOrder puts the schemas in reading order on the site.
-var documentOrder = []string{"meal", "food", "recipe", "targets", "log"}
+var documentOrder = []string{"meal", "food", "recipe", "saved-meal", "targets", "log"}
 
 func buildSite(root, out string) error {
 	v0 := filepath.Join(root, "schema", "v0")
