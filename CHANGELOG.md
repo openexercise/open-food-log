@@ -18,7 +18,7 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   correct it or run the pass.
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
 - **A place for aliases and reviews** that the generator merges in, "still to come"
-  ([CONTRIBUTING.md](CONTRIBUTING.md), The catalogue).
+  ([CONTRIBUTING.md](CONTRIBUTING.md), Contributing to the catalogue).
 - **69 liquids have no density** (`catalogue/REPORT.md`).
 - **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
   allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
@@ -26,6 +26,10 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   ([README.md](README.md)).
 
 ## Unreleased
+
+- **Added:** a developer guide (`docs/developer-guide.md`), walking through every document, the
+  amount calculation, targets, the catalogue and checking a server, and a full contributor guide
+  (`CONTRIBUTING.md`) saying which paths are published from Lifterclub and which are made here.
 
 ## v0.7.0 — 2026-11-13
 
