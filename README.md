@@ -4,6 +4,8 @@ An open format for a personal food log: what someone ate, the food it matched, h
 
 **Status: v0 development draft.** The format may change until v1, and every change is listed in its changelog. v1 freezes when the first application outside Lifterclub writes it in production; after that, changes are additive.
 
+Guides: the [developer guide](docs/developer-guide.md) for reading and writing OFL documents, using the catalogue and checking a server, and [CONTRIBUTING.md](CONTRIBUTING.md) for changing the format, the catalogue or the tools.
+
 | | |
 | --- | --- |
 | `schema/v0/SPEC.md` | The specification |
