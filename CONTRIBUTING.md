@@ -2,6 +2,8 @@
 
 Open an issue or pull request. Run `go run ./cmd/ofl validate` and `go test ./...` first; a change to a schema needs a changelog entry, the examples still valid, and the specification saying the same thing. Until v1 the format is published here from the reference implementation, so a change starts as an issue or proposal in this repository, is agreed here, and then lands in the next published version with a changelog entry.
 
+Every change someone would notice adds an entry under `Unreleased` in [CHANGELOG.md](CHANGELOG.md) in the same pull request, and keeps its `Still to do` list current: add what you leave undone, remove what ships.
+
 ## Proposing a change
 
 1. Say what real meals, foods or apps the change would serve, with an example document.
