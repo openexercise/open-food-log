@@ -8,7 +8,7 @@
     {
       "text": "3 eggs",
       "food": {
-        "id": "ofc:egg-whole-raw",
+        "id": "example:egg-whole-raw",
         "name": "Egg, Whole, Raw",
         "match": "catalogue"
       },
@@ -47,7 +47,7 @@
     {
       "text": "half a cup of oats",
       "food": {
-        "id": "ofc:oats-dry",
+        "id": "example:oats-dry",
         "name": "Oats, Dry",
         "match": "catalogue"
       },
@@ -85,7 +85,7 @@
     {
       "text": "a banana",
       "food": {
-        "id": "ofc:banana-raw",
+        "id": "example:banana-raw",
         "name": "Banana, Raw",
         "match": "catalogue"
       },
@@ -124,7 +124,7 @@
     {
       "text": "a splash of milk",
       "food": {
-        "id": "ofc:milk-whole",
+        "id": "example:milk-whole",
         "name": "Milk, Whole (3.25%)",
         "match": "catalogue"
       },

@@ -106,7 +106,7 @@ egg from [`examples/egg-whole-raw.json`](../examples/egg-whole-raw.json), shorte
 ```json
 {
   "$schema": "https://openfoodlog.org/schema/v0/food.json",
-  "id": "ofc:egg-whole-raw",
+  "id": "example:egg-whole-raw",
   "name": "Egg, Whole, Raw",
   "kind": "generic",
   "aliases": [{ "name": "egg", "kind": "common" }, { "name": "eggs", "kind": "common" }],
@@ -209,14 +209,14 @@ A meal is one eating occasion. This is part of
   "items": [
     {
       "text": "3 eggs",
-      "food": { "id": "ofc:egg-whole-raw", "name": "Egg, Whole, Raw", "match": "catalogue" },
+      "food": { "id": "example:egg-whole-raw", "name": "Egg, Whole, Raw", "match": "catalogue" },
       "amount": { "value": 3, "unit": "portion", "portion": "large" },
       "grams": 150.0,
       "nutrients": { "energy_kcal": 214.5, "protein_g": 18.84 }
     },
     {
       "text": "a splash of milk",
-      "food": { "id": "ofc:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
+      "food": { "id": "example:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
       "amount": { "value": 30, "unit": "ml" },
       "grams": 30.93,
       "nutrients": { "energy_kcal": 18.87 }
@@ -316,13 +316,13 @@ You may assume a density (1 g/ml for a drink) only if you list the item's `grams
 
 ### Worked cases, from `amount-vectors.json`
 
-Whole milk (`ofc:milk-whole` in the vectors): `density_g_per_ml` 1.031, `energy_kcal` 61 per 100 g.
+Whole milk (`example:milk-whole` in the vectors): `density_g_per_ml` 1.031, `energy_kcal` 61 per 100 g.
 
 - **250 ml.** Grams = 250 × 1.031 = 257.75. Energy = 61 × 257.75 / 100 = **157.2275 kcal**.
 - **8 fl oz.** Millilitres = 8 × 29.5735295625 = 236.5882365. Grams = 236.5882365 × 1.031 =
   243.9224718315. Energy = 61 × 2.439224718315 = **148.792707817215 kcal**.
 
-Oats (`ofc:oats-dry` in the vectors): a `cup` portion of 81 g, 379 kcal per 100 g.
+Oats (`example:oats-dry` in the vectors): a `cup` portion of 81 g, 379 kcal per 100 g.
 
 - **Half a cup.** Grams = 0.5 × 81 = 40.5. Energy = 379 × 0.405 = **153.495 kcal**.
 - **A tablespoon.** The food has no `tbsp` portion: **`portion_unknown`**.
@@ -371,7 +371,7 @@ It adds to `estimates` and never replaces them, and two producers' confidences c
 ```json
 {
   "text": "split a 6-egg scramble with Sam",
-  "food": { "id": "ofc:egg-whole-raw", "name": "Egg, Whole, Raw", "match": "catalogue" },
+  "food": { "id": "example:egg-whole-raw", "name": "Egg, Whole, Raw", "match": "catalogue" },
   "amount": { "value": 6, "unit": "portion", "portion": "large" },
   "share": 0.5,
   "grams": 150.0,
@@ -437,9 +437,9 @@ names it by `id` like any food, with `match: "custom"`.
 
 | Line | Grams | `energy_kcal` |
 | --- | --- | --- |
-| 1 cup oats (`ofc:oats-dry`, 379 per 100 g) | 81 | 306.99 |
-| 1 cup whole milk (`ofc:milk-whole`, 61 per 100 g) | 244 | 148.84 |
-| a banana (`ofc:banana-raw`, 89 per 100 g) | 118 | 105.02 |
+| 1 cup oats (`example:oats-dry`, 379 per 100 g) | 81 | 306.99 |
+| 1 cup whole milk (`example:milk-whole`, 61 per 100 g) | 244 | 148.84 |
+| a banana (`example:banana-raw`, 89 per 100 g) | 118 | 105.02 |
 | **Sum** | **443** | **560.85** |
 
 with `servings: 2` and no `yield_g`.
@@ -574,11 +574,11 @@ know before you depend on it:
   ("Quantity not specified"); the SR Legacy and Foundation Foods records have none. Without one, ask
   the person, or pick a portion and list the amount in `estimates`.
 - **An alias may belong to more than one food** ("milk"). Ask which, don't guess.
-- **The examples' `ofc:` IDs are not all catalogue IDs.** The examples and vectors were written
-  before the catalogue was built: `ofc:egg-whole-raw` and `ofc:milk-whole` exist in it, but
-  `ofc:oats-dry` and `ofc:banana-raw` don't (the catalogue's banana is `ofc:bananas-raw`), and the
-  catalogue's milk has different portion IDs and a density of 1.0313. Look IDs up in
-  `foods.jsonl`, not the examples.
+- **The examples' foods aren't catalogue records.** The examples and vectors use the `example:`
+  namespace: fixed, illustrative records, so their numbers never move with a catalogue release.
+  The catalogue's own are `ofc:egg-whole-raw`, `ofc:oats-raw`, `ofc:bananas-raw` and
+  `ofc:milk-whole`, with other portion IDs and figures (its milk's density is 1.0313). Look IDs up
+  in `foods.jsonl`, not the examples.
 
 **Licence.** The catalogue is dedicated to the public domain under
 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), like FoodData Central. Use it for

@@ -10,12 +10,20 @@ and every error code a tool error's text can start with. It is generated from th
 Each tool's `_meta` names its profile under `dev.openfoodlog/profile`, and servers send the same
 mark when they list their tools:
 
-- **`core`**: `log_meal`, `get_meals`, `update_meal` (a meal, or an item, including confirming its
-  food), `delete_meal`, `search_foods` and `undo`, as section 11 of the specification names them.
-  None needs an LLM. A compatible server offers all of them, with these shapes.
+- **`core`**: as section 11 of the specification names them. None needs an LLM. A compatible
+  server offers all of them, with these shapes.
+  - Meals: `log_meal`, `get_meals`, `update_meal` (a meal, or an item, including confirming its
+    food), `delete_meal` and `undo`.
+  - Foods: `search_foods`.
+  - Recipes (v0.2): `save_recipe`, `get_recipes` and `delete_recipe`.
+  - Saved meals (v0.2): `save_meal`, `get_saved_meals`, `delete_saved_meal` and `log_meal_again`
+    (a saved meal, or the same as an earlier meal, counted again).
+  - Targets (v0.1): `get_targets`, `set_targets` and `get_nutrition_summary`.
 - **`lifterclub`**: the reference server's own extensions, which other servers may copy but need
-  not: `log_meal_text` (sentence reading by an LLM) and `lookup_barcode` (packaged foods by barcode
-  at Open Food Facts, live; a product logs by its `gtin:` ID).
+  not: `log_meal_text` (sentence reading by an LLM), `log_meal_photo` (a photo read by an LLM into
+  foods and estimated amounts), `lookup_barcode` (packaged foods by barcode at Open Food Facts,
+  live; a product logs by its `gtin:` ID) and `import_recipe` (a web page's schema.org Recipe read
+  into a draft for `save_recipe`).
 
 `undo` is shared with the Open Workout profile (`dev.openworkout/profile` too): a server that keeps
 both logs restores whatever the token was given for, with one tool.

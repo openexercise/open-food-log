@@ -7,7 +7,7 @@
     {
       "text": "1 cup oats",
       "food": {
-        "id": "ofc:oats-dry",
+        "id": "example:oats-dry",
         "name": "Oats, Dry",
         "match": "catalogue"
       },
@@ -45,7 +45,7 @@
     {
       "text": "1 cup whole milk",
       "food": {
-        "id": "ofc:milk-whole",
+        "id": "example:milk-whole",
         "name": "Milk, Whole (3.25%)",
         "match": "catalogue"
       },
@@ -83,7 +83,7 @@
     {
       "text": "a banana",
       "food": {
-        "id": "ofc:banana-raw",
+        "id": "example:banana-raw",
         "name": "Banana, Raw",
         "match": "catalogue"
       },

@@ -10,7 +10,7 @@
       "lines": [
         {
           "text": "1 cup oats",
-          "food": { "id": "ofc:oats-dry", "name": "Oats, Dry", "match": "catalogue" },
+          "food": { "id": "example:oats-dry", "name": "Oats, Dry", "match": "catalogue" },
           "amount": { "value": 1, "unit": "portion", "portion": "cup" },
           "grams": 81,
           "nutrients": {
@@ -40,7 +40,7 @@
         },
         {
           "text": "1 cup whole milk",
-          "food": { "id": "ofc:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
+          "food": { "id": "example:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
           "amount": { "value": 1, "unit": "portion", "portion": "cup" },
           "grams": 244,
           "nutrients": {
@@ -70,7 +70,7 @@
         },
         {
           "text": "a banana",
-          "food": { "id": "ofc:banana-raw", "name": "Banana, Raw", "match": "catalogue" },
+          "food": { "id": "example:banana-raw", "name": "Banana, Raw", "match": "catalogue" },
           "amount": { "value": 1, "unit": "portion", "portion": "medium" },
           "grams": 118,
           "nutrients": {
@@ -110,7 +110,7 @@
       "lines": [
         {
           "text": "6 eggs",
-          "food": { "id": "ofc:egg-whole-raw", "name": "Egg, Whole, Raw", "match": "catalogue" },
+          "food": { "id": "example:egg-whole-raw", "name": "Egg, Whole, Raw", "match": "catalogue" },
           "amount": { "value": 6, "unit": "portion", "portion": "large" },
           "grams": 300,
           "nutrients": {
@@ -141,7 +141,7 @@
         },
         {
           "text": "60 ml milk",
-          "food": { "id": "ofc:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
+          "food": { "id": "example:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
           "amount": { "value": 60, "unit": "ml" },
           "grams": 61.85999999999999,
           "nutrients": {
@@ -181,7 +181,7 @@
       "lines": [
         {
           "text": "80 g oats",
-          "food": { "id": "ofc:oats-dry", "name": "Oats, Dry", "match": "catalogue" },
+          "food": { "id": "example:oats-dry", "name": "Oats, Dry", "match": "catalogue" },
           "amount": { "value": 80, "unit": "g" },
           "grams": 80,
           "nutrients": {
@@ -211,7 +211,7 @@
         },
         {
           "text": "300 ml milk",
-          "food": { "id": "ofc:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
+          "food": { "id": "example:milk-whole", "name": "Milk, Whole (3.25%)", "match": "catalogue" },
           "amount": { "value": 300, "unit": "ml" },
           "grams": 309.29999999999995,
           "nutrients": {

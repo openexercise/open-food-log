@@ -25,7 +25,7 @@
     {
       "text": "split a 6-egg scramble with Sam",
       "food": {
-        "id": "ofc:egg-whole-raw",
+        "id": "example:egg-whole-raw",
         "name": "Egg, Whole, Raw",
         "match": "catalogue"
       },

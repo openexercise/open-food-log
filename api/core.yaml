@@ -799,7 +799,7 @@ paths:
         "403": {$ref: "#/components/responses/Forbidden"}
         "404": {$ref: "#/components/responses/NotFound"}
         "503":
-          description: "`internal_error`: a barcode couldn't be looked up just now. `Retry-After` says when to try again."
+          description: "`barcode_unavailable`: a barcode couldn't be looked up just now. `Retry-After` says when to try again."
           headers:
             Retry-After: {schema: {type: integer}}
           content:
@@ -878,7 +878,7 @@ components:
         status: {type: integer}
         detail: {type: string}
         code:
-          enum: [invalid_input, consent_required, not_found, undo_unavailable, rate_limited, idempotency_conflict, unauthenticated, internal_error]
+          enum: [invalid_input, consent_required, not_found, undo_unavailable, rate_limited, idempotency_conflict, unauthenticated, internal_error, barcode_unavailable]
         field: {type: string, description: For invalid_input.}
     BearerError:
       type: object
