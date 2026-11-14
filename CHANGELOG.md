@@ -27,6 +27,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+- **Fixed:** the README's conformance paragraph names the v0.2 checks (copy, saved meals, recipes,
+  `log_meal_again`) and the vectors' `share`; `catalogue/README.md` no longer says the aliases come
+  from a model (the alias pass hasn't run; all 1,680 come from names) or that every food has a
+  default portion (survey foods do, 5,341 of 5,410; SR Legacy and Foundation foods don't), and
+  drops its link to `sources/aliases.jsonl`, which doesn't exist yet.
 - **Added:** the developer guide is on the site at [openfoodlog.org/guide](https://openfoodlog.org/guide/),
   linked from the navigation and the home page. `ofl site` rewrites the relative links in every
   Markdown page it renders (the guide, the specification, the changelog) to the site's own pages
