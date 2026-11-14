@@ -30,17 +30,17 @@ The rules, so anyone can check a record against its source (`identifiers.fdc_id`
 - **Allergens, diet flags, ingredients and glycemic index or load** are left out: FoodData Central's generic foods don't state them, and the catalogue has no other CC0 source that does. Working them out from names would be guessing.
 - **Foods with no energy value** in any of those forms are left out, rather than given one.
 - **Branded records** in SR Legacy (named in capitals: `KRAFT`, `SUBWAY`) are left out. Capitalised words used for generic foods (`USDA`, `BBQ`, `NFS`, `NFSMI`, `RTE`, `UHT`) don't count.
-- **Portions** keep FoodData Central's weights and wording. A survey food's "Quantity not specified" is its default portion: the amount to assume when someone names the food without one. The RACC is "1 serving (RACC)".
+- **Portions** keep FoodData Central's weights and wording. A survey food's "Quantity not specified" is its default portion (`is_default`): the amount to assume when someone names the food without one. 5,341 of the 5,410 survey foods have one; SR Legacy and Foundation foods have none, so an app asks for an amount or uses a serving it chooses. The RACC is "1 serving (RACC)".
 - **Densities** (`density_g_per_ml`, so an amount in ml, l or fl oz can be weighed) are given to liquids only: drinks, milks and plant milks, juices, soups and broths, oils, vinegars, syrups and honey, soy and fish sauce. A food is a liquid by FoodData Central's own category (a survey food's WWEIA category, such as "Milk, whole" or "Soft drinks"; an SR Legacy or Foundation food's category, such as "Beverages", narrowed by its name where the category also holds solids), and not when its name says it's a powder or mix before it's made up. The value is FoodData Central's measured specific gravity where there is one, else the weight of the food's largest volume portion over that volume: "1 cup" of whole milk is 244 g in 236.588 ml (a US cup), so 1.0313 g/ml, rounded to four places. "1 fl oz (with ice)" doesn't count. A value outside 0.85 to 1.45 g/ml, beyond any liquid food, means the portion isn't the liquid alone (a shake's foam, a can whose label and weight disagree), so it's left out rather than corrected. Each density's portion is named in the record's `provenance.sources`; [REPORT.md](REPORT.md) lists the liquids without one, and why.
 - **IDs** are the name in lower case with runs of other characters made `-`.
 - **Aliases** say what people call a food, all of kind `common`:
   - From the name's own shape, with no model: a two-part name with a plain modifier is also that modifier first ("Apple, raw" is "raw apple"), and "X, NFS" (not further specified) is "x".
-  - Suggested by Gemini (`cmd/aliases`), which is sent the names only and asked for names only. Its answers are kept in [`sources/aliases.jsonl`](../sources/aliases.jsonl) with the model and date, so building never calls it. Each alias it gave is listed in the record's `provenance.generated`, and the model is named in `provenance.sources`. An alias is kept only if it's short, lowercase, and has no digit the food's name lacks.
+  - Suggested by Gemini (`cmd/aliases`), which is sent the names only and asked for names only. It's written but hasn't been run yet, so every one of today's 1,680 aliases comes from the name's shape. When it runs, its answers are kept in `sources/aliases.jsonl` with the model and date, so building never calls it; each alias it gives is listed in the record's `provenance.generated`, and the model is named in `provenance.sources`. An alias is kept only if it's short, lowercase, and has no digit the food's name lacks.
   - An alias may belong to more than one food ("milk"). A matcher should then ask which one, not guess.
 
 ## Trust it accordingly
 
-The numbers are USDA's, but no record has been checked by a person, and most aliases come from a model. Reviewing records and aliases is the main way to contribute.
+The numbers are USDA's, but no record has been checked by a person, and the aliases are worked out from names by rule, so they're few and plain. Reviewing records and aliases is the main way to contribute.
 
 ## Ask the model again
 
@@ -48,7 +48,7 @@ The numbers are USDA's, but no record has been checked by a person, and most ali
 OFL_GCP_PROJECT=<project> go run ./cmd/aliases
 ```
 
-This asks only about foods `sources/aliases.jsonl` doesn't hold yet, 40 at a time, and appends the answers. Delete a food's line to ask about it again.
+This asks only about foods `sources/aliases.jsonl` doesn't hold yet (the file is made on the first run), 40 at a time, and appends the answers. Delete a food's line to ask about it again.
 
 ## Rebuild it
 

@@ -49,15 +49,16 @@ OFL_TOKEN=… OFL_READ_TOKEN=… go run ./cmd/ofl conformance a2a https://agent.
 ```
 
 The REST script logs a meal, reads it back, replays its `Idempotency-Key` and `external_id`,
-changes it, finds it in the change feed, validates the export, deletes it, finds its tombstone,
+changes it, copies it, keeps it as a saved meal and logs that, makes, uses, replaces and deletes a
+recipe, finds the meal in the change feed, validates the export, deletes it, finds its tombstone,
 checks its `external_id` stays deleted, and subscribes and removes a webhook. The MCP script checks
-the core tools' input schemas against `mcp/tools.json`, then logs, reads, changes, deletes and
-undoes through them. The A2A script reads the agent card (it must name every core skill and OAuth
+the core tools' input schemas against `mcp/tools.json`, then logs, reads and changes a meal, saves it and logs it again (`save_meal`, `log_meal_again`),
+checks refusals and a read-only token, deletes it and undoes through them. The A2A script reads the agent card (it must name every core skill and OAuth
 with the meals scopes), then over A2A 1.0 JSON-RPC logs an OFL meal holding a food no catalogue
 knows, replays the message, checks the task asks for input and stays waiting after a wrong answer,
 cancels it, reads it back with `GetTask`, finds the meal with `get-meals`, asks `food-lookup`,
 `nutrition-summary` and `targets`, and checks refusals and a read-only token. `ofl vectors -- <command>` runs every amount vector through an implementation:
-the command gets `{"name", "food", "amount"}` on stdin and prints `{"grams", "nutrients"}` or
+the command gets `{"name", "food", "amount"}` on stdin, with `share` when the vector has one, and prints `{"grams", "nutrients"}` or
 `{"error"}`. A server's own Go tests can call `conformance.Run`, `RunMCP`, `RunA2A` and `CheckVectors`
 directly, as Lifterclub's do. "Conformant" is self-reported.
 
