@@ -27,6 +27,14 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+- **Fixed:** the specification, MCP profile README, examples and vectors caught up with v0.2
+  (published from Lifterclub): section 2 lists `saved-meal.json`, section 3 the `saved:` and
+  `example:` namespaces, section 11 and `mcp/README.md` every core and extension tool, and saved
+  meals are no longer "Not in v0". The examples' and vectors' foods moved from `ofc:` IDs the
+  catalogue doesn't have to the `example:` namespace (numbers unchanged), `examples/log.json` is
+  v0.2 with saved and deleted meals, and the developer guide quotes the new IDs.
+- **Changed:** the API core answers a barcode that can't be looked up just now with
+  `barcode_unavailable` (503, `Retry-After`), where it said `internal_error`.
 - **Added:** a developer guide (`docs/developer-guide.md`), walking through every document, the
   amount calculation, targets, the catalogue and checking a server, and a full contributor guide
   (`CONTRIBUTING.md`) saying which paths are published from Lifterclub and which are made here.

@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+- Fixed: the specification still read as v0.1 in places. Its status is v0.2; section 2 lists
+  `saved-meal.json`, section 3 the `saved:` namespace (and `example:`, for documentation, which
+  never names a real record), section 11 every core tool (recipes, saved meals, `log_meal_again`,
+  targets and the nutrition summary) and the reference server's extensions, and section 14 no
+  longer calls saved meals out of scope. The MCP profile README lists the same tools, with
+  `log_meal_photo` and `import_recipe`.
+- Fixed: the examples and vectors named `ofc:` foods the Open Food Catalogue doesn't have
+  (`ofc:oats-dry`, `ofc:banana-raw`) or has with other names, portions and densities
+  (`ofc:milk-whole`, `ofc:egg-whole-raw`). They're now `example:oats-dry`, `example:banana-raw`,
+  `example:milk-whole` and `example:egg-whole-raw`, illustrative and fixed; every number is
+  unchanged. Water in section 7 and the `water_g` note name a real catalogue food, `ofc:water-tap`.
+- Fixed: `examples/log.json` is v0.2, holds `saved_meals` and `deleted_meals`, and was exported
+  after the meals it holds.
+- The README no longer links a research note that isn't published.
+
+- The API core answers a barcode that can't be looked up just now with `barcode_unavailable` (503,
+  `Retry-After`), the code the MCP profile and the A2A agent already used, where it said
+  `internal_error`. Every surface of the reference server now takes its codes from one mapping.
+
 ## v0.2 draft, 2026-11-13
 
 Saved meals, and the API core and MCP profile for recipes, saved meals and logging a meal again.
@@ -17,8 +36,8 @@ Only additions: every v0.1 document stays valid.
 - The API core holds Open Food Log alone: the exercise candidates on a problem, the workout and
   sentence-parser error codes and their warnings, and the reference server's limits and extras in
   the prose are gone. A problem's `code` is one of `invalid_input`, `consent_required`,
-  `not_found`, `undo_unavailable`, `rate_limited`, `idempotency_conflict`, `unauthenticated` and
-  `internal_error`; a server may send more, which a client treats as the closest of these.
+  `not_found`, `undo_unavailable`, `rate_limited`, `idempotency_conflict`, `unauthenticated`,
+  `internal_error` and `barcode_unavailable`; a server may send more, which a client treats as the closest of these.
 - The API core (`api/core.yaml`): the REST routes any Open Food Log server serves over a person's
   food log (foods, meals and their change feed, targets and the nutrition summary, the export and webhooks, whose meal events are
   signed in `OFL-Signature`), generated from the reference server. A meal's `external_id` replays

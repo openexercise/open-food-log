@@ -1,10 +1,10 @@
 {
   "title": "Open Food Log v0: amount vectors",
-  "description": "Worked cases every implementation should agree on: an amount on a food becomes grams (or millilitres or servings), then the item's nutrients (section 6 of the spec). grams and nutrients are exact; an implementation that rounds what it stores (to two decimal places, say) agrees when it is within 0.01. A few nutrients are listed per case; the rule is the same for all. grams null means the amount can't be weighed, which isn't an error when the food's values are per 100 ml or per serving. share is the item's share. An error is the code an implementation reports instead of guessing. The foods' IDs in the example: namespace are illustrative, not real products.",
+  "description": "Worked cases every implementation should agree on: an amount on a food becomes grams (or millilitres or servings), then the item's nutrients (section 6 of the spec). grams and nutrients are exact; an implementation that rounds what it stores (to two decimal places, say) agrees when it is within 0.01. A few nutrients are listed per case; the rule is the same for all. grams null means the amount can't be weighed, which isn't an error when the food's values are per 100 ml or per serving. share is the item's share. An error is the code an implementation reports instead of guessing. Every food here is in the example: namespace: illustrative records, fixed so the cases never move with a catalogue release. The generic ones were made from FoodData Central records but are not the Open Food Catalogue's, whose IDs, portions and figures differ; the branded ones are not real products.",
   "foods": [
     {
       "$schema": "https://openfoodlog.org/schema/v0/food.json",
-      "id": "ofc:egg-whole-raw",
+      "id": "example:egg-whole-raw",
       "name": "Egg, Whole, Raw",
       "kind": "generic",
       "aliases": [
@@ -89,7 +89,7 @@
     },
     {
       "$schema": "https://openfoodlog.org/schema/v0/food.json",
-      "id": "ofc:oats-dry",
+      "id": "example:oats-dry",
       "name": "Oats, Dry",
       "kind": "generic",
       "aliases": [
@@ -156,7 +156,7 @@
     },
     {
       "$schema": "https://openfoodlog.org/schema/v0/food.json",
-      "id": "ofc:banana-raw",
+      "id": "example:banana-raw",
       "name": "Banana, Raw",
       "kind": "generic",
       "aliases": [
@@ -241,7 +241,7 @@
     },
     {
       "$schema": "https://openfoodlog.org/schema/v0/food.json",
-      "id": "ofc:milk-whole",
+      "id": "example:milk-whole",
       "name": "Milk, Whole (3.25%)",
       "kind": "generic",
       "aliases": [
@@ -383,7 +383,7 @@
   "cases": [
     {
       "name": "grams as given",
-      "food": "ofc:egg-whole-raw",
+      "food": "example:egg-whole-raw",
       "amount": {
         "value": 150,
         "unit": "g"
@@ -400,7 +400,7 @@
     },
     {
       "name": "a named portion",
-      "food": "ofc:egg-whole-raw",
+      "food": "example:egg-whole-raw",
       "amount": {
         "value": 3,
         "unit": "portion",
@@ -418,7 +418,7 @@
     },
     {
       "name": "a fraction of a portion",
-      "food": "ofc:oats-dry",
+      "food": "example:oats-dry",
       "amount": {
         "value": 0.5,
         "unit": "portion",
@@ -437,7 +437,7 @@
     {
       "name": "ounces",
       "note": "1 oz = 28.349523125 g exactly.",
-      "food": "ofc:oats-dry",
+      "food": "example:oats-dry",
       "amount": {
         "value": 2,
         "unit": "oz"
@@ -455,7 +455,7 @@
     {
       "name": "pounds",
       "note": "1 lb = 453.59237 g exactly.",
-      "food": "ofc:banana-raw",
+      "food": "example:banana-raw",
       "amount": {
         "value": 0.25,
         "unit": "lb"
@@ -472,7 +472,7 @@
     },
     {
       "name": "kilograms",
-      "food": "ofc:banana-raw",
+      "food": "example:banana-raw",
       "amount": {
         "value": 0.2,
         "unit": "kg"
@@ -489,7 +489,7 @@
     },
     {
       "name": "millilitres through density",
-      "food": "ofc:milk-whole",
+      "food": "example:milk-whole",
       "amount": {
         "value": 250,
         "unit": "ml"
@@ -506,7 +506,7 @@
     },
     {
       "name": "litres through density",
-      "food": "ofc:milk-whole",
+      "food": "example:milk-whole",
       "amount": {
         "value": 0.5,
         "unit": "l"
@@ -524,7 +524,7 @@
     {
       "name": "US fluid ounces through density",
       "note": "1 US fl oz = 29.5735295625 ml exactly.",
-      "food": "ofc:milk-whole",
+      "food": "example:milk-whole",
       "amount": {
         "value": 8,
         "unit": "fl_oz"
@@ -542,7 +542,7 @@
     {
       "name": "a volume with no density",
       "note": "Eggs here have no density, so a volume can't be weighed. Don't assume 1 g/ml.",
-      "food": "ofc:egg-whole-raw",
+      "food": "example:egg-whole-raw",
       "amount": {
         "value": 100,
         "unit": "ml"
@@ -553,7 +553,7 @@
     },
     {
       "name": "a portion the food doesn't have",
-      "food": "ofc:oats-dry",
+      "food": "example:oats-dry",
       "amount": {
         "value": 1,
         "unit": "portion",
@@ -640,7 +640,7 @@
     },
     {
       "name": "a serving the food doesn't declare",
-      "food": "ofc:oats-dry",
+      "food": "example:oats-dry",
       "amount": {
         "value": 1,
         "unit": "serving"
@@ -652,7 +652,7 @@
     {
       "name": "a share of a dish",
       "note": "Half of six eggs: grams and nutrients are the person's part.",
-      "food": "ofc:egg-whole-raw",
+      "food": "example:egg-whole-raw",
       "amount": {
         "value": 6,
         "unit": "portion",

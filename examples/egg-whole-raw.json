@@ -1,6 +1,6 @@
 {
   "$schema": "https://openfoodlog.org/schema/v0/food.json",
-  "id": "ofc:egg-whole-raw",
+  "id": "example:egg-whole-raw",
   "name": "Egg, Whole, Raw",
   "kind": "generic",
   "aliases": [

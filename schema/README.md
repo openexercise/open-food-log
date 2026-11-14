@@ -1,8 +1,8 @@
 # Open Food Log
 
 A draft open standard for a personal food log, the nutrition sister of the Open Workout Schema
-(`docs/ows`) and the Open Exercise Schema. Why it exists and what else is out there:
-[`docs/research/nutrition.md`](../research/nutrition.md).
+(`docs/ows`) and the Open Exercise Schema. Why it exists and what else is out there: section 1 of
+[the specification](v0/SPEC.md#1-why-this-exists).
 
 **Status: v0.2 draft, 2026-11-13** (v0.1 2026-11-12, v0 2026-11-09). Lifterclub implements v0 and is the first
 implementation (`docs/nutrition.md`). Published to
@@ -21,12 +21,16 @@ directory stays the source of truth until v1.
 
 `go test ./internal/ofl` checks that the schemas compile, every example validates and adds up, every
 nutrient key used anywhere is in the vocabulary, the vocabulary matches the schema, the schemas
-refuse what they should, and the vectors agree with a reference calculation.
+refuse what they should, the vectors agree with a reference calculation, this README and section 11
+of the specification name every tool in `mcp/tools.json`, and no example uses an `ofc:` ID.
 
-The generic examples and the vectors' `ofc:` foods were generated from FoodData Central records
-171287 (egg), 173904 (oats), 173944 (banana) and 171265 (whole milk), fetched 2026-11-09. The milk's
-density is its cup portion (244 g) over a US cup (236.59 ml). Foods in the `example:` namespace (a
-can of cola, a granola bar, a vitamin D softgel) are illustrative labels, not real products. The
+Every food in the examples and the vectors is in the `example:` namespace: illustrative records,
+fixed so the vectors never move with a catalogue release. The generic ones (egg, oats, banana, whole
+milk) were generated from FoodData Central records 171287, 173904, 173944 and 171265, fetched
+2026-11-09, but they aren't the Open Food Catalogue's records, whose IDs, names, portions and figures
+differ (`ofc:egg-whole-raw`, `ofc:oats-raw`, `ofc:bananas-raw`, `ofc:milk-whole`). The milk's density
+is its cup portion (244 g) over a US cup (236.59 ml). The others (a can of cola, a granola bar, a
+vitamin D softgel) are illustrative labels, not real products. The
 nutrient mappings were checked on 2026-11-12 against FoodData Central's `nutrient.csv`, the FAO
 INFOODS tagname lists (with their 2008 and 2010 additions and the Guidelines for Food Matching
 v1.2), and the Health Connect and HealthKit references.

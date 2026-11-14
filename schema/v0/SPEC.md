@@ -1,6 +1,6 @@
 # Open Food Log v0
 
-**Status: v0.1 draft, 2026-11-12** (first draft 2026-11-09). Anything may change until v1; section 13 says how. The key words MUST, SHOULD and MAY are
+**Status: v0.2 draft, 2026-11-13** (v0.1 2026-11-12, first draft 2026-11-09). Anything may change until v1; section 13 says how. The key words MUST, SHOULD and MAY are
 used as in RFC 2119. Its home is [openfoodlog.org](https://openfoodlog.org).
 
 The Open Food Log (OFL) describes what a person ate so any app or assistant can record it, read it
@@ -31,8 +31,9 @@ things:
 | Food | [`food.json`](food.json) | One food: nutrients per 100 g (or 100 ml, or a serving), portions, label, attributes, identifiers, provenance |
 | Meal | [`meal.json`](meal.json) | One meal or snack: items eaten, with amounts and nutrients |
 | Recipe | [`recipe.json`](recipe.json) | A food made of other foods, with its yield and servings |
+| Saved meal | [`saved-meal.json`](saved-meal.json) | A meal a person keeps to log again (v0.2) |
 | Targets | [`targets.json`](targets.json) | The nutrition targets a person keeps |
-| Log | [`log.json`](log.json) | A whole log as one file: meals, the person's own foods and recipes, targets, deleted meals |
+| Log | [`log.json`](log.json) | A whole log as one file: meals, the person's own foods, recipes and saved meals, targets, deleted meals |
 | Nutrients | [`nutrients.json`](nutrients.json) | The nutrient keys and their mappings to other systems |
 | Vectors | [`amount-vectors.json`](amount-vectors.json), [`recipe-vectors.json`](recipe-vectors.json), [`target-vectors.json`](target-vectors.json) | Worked cases every implementation must agree on |
 
@@ -42,7 +43,8 @@ don't understand; producers MAY add `x-<vendor>-<name>` members to a food, a mea
 recipe or a target, and `x-<vendor>-<name>_<unit>` nutrient keys. Examples: [a food](../../examples/egg-whole-raw.json),
 [a packaged food with its label](../../examples/granola-bar.json), [a supplement](../../examples/vitamin-d3-softgel.json),
 [a breakfast](../../examples/breakfast.json), [a dinner](../../examples/dinner.json), [a recipe](../../examples/overnight-oats.json),
-[targets](../../examples/targets.json) and [a log](../../examples/log.json).
+[a saved meal](../../examples/usual-breakfast.json), [targets](../../examples/targets.json) and [a log](../../examples/log.json).
+Their foods are in the `example:` namespace: illustrative records, not the Open Food Catalogue's.
 
 ## 3. Identity
 
@@ -53,10 +55,12 @@ id = namespace ":" slug
 - `ofc:` is reserved for the Open Food Catalogue.
 - `gtin:` names a packaged product by its barcode, as 14 digits with shorter codes zero-padded on the
   left (`gtin:00012345678905`). Any system can resolve it, in any database, without a shared copy.
-- `usr:` is one person's own food, and `recipe:` one person's recipe, each meaningful only inside the
-  system that made it. An export MUST include the `usr:` foods and `recipe:` recipes its meals name,
-  in `foods` and `recipes`.
-- Anyone else uses their own namespace (`acme:protein-bar`).
+- `usr:` is one person's own food, `recipe:` one person's recipe and `saved:` one person's saved meal
+  (v0.2), each meaningful only inside the system that made it. An export MUST include the `usr:`
+  foods and `recipe:` recipes its meals and saved meals name, in `foods` and `recipes`, and the
+  person's saved meals in `saved_meals`.
+- Anyone else uses their own namespace (`acme:protein-bar`). `example:` is for documentation and
+  test cases, like this specification's: it never names a real record.
 - From v1, a published `ofc:` ID never changes meaning and is never reused. `previous_ids`,
   `status` and `replaced_by` work as in the Open Exercise Schema: a consumer holding an ID it can't
   find MUST look in `previous_ids`.
@@ -197,7 +201,7 @@ supplement); that isn't an error.
 - `source` is the same as an Open Workout Schema workout's: `kind` (`app`, `mcp`, `api`, `import`),
   `client`, `external_id`. `updated_at` moves on every change to the stored meal, for mirroring.
 - **Hydration** is `water_g` summed over everything eaten and drunk. Plain water is an item like any
-  other (`ofc:water`); there is no separate water log.
+  other (in the Open Food Catalogue, `ofc:water-tap`, say); there is no separate water log.
 
 ## 8. Recipes and saved meals
 
@@ -272,9 +276,21 @@ don't know.
 ## 11. Assistants
 
 The MCP tool profile ([`mcp/tools.json`](../../mcp/tools.json)), like [Open Workout's](https://openworkout.dev/mcp/),
-is generated from the first implementation: a neutral core of `log_meal`, `get_meals`,
-`update_meal`, `delete_meal`, `search_foods` and `undo`, each tool marked in its `_meta` under
-`dev.openfoodlog/profile`. The rules it holds an assistant to are part of this specification:
+is generated from the first implementation, each tool marked in its `_meta` under
+`dev.openfoodlog/profile`. Its neutral core is:
+
+- meals: `log_meal`, `get_meals`, `update_meal`, `delete_meal` and `undo`;
+- foods: `search_foods`;
+- recipes (v0.2): `save_recipe`, `get_recipes` and `delete_recipe`;
+- saved meals (v0.2): `save_meal`, `get_saved_meals`, `delete_saved_meal` and `log_meal_again`
+  (a saved meal, or the same as an earlier meal, counted again as section 8 says);
+- targets: `get_targets`, `set_targets` and `get_nutrition_summary`.
+
+A server MAY offer more under its own profile name; the reference server's extensions read a
+sentence (`log_meal_text`) or a photo (`log_meal_photo`), look a barcode up (`lookup_barcode`) and
+read a recipe from a web page (`import_recipe`).
+
+The rules the profile holds an assistant to are part of this specification:
 
 - Never invent a number. Log what the person said; where a size or amount is assumed, use the food's
   default portion and list it in `estimates`.
@@ -335,6 +351,7 @@ both by volume; `water_g` in foods maps to neither.
 - Body metrics (weight, body fat), glucose readings and fasting windows. They describe the person,
   not what they ate; use Health Connect, HealthKit or FHIR (`Observation`) for them, and link by
   time.
-- Meal plans (what someone means to eat, as opposed to what they ate) and saved meals.
+- Meal plans (what someone means to eat, as opposed to what they ate). Saved meals (section 8) are
+  meals to log again, not a plan.
 - Photos themselves: OFL records what was read from one, marked as an estimate, and at most a
   `media` reference to a copy the producer keeps.
