@@ -7,13 +7,36 @@ import (
 	"fmt"
 	"html/template"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
 
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/text"
+	"github.com/yuin/goldmark/util"
 )
+
+// repoURL is where a link to a file the site doesn't serve goes.
+const repoURL = "https://github.com/openexercise/open-food-log"
+
+// markdownPages are the repository's Markdown files the site renders, by their path in the
+// repository, and where each is served. A link between them, or to a file the site copies, stays
+// on the site; any other relative link goes to the file on GitHub.
+var markdownPages = map[string]string{
+	"schema/v0/SPEC.md":       "/schema/v0/",
+	"schema/CHANGELOG.md":     "/changelog/",
+	"docs/developer-guide.md": "/guide/",
+}
+
+// sitePaths are other repository paths with a page of their own: the schemas folder is the Schema
+// page.
+var sitePaths = map[string]string{
+	"schema/v0": "/schema/",
+}
 
 //go:embed templates/*.html templates/style.css
 var templateFS embed.FS
@@ -104,32 +127,8 @@ func buildSite(root, out string) error {
 		return writeFile(filepath.Join(out, path, "index.html"), b.Bytes())
 	}
 
-	spec, err := renderMarkdown(filepath.Join(v0, "SPEC.md"))
-	if err != nil {
-		return err
-	}
-	changelog, err := renderMarkdown(filepath.Join(root, "schema", "CHANGELOG.md"))
-	if err != nil {
-		return err
-	}
-	pages := []struct {
-		path, template string
-		p              page
-	}{
-		{"", "home.html", page{Title: "Open Food Log", Description: "An open format for a food log: what someone ate, the food it matched, how much, and which numbers were guessed.", Schemas: schemas}},
-		// The specification sits beside the schemas, so its links to them work as written.
-		{"schema/v0", "doc.html", page{Title: "Specification", Description: "The Open Food Log specification, version 0 draft.", HTML: spec}},
-		{"schema", "schema.html", page{Title: "Schema", Description: "The Open Food Log schemas, field by field: a meal, a food, a recipe, targets and a log.", Schemas: schemas}},
-		{"nutrients", "nutrients.html", page{Title: "Nutrients", Description: "The nutrient keys, their units, and the matching INFOODS tagnames, FoodData Central numbers, and Health Connect and HealthKit fields.", Nutrients: vocab.Nutrients}},
-		{"changelog", "doc.html", page{Title: "Changelog", Description: "What changed in the Open Food Log.", HTML: changelog}},
-	}
-	for _, pg := range pages {
-		if err := render(pg.path, pg.template, pg.p); err != nil {
-			return err
-		}
-	}
-
 	// The schema files at their $id paths, the vocabulary, the vectors, the examples, the stylesheet.
+	// Each is served at its path in the repository.
 	copies := map[string]string{}
 	files, _ := filepath.Glob(filepath.Join(v0, "*.json"))
 	for _, f := range files {
@@ -140,6 +139,36 @@ func buildSite(root, out string) error {
 	for _, e := range examples {
 		copies["examples/"+filepath.Base(e)] = e
 	}
+	links := linker{root: root, copies: copies}
+	spec, err := links.render("schema/v0/SPEC.md")
+	if err != nil {
+		return err
+	}
+	changelog, err := links.render("schema/CHANGELOG.md")
+	if err != nil {
+		return err
+	}
+	guide, err := links.render("docs/developer-guide.md")
+	if err != nil {
+		return err
+	}
+	pages := []struct {
+		path, template string
+		p              page
+	}{
+		{"", "home.html", page{Title: "Open Food Log", Description: "An open format for a food log: what someone ate, the food it matched, how much, and which numbers were guessed.", Schemas: schemas}},
+		{"schema/v0", "doc.html", page{Title: "Specification", Description: "The Open Food Log specification, version 0 draft.", HTML: spec}},
+		{"guide", "doc.html", page{Title: "Developer guide", Description: "How to read and write Open Food Log documents, use the Open Food Catalogue, and build or check a server that keeps a food log.", HTML: guide}},
+		{"schema", "schema.html", page{Title: "Schema", Description: "The Open Food Log schemas, field by field: a meal, a food, a recipe, targets and a log.", Schemas: schemas}},
+		{"nutrients", "nutrients.html", page{Title: "Nutrients", Description: "The nutrient keys, their units, and the matching INFOODS tagnames, FoodData Central numbers, and Health Connect and HealthKit fields.", Nutrients: vocab.Nutrients}},
+		{"changelog", "doc.html", page{Title: "Changelog", Description: "What changed in the Open Food Log.", HTML: changelog}},
+	}
+	for _, pg := range pages {
+		if err := render(pg.path, pg.template, pg.p); err != nil {
+			return err
+		}
+	}
+
 	for dest, src := range copies {
 		data, err := os.ReadFile(src)
 		if err != nil {
@@ -255,16 +284,93 @@ func str(v any) string {
 	return s
 }
 
-func renderMarkdown(path string) (template.HTML, error) {
-	src, err := os.ReadFile(path)
+// linker renders the repository's Markdown files for the site, rewriting their relative links.
+type linker struct {
+	root   string
+	copies map[string]string // site path (the same as the repository path) → source file
+}
+
+// render renders one Markdown file, named by its path in the repository. Headings get IDs as
+// GitHub gives them, so a file's links to its own sections work on both.
+func (l linker) render(file string) (template.HTML, error) {
+	src, err := os.ReadFile(filepath.Join(l.root, filepath.FromSlash(file)))
 	if err != nil {
 		return "", err
 	}
+	t := &linkRewriter{l: l, from: file}
+	md := goldmark.New(
+		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+			parser.WithASTTransformers(util.Prioritized(t, 100)),
+		),
+	)
 	var b bytes.Buffer
-	if err := goldmark.New(goldmark.WithExtensions(extension.GFM)).Convert(src, &b); err != nil {
-		return "", fmt.Errorf("render %s: %w", path, err)
+	if err := md.Convert(src, &b); err != nil {
+		return "", fmt.Errorf("render %s: %w", file, err)
+	}
+	if t.err != nil {
+		return "", t.err
 	}
 	return template.HTML(b.String()), nil // our own file in this repository
+}
+
+// resolve maps a link in the Markdown file from to where it goes on the site: a page or copied
+// file of the site's, else the file on GitHub. Absolute URLs and in-page anchors stay as written;
+// a link to a file the repository lacks is an error.
+func (l linker) resolve(from, dest string) (string, error) {
+	if dest == "" || strings.HasPrefix(dest, "#") || strings.HasPrefix(dest, "/") || strings.Contains(dest, ":") {
+		return dest, nil
+	}
+	target, fragment, _ := strings.Cut(dest, "#")
+	if fragment != "" {
+		fragment = "#" + fragment
+	}
+	p := path.Clean(path.Join(path.Dir(from), target))
+	if strings.HasPrefix(p, "../") || p == ".." {
+		return "", fmt.Errorf("%s: link %q leaves the repository", from, dest)
+	}
+	if u, ok := markdownPages[p]; ok {
+		return u + fragment, nil
+	}
+	if u, ok := sitePaths[p]; ok {
+		return u + fragment, nil
+	}
+	if _, ok := l.copies[p]; ok {
+		return "/" + p + fragment, nil
+	}
+	info, err := os.Stat(filepath.Join(l.root, filepath.FromSlash(p)))
+	if err != nil {
+		return "", fmt.Errorf("%s: link %q: %w", from, dest, err)
+	}
+	kind := "blob"
+	if info.IsDir() {
+		kind = "tree"
+	}
+	return repoURL + "/" + kind + "/main/" + p + fragment, nil
+}
+
+// linkRewriter is the goldmark transformer that applies resolve to every link.
+type linkRewriter struct {
+	l    linker
+	from string
+	err  error
+}
+
+func (t *linkRewriter) Transform(doc *ast.Document, _ text.Reader, _ parser.Context) {
+	_ = ast.Walk(doc, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
+		link, ok := n.(*ast.Link)
+		if !entering || !ok {
+			return ast.WalkContinue, nil
+		}
+		dest, err := t.l.resolve(t.from, string(link.Destination))
+		if err != nil {
+			t.err = err
+			return ast.WalkStop, nil
+		}
+		link.Destination = []byte(dest)
+		return ast.WalkContinue, nil
+	})
 }
 
 func writeFile(path string, data []byte) error {

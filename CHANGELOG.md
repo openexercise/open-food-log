@@ -27,6 +27,13 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+- **Added:** the developer guide is on the site at [openfoodlog.org/guide](https://openfoodlog.org/guide/),
+  linked from the navigation and the home page. `ofl site` rewrites the relative links in every
+  Markdown page it renders (the guide, the specification, the changelog) to the site's own pages
+  and files, else to the file on GitHub, gives headings GitHub's IDs so section links work, and
+  fails on a link to a file the repository lacks; `TestSiteLinks` checks every built page's links.
+  This also fixes the specification's links to `api/core.yaml`, `mcp/tools.json` and
+  `schema/README.md`, which went nowhere on the site.
 - **Fixed:** the specification, MCP profile README, examples and vectors caught up with v0.2
   (published from Lifterclub): section 2 lists `saved-meal.json`, section 3 the `saved:` and
   `example:` namespaces, section 11 and `mcp/README.md` every core and extension tool, and saved
