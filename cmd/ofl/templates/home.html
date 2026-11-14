@@ -2,7 +2,7 @@
 <section class="hero">
 <h1>What you ate, in a format you can take anywhere.</h1>
 <p class="lead">The Open Food Log records a person's meals: what they said they ate, the food it matched, how much, what it held, and which numbers were guessed. Any app can write it, any assistant can read it, and the person keeps the log.</p>
-<p class="actions"><a class="button" href="/schema/v0/">Read the specification</a><a class="button ghost" href="/nutrients/">See the nutrients</a></p>
+<p class="actions"><a class="button" href="/schema/v0/">Read the specification</a><a class="button ghost" href="/guide/">Read the developer guide</a><a class="button ghost" href="/nutrients/">See the nutrients</a></p>
 </section>
 <section class="grid">
 <div><h2>Unknown is not zero</h2><p>A nutrient a food doesn't list is left out, never written as 0. Every key names its unit: <code>protein_g</code>, <code>sodium_mg</code>.</p></div>
@@ -18,6 +18,7 @@
 <section>
 <h2>Use it</h2>
 <ul class="links">
+<li><a href="/guide/">The developer guide</a>: reading and writing documents, the catalogue, and building or checking a server</li>
 {{range .Schemas}}<li><a href="/schema/v0/{{.Kind}}.json">{{.Kind}}.json</a>, JSON Schema (draft 2020-12), at its <code>$id</code></li>
 {{end}}<li><a href="/schema/v0/nutrients.json">nutrients.json</a>, the nutrient keys and their mappings</li>
 <li><a href="/schema/v0/amount-vectors.json">amount-vectors.json</a>, worked cases from an amount to grams to nutrients</li>
