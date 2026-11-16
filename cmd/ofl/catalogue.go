@@ -231,12 +231,23 @@ func buildCatalogue(dir, root string) error {
 	if err != nil {
 		return err
 	}
-	var ruleCount, modelCount, withAliases int
+	curated, err := readCuratedAliases(root)
+	if err != nil {
+		return err
+	}
+	names := map[string]string{}
+	for id, food := range byID {
+		names[id] = food.Name
+	}
+	if err := checkCurated(curated, names); err != nil {
+		return err
+	}
+	var aliases aliasCounts
+	withAliases := 0
 	for _, id := range ids {
-		r, g := attachAliases(byID[id], model)
-		ruleCount += r
-		modelCount += g
-		if r+g > 0 {
+		got := attachAliases(byID[id], curated, model)
+		aliases.add(got)
+		if got.total() > 0 {
 			withAliases++
 		}
 	}
@@ -271,7 +282,7 @@ func buildCatalogue(dir, root string) error {
 		c := report[src.key]
 		fmt.Fprintf(&b, "| %s | %d | %d | %d | %d | %d | %d | %d |\n", src.label, c.read, c.kept, c.merged, c.branded, c.empty, c.noEnergy, c.noPortions)
 	}
-	fmt.Fprintf(&b, "\n%d foods in `foods.jsonl`, %d with aliases: %d from the names' own shape, %d suggested by a model (listed in each record's `provenance.generated`).\n", len(ids), withAliases, ruleCount, modelCount)
+	b.WriteString("\n" + aliasReport(len(ids), withAliases, aliases) + "\n")
 	withDensity := 0
 	for _, src := range sources {
 		withDensity += report[src.key].density

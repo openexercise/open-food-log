@@ -23,7 +23,8 @@ const usage = `usage:
                                                          check an A2A nutrition agent
   ofl vectors [--json] -- <command> [args...]            check an amount calculation against the vectors
   ofl site [outdir]                                      build the website (dist/ by default)
-  ofl catalogue <dir>                                    rebuild catalogue/ from the FoodData Central downloads in dir`
+  ofl catalogue <dir>                                    rebuild catalogue/ from the FoodData Central downloads in dir
+  ofl catalogue aliases                                  attach aliases again from sources/, over the built catalogue`
 
 func main() {
 	if len(os.Args) < 2 {
@@ -52,6 +53,10 @@ func main() {
 		}
 		err = buildSite(".", out)
 	case "catalogue":
+		if len(os.Args) == 3 && os.Args[2] == "aliases" {
+			err = writeRefreshedAliases(".")
+			break
+		}
 		if len(os.Args) < 3 {
 			err = errors.New("want the directory holding the FoodData Central downloads")
 			break
