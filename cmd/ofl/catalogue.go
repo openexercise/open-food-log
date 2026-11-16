@@ -243,6 +243,11 @@ func buildCatalogue(dir, root string) error {
 	if err := checkCurated(curated, names); err != nil {
 		return err
 	}
+	sorted := make([]*catalogueFood, 0, len(ids))
+	for _, id := range ids {
+		sorted = append(sorted, byID[id])
+	}
+	model = soleModelAliases(sorted, curated, model)
 	var aliases aliasCounts
 	withAliases := 0
 	for _, id := range ids {

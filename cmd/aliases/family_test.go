@@ -157,7 +157,7 @@ func TestMergeRunAcrossBatches(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	// A family split across two batches: both claim "meatloaf", so neither keeps it.
+	// A family split across two batches: both claim "meatloaf", and both keep it (the build picks one).
 	write("batch-001.json", batchFile{Batch: "batch-001", Families: []family{{Family: "meat loaf", Foods: []batchFood{{ID: "ofc:a", Name: "Meat loaf made with beef"}}}}})
 	write("answer-001.json", map[string][]string{"ofc:a": {"meatloaf", "beef meatloaf"}})
 	write("batch-002.json", batchFile{Batch: "batch-002", Families: []family{{Family: "meat loaf", Foods: []batchFood{{ID: "ofc:b", Name: "Meat loaf made with ham"}}}}})
@@ -172,10 +172,10 @@ func TestMergeRunAcrossBatches(t *testing.T) {
 	if _, ok := res.refused["batch-003"]; !ok || len(res.refused) != 1 {
 		t.Errorf("refused %v", res.refused)
 	}
-	if len(res.entries) != 2 || !slices.Equal(res.entries[0].Aliases, []string{"beef meatloaf"}) || len(res.entries[1].Aliases) != 0 {
+	if len(res.entries) != 2 || !slices.Equal(res.entries[0].Aliases, []string{"meatloaf", "beef meatloaf"}) || !slices.Equal(res.entries[1].Aliases, []string{"meatloaf"}) {
 		t.Errorf("entries %+v", res.entries)
 	}
-	if len(res.dropped) != 2 {
+	if len(res.dropped) != 0 {
 		t.Errorf("dropped %q", res.dropped)
 	}
 	if res.entries[0].Model != "m" || res.entries[0].At != "2026-11-16" {
