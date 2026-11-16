@@ -31,6 +31,10 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.9.1 — 2026-11-16
+
+Cheese omelets are found by name. Aliases only; every v0.2 document stays valid.
+
 - **Added:** cheese omelet aliases ("cheese omelet", "cheese omelette", "omelet with cheese",
   "omelette with cheese", "cheesy scrambled egg", "scrambled egg(s) with cheese") on
   `ofc:egg-omelet-or-scrambled-egg-with-cheese-made-with-butter`. FoodData Central has no cheese
