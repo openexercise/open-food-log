@@ -27,6 +27,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.8.0 — 2026-11-16
+
+The documents, examples and vectors catch up with v0.2, the API core names an unavailable barcode
+lookup, and the guides are on the site. Every v0.2 document stays valid.
+
 - **Released:** the Go client's first tag, `clients/go/v0.1.0` (commit 8bd048d), the API core for
   OFL v0.2. `go get github.com/openexercise/open-food-log/clients/go@v0.1.0` replaces a pseudo-version
   of `main`.
