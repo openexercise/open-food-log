@@ -31,12 +31,22 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.9.0 — 2026-11-16
+
+Curated aliases: the catalogue now finds everyday egg foods by what people call them, and aliases
+can be changed without the FoodData Central downloads. Every v0.2 document stays valid.
+
 - **Added:** curated aliases. `sources/curated-aliases.jsonl` holds aliases a person chose, with
   why, merged into every build after the name rules and named in `provenance.sources`; `ofl
   catalogue aliases` attaches aliases again over the built catalogue without the FoodData Central
   downloads. The first 14 fix eggs: "egg" found "Egg, creamed" (the shortest of ~50 names starting
   "Egg"), "fried egg" found "Fried eggplant", and "omelet" or "omelette" found nothing. Each now
   names one survey food whose usual portion is one egg.
+
+## v0.8.0 — 2026-11-16
+
+The documents, examples and vectors catch up with v0.2, the API core names an unavailable barcode
+lookup, and the guides are on the site. Every v0.2 document stays valid.
 
 - **Released:** the Go client's first tag, `clients/go/v0.1.0` (commit 8bd048d), the API core for
   OFL v0.2. `go get github.com/openexercise/open-food-log/clients/go@v0.1.0` replaces a pseudo-version
