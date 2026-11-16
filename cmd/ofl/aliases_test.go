@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
+	"os"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -27,25 +29,6 @@ func TestRuleAliases(t *testing.T) {
 	for name, want := range cases {
 		if got := ruleAliases(name); !slices.Equal(got, want) {
 			t.Errorf("ruleAliases(%q) = %q, want %q", name, got, want)
-		}
-	}
-}
-
-func TestAcceptableAlias(t *testing.T) {
-	cases := []struct {
-		alias, name string
-		want        bool
-	}{
-		{"hard boiled egg", "Egg, whole, cooked, hard-boiled", true},
-		{"2% milk", "Milk, reduced fat (2%)", true},
-		{"2 eggs", "Egg, whole, raw", false},
-		{"Oj", "Orange juice, raw", false},
-		{" oj", "Orange juice, raw", false},
-		{"x", "X", false},
-	}
-	for _, c := range cases {
-		if got := acceptableAlias(c.alias, c.name); got != c.want {
-			t.Errorf("acceptableAlias(%q, %q) = %v", c.alias, c.name, got)
 		}
 	}
 }
@@ -131,6 +114,56 @@ func TestCuratedEggs(t *testing.T) {
 	for _, phrase := range []string{"egg", "fried egg", "boiled egg", "scrambled egg", "omelet", "omelette", "egg white", "cheese omelette", "omelet with cheese", "scrambled eggs with cheese"} {
 		if len(holders[phrase]) != 1 {
 			t.Errorf("%q is held by %v, want one food", phrase, holders[phrase])
+		}
+	}
+}
+
+// TestAliasChecks holds the built catalogue to sources/alias-checks.jsonl: each phrase is a name or
+// alias that one food alone holds, the food named, which a matcher can take as a sure match. A
+// model run that moves a plain name, or gives it to two foods, fails here.
+func TestAliasChecks(t *testing.T) {
+	root := filepath.Join("..", "..")
+	data, err := os.ReadFile(filepath.Join(root, "sources", "alias-checks.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	f, err := os.Open(filepath.Join(root, "catalogue", "foods.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	holders := map[string][]string{}
+	scanner := bufio.NewScanner(f)
+	scanner.Buffer(make([]byte, 1<<20), 1<<20)
+	for scanner.Scan() {
+		var r struct {
+			ID      string     `json:"id"`
+			Name    string     `json:"name"`
+			Aliases []aliasDoc `json:"aliases"`
+		}
+		if err := json.Unmarshal(scanner.Bytes(), &r); err != nil {
+			t.Fatal(err)
+		}
+		names := []string{normalize(r.Name)}
+		for _, a := range r.Aliases {
+			names = append(names, normalize(a.Name))
+		}
+		for _, n := range names {
+			if !slices.Contains(holders[n], r.ID) {
+				holders[n] = append(holders[n], r.ID)
+			}
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		t.Fatal(err)
+	}
+	for i, line := range strings.Split(strings.TrimSpace(string(data)), "\n") {
+		var c struct{ Phrase, ID string }
+		if err := json.Unmarshal([]byte(line), &c); err != nil || c.Phrase == "" || c.ID == "" {
+			t.Fatalf("alias-checks.jsonl line %d: want {phrase, id}: %v", i+1, err)
+		}
+		if got := holders[normalize(c.Phrase)]; !slices.Equal(got, []string{c.ID}) {
+			t.Errorf("%q is held by %v, want %s alone", c.Phrase, got, c.ID)
 		}
 	}
 }
