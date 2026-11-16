@@ -29,6 +29,12 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.10.0 — 2026-11-16
+
+The catalogue gets the names people log foods by: 6,961 foods have aliases (1,807 before), most
+suggested by Claude Haiku through the new `/food-aliases` skill, each on one food only. Every v0.2
+document stays valid.
+
 - **Added:** model-suggested aliases for the whole catalogue, from `/food-aliases` (Claude Haiku,
   `claude-haiku-5-5`) over the 12,140 foods the trial didn't cover. 6,961 foods now have aliases
   (1,807 before), 6,524 of them suggested by the model ("french fries", "hash browns", "salmon",
