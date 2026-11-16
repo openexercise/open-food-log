@@ -27,6 +27,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.9.2 — 2026-11-16
+
+Ingredient-only foods lose a drink's placeholder portions, and `ofl catalogue refresh` reapplies
+record rules without the FoodData Central downloads. Every v0.2 document stays valid.
+
 - **Fixed:** 37 ingredient-only survey foods ("Tomatoes as ingredient in omelet", "Rice, white,
   cooked, as ingredient", "Industrial oil as ingredient in food"…, WWEIA category 9999) no longer
   carry a drink's portions ("1 fl oz (with ice)", and a 248 g glass as the default). The survey
