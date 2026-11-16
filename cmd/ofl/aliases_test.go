@@ -148,7 +148,7 @@ func TestCuratedEggs(t *testing.T) {
 			holders[normalize(a)] = append(holders[normalize(a)], id)
 		}
 	}
-	for _, phrase := range []string{"egg", "fried egg", "boiled egg", "scrambled egg", "omelet", "omelette", "egg white"} {
+	for _, phrase := range []string{"egg", "fried egg", "boiled egg", "scrambled egg", "omelet", "omelette", "egg white", "cheese omelette", "omelet with cheese", "scrambled eggs with cheese"} {
 		if len(holders[phrase]) != 1 {
 			t.Errorf("%q is held by %v, want one food", phrase, holders[phrase])
 		}
