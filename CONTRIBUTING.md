@@ -179,13 +179,14 @@ with a default portion, so a count ("2 eggs") can be weighed. An alias must be s
 have no digit the name lacks; an unknown ID or an unacceptable alias fails the build. Then:
 
 ```bash
-go run ./cmd/ofl catalogue aliases
+go run ./cmd/ofl catalogue refresh
 go test ./...
 ```
 
-`ofl catalogue aliases` attaches every food's aliases again over the built catalogue, so it needs no
-FoodData Central downloads; a full rebuild reads the same file. `TestCatalogueAliasesAreCurrent`
-fails when `sources/` changed and it wasn't run. Curated aliases are named in the record's
+`ofl catalogue refresh` applies the rules that work on records alone (aliases, and leaving out
+placeholder portions) again over the built catalogue, so it needs no FoodData Central downloads; a
+full rebuild applies the same rules. `TestCatalogueIsRefreshed` fails when a rule or `sources/`
+changed and it wasn't run. Curated aliases are named in the record's
 `provenance.sources` and aren't `generated`.
 
 ### Review

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -232,82 +231,3 @@ func aliasReport(foods, withAliases int, n aliasCounts) string {
 }
 
 var aliasReportLine = regexp.MustCompile("(?m)^\\d+ foods in `foods\\.jsonl`, .*$")
-
-// refreshAliases attaches every food's aliases again from the rules and sources/, over the
-// catalogue already built, so changing an alias needs no FoodData Central downloads. It returns
-// the new foods.jsonl and REPORT.md.
-func refreshAliases(root string) (foods, report []byte, err error) {
-	curated, err := readCuratedAliases(root)
-	if err != nil {
-		return nil, nil, err
-	}
-	model, err := readModelAliases(root)
-	if err != nil {
-		return nil, nil, err
-	}
-	f, err := os.Open(filepath.Join(root, "catalogue", "foods.jsonl"))
-	if err != nil {
-		return nil, nil, err
-	}
-	defer f.Close()
-	var all []*catalogueFood
-	names := map[string]string{}
-	scanner := bufio.NewScanner(f)
-	scanner.Buffer(make([]byte, 1<<20), 1<<20)
-	for scanner.Scan() {
-		food := &catalogueFood{}
-		if err := json.Unmarshal(scanner.Bytes(), food); err != nil {
-			return nil, nil, err
-		}
-		all = append(all, food)
-		names[food.ID] = food.Name
-	}
-	if err := scanner.Err(); err != nil {
-		return nil, nil, err
-	}
-	if err := checkCurated(curated, names); err != nil {
-		return nil, nil, err
-	}
-	var buf bytes.Buffer
-	var n aliasCounts
-	withAliases := 0
-	for _, food := range all {
-		dropAliases(food)
-		got := attachAliases(food, curated, model)
-		n.add(got)
-		if got.total() > 0 {
-			withAliases++
-		}
-		line, err := json.Marshal(food)
-		if err != nil {
-			return nil, nil, err
-		}
-		buf.Write(line)
-		buf.WriteByte('\n')
-	}
-	old, err := os.ReadFile(filepath.Join(root, "catalogue", "REPORT.md"))
-	if err != nil {
-		return nil, nil, err
-	}
-	if !aliasReportLine.Match(old) {
-		return nil, nil, errors.New("catalogue/REPORT.md has no line on aliases to update")
-	}
-	report = aliasReportLine.ReplaceAll(old, []byte(aliasReport(len(all), withAliases, n)))
-	return buf.Bytes(), report, nil
-}
-
-// writeRefreshedAliases is `ofl catalogue aliases`.
-func writeRefreshedAliases(root string) error {
-	foods, report, err := refreshAliases(root)
-	if err != nil {
-		return err
-	}
-	if err := os.WriteFile(filepath.Join(root, "catalogue", "foods.jsonl"), foods, 0o644); err != nil {
-		return err
-	}
-	if err := os.WriteFile(filepath.Join(root, "catalogue", "REPORT.md"), report, 0o644); err != nil {
-		return err
-	}
-	fmt.Println("catalogue: aliases attached again")
-	return nil
-}

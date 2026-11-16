@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"os"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -112,25 +111,6 @@ func TestCheckCurated(t *testing.T) {
 		err := checkCurated(map[string]curatedAliases{c.curated.ID: c.curated}, names)
 		if (err == nil) != (c.want == "") || (err != nil && !strings.Contains(err.Error(), c.want)) {
 			t.Errorf("%+v: %v, want %q", c.curated, err, c.want)
-		}
-	}
-}
-
-// TestCatalogueAliasesAreCurrent fails when sources/ changed and `ofl catalogue aliases` wasn't
-// run, so the committed catalogue always carries the aliases its sources give.
-func TestCatalogueAliasesAreCurrent(t *testing.T) {
-	root := filepath.Join("..", "..")
-	foods, report, err := refreshAliases(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for name, want := range map[string][]byte{"foods.jsonl": foods, "REPORT.md": report} {
-		have, err := os.ReadFile(filepath.Join(root, "catalogue", name))
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !bytes.Equal(have, want) {
-			t.Errorf("catalogue/%s is stale: run go run ./cmd/ofl catalogue aliases", name)
 		}
 	}
 }

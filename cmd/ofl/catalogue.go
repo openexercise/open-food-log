@@ -202,6 +202,7 @@ func buildCatalogue(dir, root string) error {
 			for k := range nutrients {
 				coverage[k][src.key]++
 			}
+			dropPlaceholderPortions(food)
 			if len(food.Portions) == 0 {
 				c.noPortions++
 			}
