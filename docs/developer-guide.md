@@ -915,8 +915,8 @@ webhooks and the export; [`clients/go/README.md`](../clients/go/README.md) has m
 routes it has no method for. Getting the token (OAuth 2.1 with PKCE) is the app's job; set
 `c.TokenSource` to hand it a refreshed one.
 
-The client has no release tag of its own yet, so `go get github.com/openexercise/open-food-log/clients/go@main`
-gives a pseudo-version of the latest commit. A TypeScript client is published from Open Workout as
+The client is released with tags of its own, `clients/go/vX.Y.Z`:
+`go get github.com/openexercise/open-food-log/clients/go@v0.1.0` (or `@latest`). A TypeScript client is published from Open Workout as
 `@openexercise/open-workout-client/openfoodlog`.
 
 ## 20. Mapping to other systems
