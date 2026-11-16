@@ -159,7 +159,7 @@ changes meaning and is never reused: a food that goes away gets `status: replace
 
 ### Aliases
 
-Aliases are what people call a food. All 1,680 today come from the shape of names, with no model
+Aliases are what people call a food. 1,680 come from the shape of names, with no model
 ("Apple, raw" is also "raw apple"; "X, NFS" is also "x"). `cmd/aliases` can ask a model (Gemini on
 Vertex AI) for more:
 
@@ -169,11 +169,24 @@ OFL_GCP_PROJECT=<project> go run ./cmd/aliases
 
 It sends food names only, and appends the answers to `sources/aliases.jsonl` with the model and
 date, which `ofl catalogue` reads so a build never calls the model. That pass hasn't been run, so
-`sources/` doesn't exist yet. Aliases from a model are listed in each record's
+`sources/aliases.jsonl` doesn't exist yet. Aliases from a model are listed in each record's
 `provenance.generated`.
 
-A place for people to add or correct aliases, which the generator merges in, is still to come
-(`CHANGELOG.md`, Still to do). Until then, propose aliases in an issue, with the `ofc:` IDs.
+People choose aliases in `sources/curated-aliases.jsonl`, one food per line: its `id`, the
+`aliases` and `why` that food rather than its neighbours. Use it when a phrase people say finds the
+wrong food or none ("egg" found "Egg, creamed"; "omelette" found nothing). Prefer a survey food
+with a default portion, so a count ("2 eggs") can be weighed. An alias must be short, lowercase and
+have no digit the name lacks; an unknown ID or an unacceptable alias fails the build. Then:
+
+```bash
+go run ./cmd/ofl catalogue aliases
+go test ./...
+```
+
+`ofl catalogue aliases` attaches every food's aliases again over the built catalogue, so it needs no
+FoodData Central downloads; a full rebuild reads the same file. `TestCatalogueAliasesAreCurrent`
+fails when `sources/` changed and it wasn't run. Curated aliases are named in the record's
+`provenance.sources` and aren't `generated`.
 
 ### Review
 

@@ -1,0 +1,7 @@
+{"id":"ofc:egg-whole-cooked-ns-as-to-cooking-method","aliases":["egg","whole egg","cooked egg"],"why":"About 50 foods' names start with \"Egg\", so a name search ties and the shortest (\"Egg, creamed\") won. The survey's egg not further specified is what someone means by \"an egg\", and it weighs 50 g a piece."}
+{"id":"ofc:egg-whole-raw","aliases":["raw egg"],"why":"The survey's raw egg, which has a default portion of one egg; \"Egg, whole, raw, fresh\" has sizes but no default."}
+{"id":"ofc:egg-whole-fried-ns-as-to-fat","aliases":["fried egg"],"why":"Searching \"fried egg\" found \"Fried eggplant\" first. Fat not further specified, as people say it."}
+{"id":"ofc:egg-whole-boiled-or-poached","aliases":["boiled egg","hard boiled egg","soft boiled egg","poached egg"],"why":"The survey food has one egg as its default portion; the SR Legacy hard-boiled and poached eggs have sizes but no default."}
+{"id":"ofc:egg-omelet-or-scrambled-egg-ns-as-to-fat","aliases":["omelet","omelette","scrambled egg"],"why":"FoodData Central has no food named \"omelet\": its omelets are \"Egg omelet or scrambled egg, …\", too long for a name search to find either spelling. Fat not further specified, as people say it."}
+{"id":"ofc:egg-white-only-raw","aliases":["egg white"],"why":"Egg whites have the same numbers raw or cooked without fat, and this one has a default portion of one white."}
+{"id":"ofc:egg-yolk-only-raw","aliases":["egg yolk"],"why":"One yolk is its default portion."}

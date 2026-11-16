@@ -17,8 +17,12 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   come from names' shape (`catalogue/REPORT.md`). `catalogue/README.md` says most come from a model;
   correct it or run the pass.
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
-- **A place for aliases and reviews** that the generator merges in, "still to come"
-  ([CONTRIBUTING.md](CONTRIBUTING.md), Contributing to the catalogue).
+- **A place for reviews** that the generator merges in (aliases have one now:
+  `sources/curated-aliases.jsonl`).
+- **Odd portions on "… as ingredient in omelet" foods:** `ofc:breakfast-meat-as-ingredient-in-omelet`
+  and its neighbours carry drink portions ("1 fl oz (with ice)", "Quantity not specified" 248 g),
+  while FoodData Central's API lists no portions for them (fdc_id 2710781). Check the survey
+  download and leave them without portions if it agrees with the API.
 - **69 liquids have no density** (`catalogue/REPORT.md`).
 - **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
   allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
@@ -27,10 +31,12 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
-## v0.8.0 — 2026-11-16
-
-The documents, examples and vectors catch up with v0.2, the API core names an unavailable barcode
-lookup, and the guides are on the site. Every v0.2 document stays valid.
+- **Added:** curated aliases. `sources/curated-aliases.jsonl` holds aliases a person chose, with
+  why, merged into every build after the name rules and named in `provenance.sources`; `ofl
+  catalogue aliases` attaches aliases again over the built catalogue without the FoodData Central
+  downloads. The first 14 fix eggs: "egg" found "Egg, creamed" (the shortest of ~50 names starting
+  "Egg"), "fried egg" found "Fried eggplant", and "omelet" or "omelette" found nothing. Each now
+  names one survey food whose usual portion is one egg.
 
 - **Released:** the Go client's first tag, `clients/go/v0.1.0` (commit 8bd048d), the API core for
   OFL v0.2. `go get github.com/openexercise/open-food-log/clients/go@v0.1.0` replaces a pseudo-version

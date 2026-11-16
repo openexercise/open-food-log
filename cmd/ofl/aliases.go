@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -27,8 +28,25 @@ type modelAliases struct {
 	At      string   `json:"at"`
 }
 
-// aliasSource is where cmd/aliases keeps the model's answers.
-const aliasSource = "sources/aliases.jsonl"
+// curatedAliases is one line of sources/curated-aliases.jsonl: what a person decided a food is
+// called, and why that food rather than its neighbours ("egg" is the survey's cooked egg, not
+// "Egg, creamed", which only sorts first).
+type curatedAliases struct {
+	ID      string   `json:"id"`
+	Aliases []string `json:"aliases"`
+	Why     string   `json:"why"`
+}
+
+const (
+	// aliasSource is where cmd/aliases keeps the model's answers.
+	aliasSource = "sources/aliases.jsonl"
+	// curatedSource is where people keep the aliases they chose, merged into every build.
+	curatedSource = "sources/curated-aliases.jsonl"
+	// curatedSourceName names curated aliases among a record's sources.
+	curatedSourceName = "Aliases chosen by a person (sources/curated-aliases.jsonl)"
+	// modelSourcePrefix starts the name of a model's aliases among a record's sources.
+	modelSourcePrefix = "Aliases suggested by "
+)
 
 var (
 	phraseBreaks = regexp.MustCompile(`[^\p{L}\p{N}%]+`)
@@ -67,25 +85,56 @@ func ruleAliases(name string) []string {
 // readModelAliases reads sources/aliases.jsonl, if there is one, by food ID. A later line for a
 // food replaces an earlier one.
 func readModelAliases(root string) (map[string]modelAliases, error) {
-	f, err := os.Open(filepath.Join(root, aliasSource))
+	return readByID(root, aliasSource, func(m modelAliases) string { return m.ID })
+}
+
+// readCuratedAliases reads sources/curated-aliases.jsonl, if there is one, by food ID. A later
+// line for a food replaces an earlier one.
+func readCuratedAliases(root string) (map[string]curatedAliases, error) {
+	return readByID(root, curatedSource, func(c curatedAliases) string { return c.ID })
+}
+
+// readByID reads a JSON Lines file under root, keyed by each line's ID; a missing file is empty.
+func readByID[T any](root, name string, id func(T) string) (map[string]T, error) {
+	f, err := os.Open(filepath.Join(root, name))
 	if errors.Is(err, fs.ErrNotExist) {
-		return map[string]modelAliases{}, nil
+		return map[string]T{}, nil
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
-	out := map[string]modelAliases{}
+	out := map[string]T{}
 	scanner := bufio.NewScanner(f)
 	scanner.Buffer(make([]byte, 1<<20), 1<<20)
 	for line := 1; scanner.Scan(); line++ {
-		var m modelAliases
-		if err := json.Unmarshal(scanner.Bytes(), &m); err != nil {
-			return nil, fmt.Errorf("%s line %d: %w", aliasSource, line, err)
+		if len(strings.TrimSpace(scanner.Text())) == 0 {
+			continue
 		}
-		out[m.ID] = m
+		var v T
+		if err := json.Unmarshal(scanner.Bytes(), &v); err != nil {
+			return nil, fmt.Errorf("%s line %d: %w", name, line, err)
+		}
+		out[id(v)] = v
 	}
 	return out, scanner.Err()
+}
+
+// checkCurated refuses curated aliases a build would drop: a food the catalogue doesn't hold, or
+// an alias the catalogue wouldn't keep from a model either.
+func checkCurated(curated map[string]curatedAliases, names map[string]string) error {
+	for id, c := range curated {
+		name, ok := names[id]
+		if !ok {
+			return fmt.Errorf("%s: %s isn't in the catalogue", curatedSource, id)
+		}
+		for _, a := range c.Aliases {
+			if !acceptableAlias(a, name) {
+				return fmt.Errorf("%s: %q for %s: an alias is short, lowercase, and has no digit the name lacks", curatedSource, a, id)
+			}
+		}
+	}
+	return nil
 }
 
 // acceptableAlias holds a model's alias to what the catalogue keeps: a short lowercase phrase,
@@ -102,9 +151,20 @@ func acceptableAlias(alias, name string) bool {
 	return true
 }
 
-// attachAliases gives a food its rule aliases, then the model's, leaving out repeats and the
-// name itself, and records the model's in provenance.generated.
-func attachAliases(food *catalogueFood, model map[string]modelAliases) (rules, generated int) {
+// aliasCounts are how many aliases a build attached, by where they came from.
+type aliasCounts struct{ rules, curated, generated int }
+
+func (c *aliasCounts) add(o aliasCounts) {
+	c.rules += o.rules
+	c.curated += o.curated
+	c.generated += o.generated
+}
+
+func (c aliasCounts) total() int { return c.rules + c.curated + c.generated }
+
+// attachAliases gives a food its rule aliases, then those a person chose, then the model's,
+// leaving out repeats and the name itself, and records the model's in provenance.generated.
+func attachAliases(food *catalogueFood, curated map[string]curatedAliases, model map[string]modelAliases) (n aliasCounts) {
 	seen := map[string]bool{normalize(food.Name): true}
 	add := func(alias string) bool {
 		n := normalize(alias)
@@ -117,22 +177,137 @@ func attachAliases(food *catalogueFood, model map[string]modelAliases) (rules, g
 	}
 	for _, a := range ruleAliases(food.Name) {
 		if add(a) {
-			rules++
+			n.rules++
+		}
+	}
+	if c, ok := curated[food.ID]; ok {
+		for _, a := range c.Aliases {
+			if acceptableAlias(a, food.Name) && add(a) {
+				n.curated++
+			}
+		}
+		if n.curated > 0 {
+			food.Provenance.Sources = append(food.Provenance.Sources, sourceDoc{Name: curatedSourceName})
 		}
 	}
 	m, ok := model[food.ID]
 	if !ok {
-		return rules, 0
+		return n
 	}
 	for _, a := range m.Aliases {
 		if acceptableAlias(a, food.Name) && add(a) {
 			food.Provenance.Generated = append(food.Provenance.Generated, fmt.Sprintf("/aliases/%d", len(food.Aliases)-1))
-			generated++
+			n.generated++
 		}
 	}
-	if generated > 0 {
+	if n.generated > 0 {
 		// The model is a source of these values, so it's named among the sources.
-		food.Provenance.Sources = append(food.Provenance.Sources, sourceDoc{Name: "Aliases suggested by " + m.Model, RetrievedAt: m.At})
+		food.Provenance.Sources = append(food.Provenance.Sources, sourceDoc{Name: modelSourcePrefix + m.Model, RetrievedAt: m.At})
 	}
-	return rules, generated
+	return n
+}
+
+// dropAliases takes off everything attachAliases gives, so aliases can be attached again.
+func dropAliases(food *catalogueFood) {
+	food.Aliases = nil
+	var generated []string
+	for _, g := range food.Provenance.Generated {
+		if !strings.HasPrefix(g, "/aliases/") {
+			generated = append(generated, g)
+		}
+	}
+	food.Provenance.Generated = generated
+	var sources []sourceDoc
+	for _, s := range food.Provenance.Sources {
+		if s.Name != curatedSourceName && !strings.HasPrefix(s.Name, modelSourcePrefix) {
+			sources = append(sources, s)
+		}
+	}
+	food.Provenance.Sources = sources
+}
+
+// aliasReport is REPORT.md's line on aliases.
+func aliasReport(foods, withAliases int, n aliasCounts) string {
+	return fmt.Sprintf("%d foods in `foods.jsonl`, %d with aliases: %d from the names' own shape, %d chosen by a person (`%s`), %d suggested by a model (listed in each record's `provenance.generated`).", foods, withAliases, n.rules, n.curated, curatedSource, n.generated)
+}
+
+var aliasReportLine = regexp.MustCompile("(?m)^\\d+ foods in `foods\\.jsonl`, .*$")
+
+// refreshAliases attaches every food's aliases again from the rules and sources/, over the
+// catalogue already built, so changing an alias needs no FoodData Central downloads. It returns
+// the new foods.jsonl and REPORT.md.
+func refreshAliases(root string) (foods, report []byte, err error) {
+	curated, err := readCuratedAliases(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	model, err := readModelAliases(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	f, err := os.Open(filepath.Join(root, "catalogue", "foods.jsonl"))
+	if err != nil {
+		return nil, nil, err
+	}
+	defer f.Close()
+	var all []*catalogueFood
+	names := map[string]string{}
+	scanner := bufio.NewScanner(f)
+	scanner.Buffer(make([]byte, 1<<20), 1<<20)
+	for scanner.Scan() {
+		food := &catalogueFood{}
+		if err := json.Unmarshal(scanner.Bytes(), food); err != nil {
+			return nil, nil, err
+		}
+		all = append(all, food)
+		names[food.ID] = food.Name
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, nil, err
+	}
+	if err := checkCurated(curated, names); err != nil {
+		return nil, nil, err
+	}
+	var buf bytes.Buffer
+	var n aliasCounts
+	withAliases := 0
+	for _, food := range all {
+		dropAliases(food)
+		got := attachAliases(food, curated, model)
+		n.add(got)
+		if got.total() > 0 {
+			withAliases++
+		}
+		line, err := json.Marshal(food)
+		if err != nil {
+			return nil, nil, err
+		}
+		buf.Write(line)
+		buf.WriteByte('\n')
+	}
+	old, err := os.ReadFile(filepath.Join(root, "catalogue", "REPORT.md"))
+	if err != nil {
+		return nil, nil, err
+	}
+	if !aliasReportLine.Match(old) {
+		return nil, nil, errors.New("catalogue/REPORT.md has no line on aliases to update")
+	}
+	report = aliasReportLine.ReplaceAll(old, []byte(aliasReport(len(all), withAliases, n)))
+	return buf.Bytes(), report, nil
+}
+
+// writeRefreshedAliases is `ofl catalogue aliases`.
+func writeRefreshedAliases(root string) error {
+	foods, report, err := refreshAliases(root)
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(root, "catalogue", "foods.jsonl"), foods, 0o644); err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(root, "catalogue", "REPORT.md"), report, 0o644); err != nil {
+		return err
+	}
+	fmt.Println("catalogue: aliases attached again")
+	return nil
 }
