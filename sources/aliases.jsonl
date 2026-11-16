@@ -1,0 +1,302 @@
+{"id":"ofc:burrito-bean-and-cheese-frozen","aliases":["frozen bean and cheese burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-beef-and-bean-frozen","aliases":["frozen beef and bean burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-beef-and-bean-microwaved","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-beef-cheese","aliases":["beef burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-beef-with-beans-and-rice-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-beef-with-beans-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-beef-with-rice-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-cheese-only","aliases":["cheese burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-chicken-cheese","aliases":["chicken burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-chicken-with-beans-and-rice-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-chicken-with-beans-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-chicken-with-rice-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-meat-no-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-meat-with-beans-and-rice-no-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-meat-with-beans-no-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-meat-with-rice-no-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-nfs","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-pork-cheese","aliases":["pork burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-pork-with-beans-and-rice-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-pork-with-beans-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-pork-with-rice-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-with-beans-and-rice-cheese","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-with-beans-cheese","aliases":["bean and cheese burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-with-beans-no-cheese","aliases":["bean burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-beef-or-pork","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-beef-or-pork-with-beans","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-beef-or-pork-with-beans-and-rice","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-beef-or-pork-with-rice","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-chicken","aliases":["chicken bowl"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-chicken-with-beans","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-chicken-with-beans-and-rice","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-chicken-with-rice","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-nfs","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:burrito-bowl-with-beans","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-con-carne-with-beans-canned-entree","aliases":["canned chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-hot-dog-no-bun","aliases":["chili dog no bun"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-hot-dog-sandwich-on-wheat-bread","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-hot-dog-sandwich-on-wheat-bun","aliases":["wheat chili dog"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-hot-dog-sandwich-on-white-bread","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-hot-dog-sandwich-on-white-bun","aliases":["chili dog","chili hot dog"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-nfs","aliases":["chili con carne","chile"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-no-beans-canned-entree","aliases":["chili without beans"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-vegetarian","aliases":["veggie chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-white","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-beans-canned","aliases":["chili with beans"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-beans-microwavable-bowls","aliases":["microwave chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-chicken","aliases":["chicken chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-chicken-and-beans","aliases":["chicken and bean chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-macaroni","aliases":["chili mac","chili macaroni"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-meat","aliases":["beef chili","meat chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-meat-and-beans","aliases":["beef and bean chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-meat-canned","aliases":["canned beef chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chili-with-meat-from-restaurant","aliases":["restaurant chili"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:chiliburger-with-or-without-cheese-on-bun","aliases":["chili burger"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-from-fast-food-2-large-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-from-fast-food-2-medium-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-from-fast-food-2-small-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-on-wheat-bun-2-large-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-on-wheat-bun-2-medium-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-on-wheat-bun-2-small-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-on-white-bun-2-large-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-on-white-bun-2-medium-patties","aliases":["double hamburger","double burger"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:double-hamburger-on-white-bun-2-small-patties","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-burrito","aliases":["egg burrito","breakfast burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-burrito-with-bacon","aliases":["bacon egg burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-burrito-with-ham","aliases":["ham egg burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-burrito-with-sausage","aliases":["sausage egg burrito"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-from-fast-food-restaurant","aliases":["restaurant omelet","fast food omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-made-with-animal-fat-or-meat-drippings","aliases":["omelet cooked in bacon grease"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-made-with-butter","aliases":["buttered omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-made-with-cooking-spray","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-made-with-margarine","aliases":["margarine omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-made-with-oil","aliases":["omelet cooked in oil"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-ns-as-to-fat-type","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-dark-green-vegetables-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-dark-green-vegetables-ns-as-to-fat","aliases":["spinach and cheese omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-made-with-animal-fat-or-meat-drippings","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-made-with-butter","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-made-with-cooking-spray","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-made-with-margarine","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-made-with-oil","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-ns-as-to-fat","aliases":["meat and cheese omelet","meat and cheese omelette"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-meat-ns-as-to-fat-type","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-tomatoes-ns-as-to-fat","aliases":["cheese and tomato omelet","tomato and cheese omelet","tomato and cheese omelette"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-vegetables-other-than-dark-green-and-or-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-vegetables-other-than-dark-green-and-or-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-and-vegetables-other-than-dark-green-and-or-tomatoes-ns-as-to-fat","aliases":["vegetable and cheese omelet","veggie and cheese omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-made-with-animal-fat-or-meat-drippings","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-made-with-butter","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-made-with-cooking-spray","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-made-with-margarine","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-made-with-oil","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-dark-green-vegetables-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-dark-green-vegetables-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-tomatoes-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-vegetables-other-than-dark-green-and-or-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-vegetables-other-than-dark-green-and-or-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-and-vegetables-other-than-dark-green-and-or-tomatoes-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-tomatoes-and-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-tomatoes-and-dark-green-vegetables-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-meat-tomatoes-and-dark-green-vegetables-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-tomatoes-and-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-tomatoes-and-dark-green-vegetables-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-cheese-tomatoes-and-dark-green-vegetables-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-dark-green-vegetables-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-dark-green-vegetables-ns-as-to-fat","aliases":["spinach omelet","spinach omelette"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-dark-green-vegetables-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-dark-green-vegetables-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-tomatoes-ns-as-to-fat","aliases":["meat and tomato omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-vegetables-other-than-dark-green-and-or-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-vegetables-other-than-dark-green-and-or-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-and-vegetables-other-than-dark-green-and-or-tomatoes-ns-as-to-fat","aliases":["meat and vegetable omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-made-with-animal-fat-or-meat-drippings","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-made-with-butter","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-made-with-cooking-spray","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-made-with-margarine","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-made-with-oil","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-ns-as-to-fat","aliases":["meat omelet","meat omelette"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-ns-as-to-fat-type","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-tomatoes-and-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-tomatoes-and-dark-green-vegetables-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-meat-tomatoes-and-dark-green-vegetables-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-potatoes-and-or-onions-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-potatoes-and-or-onions-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-potatoes-and-or-onions-ns-as-to-fat","aliases":["potato and onion omelet","potato omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-tomatoes-and-dark-green-vegetables-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-tomatoes-and-dark-green-vegetables-no-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-tomatoes-and-dark-green-vegetables-ns-as-to-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-tomatoes-ns-as-to-fat","aliases":["tomato omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-vegetables-other-than-dark-green-and-or-tomatoes-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-vegetables-other-than-dark-green-and-or-tomatoes-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-with-vegetables-other-than-dark-green-and-or-tomatoes-ns-as-to-fat","aliases":["vegetable omelet","veggie omelet"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-fast-food-restaurant","aliases":["fast food french toast"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-frozen","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-frozen-ready-to-heat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-gluten-free","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-nfs","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-plain","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-prepared-from-recipe-made-with-low-fat-2-milk","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-school","aliases":["school french toast"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-sticks","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-sticks-fast-food-restaurant","aliases":["fast food french toast sticks"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-sticks-school","aliases":["school french toast sticks"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:french-toast-whole-grain","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:grilled-cheese-sandwich-american-cheese-on-wheat-bread","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:grilled-cheese-sandwich-american-cheese-on-white-bread","aliases":["american grilled cheese"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:grilled-cheese-sandwich-cheddar-cheese-on-wheat-bread","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:grilled-cheese-sandwich-cheddar-cheese-on-white-bread","aliases":["cheddar grilled cheese"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:grilled-cheese-sandwich-nfs","aliases":["grilled cheese"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:grilled-cheese-sandwich-reduced-fat-cheese-on-wheat-bread","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:grilled-cheese-sandwich-reduced-fat-cheese-on-white-bread","aliases":["reduced fat grilled cheese"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-burger-king","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-from-fast-food-1-large-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-from-fast-food-1-medium-patty","aliases":["fast food hamburger"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-from-fast-food-1-small-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-from-school-cafeteria","aliases":["school hamburger"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-nfs","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-on-wheat-bun-1-large-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-on-wheat-bun-1-medium-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-on-wheat-bun-1-small-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-on-white-bun-1-large-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-on-white-bun-1-medium-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-on-white-bun-1-small-patty","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-mcdonalds","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-slider","aliases":["slider"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-slider-from-fast-food","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:hamburger-wrap-sandwich-from-fast-food","aliases":["hamburger wrap"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-dinner-nfs-frozen-meal","aliases":["frozen meatloaf dinner"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-beef","aliases":["beef meatloaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-beef-and-pork","aliases":["beef and pork meatloaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-beef-and-pork-with-tomato-based-sauce","aliases":["beef and pork meatloaf with tomato sauce"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-beef-veal-and-pork","aliases":["beef veal and pork meatloaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-beef-with-tomato-based-sauce","aliases":["beef meatloaf with tomato sauce"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-chicken-or-turkey","aliases":["turkey meatloaf","chicken meatloaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-chicken-or-turkey-with-tomato-based-sauce","aliases":["turkey meatloaf with tomato sauce","chicken meatloaf with tomato sauce"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-ham","aliases":["ham loaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-made-with-venison-deer","aliases":["venison meatloaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-ns-as-to-type-of-meat","aliases":["meatloaf","meat loaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-puerto-rican-style","aliases":["puerto rican meatloaf"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:meat-loaf-with-potatoes-vegetable-frozen-meal","aliases":["frozen meatloaf with potatoes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-fast-food-flavored","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-fast-food-plain","aliases":["fast food oatmeal"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-fruit-flavored-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-fruit-flavored-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-maple-flavored-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-maple-flavored-no-added-fat","aliases":["maple oatmeal"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-plain-made-with-milk-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-plain-made-with-milk-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-plain-made-with-non-dairy-milk-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-plain-made-with-non-dairy-milk-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-plain-made-with-water-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-instant-plain-made-with-water-no-added-fat","aliases":["instant oatmeal"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-multigrain","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-nfs","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-reduced-sugar","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-regular-or-quick-made-with-milk-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-regular-or-quick-made-with-milk-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-regular-or-quick-made-with-non-dairy-milk-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-regular-or-quick-made-with-non-dairy-milk-no-added-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-regular-or-quick-made-with-water-fat-added","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:oatmeal-regular-or-quick-made-with-water-no-added-fat","aliases":["regular oatmeal","quick oatmeal"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-100-canned-bottled-or-in-a-carton","aliases":["bottled orange juice","boxed orange juice","orange juice in a carton"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-100-freshly-squeezed","aliases":["fresh squeezed orange juice","freshly squeezed orange juice","fresh orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-100-frozen-not-reconstituted","aliases":["frozen orange juice concentrate"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-100-frozen-reconstituted","aliases":["frozen orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-100-nfs","aliases":["orange juice","oj"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-100-with-calcium-added-canned-bottled-or-in-a-carton","aliases":["bottled orange juice with calcium","boxed orange juice with calcium"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-100-with-calcium-added-frozen-reconstituted","aliases":["frozen orange juice with calcium"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-beverage-40-50-juice-light","aliases":["orange drink","orange juice drink"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-canned-unsweetened","aliases":["canned orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-chilled-includes-from-concentrate","aliases":["chilled orange juice","refrigerated orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-chilled-includes-from-concentrate-with-added-calcium","aliases":["chilled orange juice with calcium","calcium orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-chilled-includes-from-concentrate-with-added-calcium-and-vitamin-d","aliases":["orange juice with calcium and vitamin d"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-chilled-includes-from-concentrate-with-added-calcium-and-vitamins-a-d-e","aliases":["orange juice with vitamins"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-frozen-concentrate-unsweetened-diluted-with-3-volume-water","aliases":["diluted orange juice concentrate"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-frozen-concentrate-unsweetened-diluted-with-3-volume-water-with-added-calcium","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-frozen-concentrate-unsweetened-undiluted","aliases":["orange juice concentrate"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-frozen-concentrate-unsweetened-undiluted-with-added-calcium","aliases":["orange juice concentrate with calcium"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-no-pulp-not-fortified-from-concentrate-refrigerated","aliases":["no pulp orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-no-pulp-not-fortified-not-from-concentrate-refrigerated","aliases":["nfc orange juice","not from concentrate orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:orange-juice-raw-includes-foods-for-usda-s-food-distribution-program","aliases":["raw orange juice"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-and-sausage-frozen-meal","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-blueberry-prepared-from-recipe","aliases":["blueberry pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-buckwheat-dry-mix-incomplete","aliases":["buckwheat pancake mix"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-buttermilk-prepared-from-recipe","aliases":["buttermilk pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-chocolate","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-chocolate-fast-food-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-chocolate-frozen","aliases":["frozen chocolate pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-fruit","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-fruit-fast-food-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-fruit-frozen","aliases":["frozen fruit pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-gluten-free","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-gluten-free-frozen-ready-to-heat","aliases":["frozen gluten free pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-nfs","aliases":["pancake"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-dry-mix-complete-includes-buttermilk","aliases":["complete pancake mix"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-dry-mix-complete-prepared","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-dry-mix-incomplete-includes-buttermilk","aliases":["incomplete pancake mix"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-dry-mix-incomplete-prepared","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-fast-food-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-frozen","aliases":["frozen pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-frozen-ready-to-heat-microwave-includes-buttermilk","aliases":["microwave pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-prepared-from-recipe","aliases":["homemade pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-reduced-fat","aliases":["reduced fat pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-pumpkin","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-school","aliases":["school pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-special-dietary-dry-mix","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-whole-grain","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-whole-grain-fast-food-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-whole-grain-frozen","aliases":["frozen whole grain pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-whole-grain-reduced-fat","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-whole-wheat-dry-mix-incomplete","aliases":["whole wheat pancake mix"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-whole-wheat-dry-mix-incomplete-prepared","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:pancakes-plain-frozen-ready-to-heat-includes-buttermilk","aliases":["frozen buttermilk pancakes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:potato-pancakes","aliases":["latkes","potato latkes"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:tomato-chili-sauce","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-buttermilk-frozen-ready-to-heat-microwaved","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-buttermilk-frozen-ready-to-heat-toasted","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-chocolate","aliases":["chocolate waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-chocolate-fast-food-restaurant","aliases":["restaurant chocolate waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-chocolate-frozen","aliases":["frozen chocolate waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-cinnamon","aliases":["cinnamon waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-fruit","aliases":["fruit waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-fruit-fast-food-restaurant","aliases":["restaurant fruit waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-fruit-frozen","aliases":["frozen fruit waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-gluten-free","aliases":["gluten free waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-nfs","aliases":["waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-plain","aliases":["plain waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-plain-fast-food-restaurant","aliases":["restaurant plain waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-plain-frozen","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-plain-frozen-ready-to-heat-microwave","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-plain-reduced-fat","aliases":["reduced fat waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-school","aliases":["school waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-whole-grain","aliases":["whole grain waffles","whole wheat waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-whole-grain-fast-food-restaurant","aliases":["restaurant whole grain waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-whole-grain-frozen","aliases":["frozen whole grain waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-whole-grain-fruit-frozen","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffle-whole-grain-reduced-fat","aliases":["reduced fat whole grain waffle"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffles-buttermilk-frozen-ready-to-heat","aliases":["frozen buttermilk waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffles-chocolate-chip-frozen-ready-to-heat","aliases":["frozen chocolate chip waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffles-gluten-free-frozen-ready-to-heat","aliases":["frozen gluten free waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffles-plain-frozen-ready-to-heat","aliases":["frozen plain waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffles-plain-frozen-ready-to-heat-toasted","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffles-plain-prepared-from-recipe","aliases":["homemade waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:waffles-whole-wheat-lowfat-frozen-ready-to-heat","aliases":["frozen whole wheat waffles"],"model":"claude-haiku-5-5","at":"2026-11-16"}

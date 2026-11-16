@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/openexercise/open-food-log/internal/alias"
 )
 
 // aliasDoc is an alias as a food record carries it.
@@ -128,26 +130,12 @@ func checkCurated(curated map[string]curatedAliases, names map[string]string) er
 			return fmt.Errorf("%s: %s isn't in the catalogue", curatedSource, id)
 		}
 		for _, a := range c.Aliases {
-			if !acceptableAlias(a, name) {
+			if !alias.Acceptable(a, name) {
 				return fmt.Errorf("%s: %q for %s: an alias is short, lowercase, and has no digit the name lacks", curatedSource, a, id)
 			}
 		}
 	}
 	return nil
-}
-
-// acceptableAlias holds a model's alias to what the catalogue keeps: a short lowercase phrase,
-// with a digit only where the food's own name has it ("2% milk" for "Milk, reduced fat (2%)").
-func acceptableAlias(alias, name string) bool {
-	if alias != strings.ToLower(alias) || len(alias) < 2 || len(alias) > 60 || strings.TrimSpace(alias) != alias {
-		return false
-	}
-	for _, r := range alias {
-		if r >= '0' && r <= '9' && !strings.ContainsRune(name, r) {
-			return false
-		}
-	}
-	return true
 }
 
 // aliasCounts are how many aliases a build attached, by where they came from.
@@ -181,7 +169,7 @@ func attachAliases(food *catalogueFood, curated map[string]curatedAliases, model
 	}
 	if c, ok := curated[food.ID]; ok {
 		for _, a := range c.Aliases {
-			if acceptableAlias(a, food.Name) && add(a) {
+			if alias.Acceptable(a, food.Name) && add(a) {
 				n.curated++
 			}
 		}
@@ -194,7 +182,7 @@ func attachAliases(food *catalogueFood, curated map[string]curatedAliases, model
 		return n
 	}
 	for _, a := range m.Aliases {
-		if acceptableAlias(a, food.Name) && add(a) {
+		if alias.Acceptable(a, food.Name) && add(a) {
 			food.Provenance.Generated = append(food.Provenance.Generated, fmt.Sprintf("/aliases/%d", len(food.Aliases)-1))
 			n.generated++
 		}

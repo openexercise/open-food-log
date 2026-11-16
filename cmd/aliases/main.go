@@ -1,9 +1,17 @@
-// Command aliases asks Gemini on Vertex AI what people call each catalogue food when they log it,
-// and appends each answer to sources/aliases.jsonl, so a run resumes where it stopped and `ofl
-// catalogue` merges the answers without calling the model. It sends names only and asks for names
-// only: no numbers come from the model.
+// Command aliases asks a model what people call each catalogue food when they log it, and appends
+// each answer to sources/aliases.jsonl, so a run resumes where it stopped and `ofl catalogue`
+// merges the answers without calling the model. It sends names only and asks for names only: no
+// numbers come from the model.
+//
+// With no subcommand it asks Gemini on Vertex AI, one food at a time:
 //
 //	OFL_GCP_PROJECT=<project> go run ./cmd/aliases [-limit N]
+//
+// The /food-aliases skill asks Claude Haiku instead, a family of related foods at a time, so the
+// plain name of a dish goes to one food alone. Go writes the questions and checks the answers:
+//
+//	go run ./cmd/aliases batches -out <dir> [-match <text>] [-limit N]
+//	go run ./cmd/aliases merge -in <dir> -model <model>
 package main
 
 import (
@@ -53,9 +61,18 @@ type entry struct {
 }
 
 func main() {
-	limit := flag.Int("limit", 0, "stop after this many foods")
-	flag.Parse()
-	if err := run(context.Background(), *limit); err != nil {
+	var err error
+	switch {
+	case len(os.Args) > 1 && os.Args[1] == "batches":
+		err = runBatches(os.Args[2:])
+	case len(os.Args) > 1 && os.Args[1] == "merge":
+		err = runMerge(os.Args[2:])
+	default:
+		limit := flag.Int("limit", 0, "stop after this many foods")
+		flag.Parse()
+		err = run(context.Background(), *limit)
+	}
+	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

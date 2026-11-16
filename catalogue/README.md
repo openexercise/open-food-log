@@ -37,7 +37,7 @@ The rules, so anyone can check a record against its source (`identifiers.fdc_id`
 - **Aliases** say what people call a food, all of kind `common`:
   - From the name's own shape, with no model: a two-part name with a plain modifier is also that modifier first ("Apple, raw" is "raw apple"), and "X, NFS" (not further specified) is "x".
   - Chosen by a person in `sources/curated-aliases.jsonl`, with why that food: "egg", "fried egg", "boiled egg", "omelet", "omelette", "scrambled egg", "cheese omelette", "egg white" and a few more, each naming a survey food with one egg (or white, or yolk) as a portion. They're named in the record's `provenance.sources`. `ofl catalogue refresh` attaches aliases again without the FoodData Central downloads.
-  - Suggested by Gemini (`cmd/aliases`), which is sent the names only and asked for names only. It's written but hasn't been run yet, so none of today's aliases comes from a model. When it runs, its answers are kept in `sources/aliases.jsonl` with the model and date, so building never calls it; each alias it gives is listed in the record's `provenance.generated`, and the model is named in `provenance.sources`. An alias is kept only if it's short, lowercase, and has no digit the food's name lacks.
+  - Suggested by a model, which is sent names only and asked for names only: Claude Haiku through the `/food-aliases` skill (`.claude/skills/food-aliases`), or Gemini (`cmd/aliases` with no subcommand, not run yet). The skill asks about a **family** at a time (every "Meat loaf …" record together), so a dish's plain name ("meatloaf") goes to the one record a person means and its neighbours get names that say how they differ ("turkey meatloaf"). The answers are kept in `sources/aliases.jsonl` with the model and date, so building never calls it; each alias a model gives is listed in the record's `provenance.generated`, and the model is named in `provenance.sources`. An alias is kept only if it's short, lowercase, and has no digit the food's name lacks, and never if it's a name a rule or a person already gave another food. No person reviews them: [`sources/alias-checks.jsonl`](../sources/alias-checks.jsonl) lists phrases that must name one food alone, the one listed, and `go test` fails when a run breaks one.
   - An alias may belong to more than one food ("milk"). A matcher should then ask which one, not guess.
 
 ## Trust it accordingly
@@ -46,11 +46,20 @@ The numbers are USDA's, but no record has been checked by a person, and the alia
 
 ## Ask the model again
 
+In Claude Code, from this repository's root:
+
+```
+/food-aliases                 # every food sources/aliases.jsonl doesn't hold yet
+/food-aliases "meat loaf"     # only families whose plain name contains the text
+```
+
+`go run ./cmd/aliases batches` writes the questions, Haiku subagents answer one batch each, and `go run ./cmd/aliases merge` checks every answer (each food answered, no name given to two foods of one family) before appending it. Or ask Gemini, one food at a time:
+
 ```bash
 OFL_GCP_PROJECT=<project> go run ./cmd/aliases
 ```
 
-This asks only about foods `sources/aliases.jsonl` doesn't hold yet (the file is made on the first run), 40 at a time, and appends the answers. Delete a food's line to ask about it again.
+Either asks only about foods `sources/aliases.jsonl` doesn't hold yet (the file is made on the first run) and appends the answers; a later line for a food replaces an earlier one. Delete a food's line, or pass `batches -redo`, to ask about it again. Add a line to `sources/alias-checks.jsonl` before changing the skill's prompt.
 
 ## Rebuild it
 

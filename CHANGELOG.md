@@ -13,9 +13,9 @@ Lifterclub with the specification; this file covers the whole repository. `git l
 
 Known gaps and deferred work, removed when it ships (and recorded under Unreleased).
 
-- **Model-suggested aliases:** `cmd/aliases` is written but has never been run, so all 1,680 aliases
-  come from names' shape (`catalogue/REPORT.md`). `catalogue/README.md` says most come from a model;
-  correct it or run the pass.
+- **Model-suggested aliases for the whole catalogue:** `/food-aliases` has only been run on a trial
+  set of families; run it on everything (about 350 batches), then snapshot the release into
+  Lifterclub (`make foods-snapshot`, `make foods-load`, `make eval`).
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
 - **A place for reviews** that the generator merges in (aliases have one now:
   `sources/curated-aliases.jsonl`).
@@ -26,6 +26,20 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   ([README.md](README.md)).
 
 ## Unreleased
+
+- **Added:** the `/food-aliases` Claude Code skill (`.claude/skills/food-aliases`), which asks
+  Claude Haiku what people call the catalogue's foods, a family of related records at a time, so
+  a dish's plain name goes to one food alone ("meatloaf" to the survey's unspecified meat loaf,
+  "turkey meatloaf" to the turkey one). `cmd/aliases batches` writes its questions and
+  `cmd/aliases merge` checks the answers (every food answered, no alias given to two foods of a
+  family or taken from a rule's or a person's) before appending them to `sources/aliases.jsonl`.
+- **Added:** `sources/alias-checks.jsonl` and `TestAliasChecks`: phrases that must name one food
+  alone, the one listed, so a model run that moves or doubles a plain name fails `go test`.
+- **Added:** the first model-suggested aliases, from a trial run of `/food-aliases` (Claude Haiku,
+  `claude-haiku-5-5`) over 302 foods in 11 families: meat loaf, orange juice, oatmeal, pancakes,
+  waffles, burritos, chili, hamburgers, French toast, grilled cheese and egg omelets. 166 aliases
+  on 119 more foods ("meatloaf", "beef meatloaf", "oj", "bean burrito"), none shared by two foods;
+  each is listed in its record's `provenance.generated`.
 
 ## v0.9.2 — 2026-11-16
 
