@@ -27,6 +27,9 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+- **Released:** the Go client's first tag, `clients/go/v0.1.0` (commit 8bd048d), the API core for
+  OFL v0.2. `go get github.com/openexercise/open-food-log/clients/go@v0.1.0` replaces a pseudo-version
+  of `main`.
 - **Fixed:** the README's conformance paragraph names the v0.2 checks (copy, saved meals, recipes,
   `log_meal_again`) and the vectors' `share`; `catalogue/README.md` no longer says the aliases come
   from a model (the alias pass hasn't run; all 1,680 come from names) or that every food has a

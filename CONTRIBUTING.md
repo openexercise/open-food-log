@@ -268,5 +268,6 @@ tags the merge.
 
 Tags number the package, the `ofl` command, the conformance suite and the catalogue. The format's
 version is separate: `ofl_version` (`"0.2"` today), recorded in `schema/CHANGELOG.md`. The Go client
-in `clients/go` is a module of its own and would take tags named `clients/go/vX.Y.Z`; none is
-published yet.
+in `clients/go` is a module of its own with its own tags, `clients/go/vX.Y.Z` (`clients/go/v0.1.0`
+was the first). Tag it after a change to the client merges and CI passes on that commit; a tag is a
+public release, so only a maintainer pushes one, and its version goes in this changelog.
