@@ -66,7 +66,7 @@ Two rules run through all of it:
 The `ofl` command validates documents, checks servers and checks calculations. Install a release:
 
 ```bash
-go install github.com/openexercise/open-food-log/cmd/ofl@v0.7.0
+go install github.com/openexercise/open-food-log/cmd/ofl@v0.8.0
 ```
 
 Or work from a checkout, where `go run ./cmd/ofl …` does the same:
