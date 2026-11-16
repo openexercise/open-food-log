@@ -19,10 +19,6 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
 - **A place for reviews** that the generator merges in (aliases have one now:
   `sources/curated-aliases.jsonl`).
-- **Odd portions on "… as ingredient in omelet" foods:** `ofc:breakfast-meat-as-ingredient-in-omelet`
-  and its neighbours carry drink portions ("1 fl oz (with ice)", "Quantity not specified" 248 g),
-  while FoodData Central's API lists no portions for them (fdc_id 2710781). Check the survey
-  download and leave them without portions if it agrees with the API.
 - **69 liquids have no density** (`catalogue/REPORT.md`).
 - **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
   allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
@@ -30,6 +26,16 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   ([README.md](README.md)).
 
 ## Unreleased
+
+- **Fixed:** 37 ingredient-only survey foods ("Tomatoes as ingredient in omelet", "Rice, white,
+  cooked, as ingredient", "Industrial oil as ingredient in food"…, WWEIA category 9999) no longer
+  carry a drink's portions ("1 fl oz (with ice)", and a 248 g glass as the default). The survey
+  download gives them that placeholder; FoodData Central's API lists no portions for them, so they
+  have none, and their `provenance.sources` says why. 5,304 survey foods keep a default portion.
+- **Changed:** `ofl catalogue aliases` is now `ofl catalogue refresh` (the old name still works):
+  it reapplies every rule that works on records alone, portions as well as aliases, and updates
+  `REPORT.md`'s "Kept without portions" from the records. `TestCatalogueIsRefreshed` replaces
+  `TestCatalogueAliasesAreCurrent`.
 
 ## v0.9.1 — 2026-11-16
 
