@@ -83,8 +83,9 @@ func normalize(s string) string {
 	return strings.TrimSpace(wordBreaks.ReplaceAllString(strings.ToLower(s), " "))
 }
 
-// mergeRun checks every answer in dir against its batch. A plain name two batches gave to foods
-// of one family (a family split across batches) is dropped from both.
+// mergeRun checks every answer in dir against its batch. A name two batches gave to different
+// foods is kept on both here: building the catalogue keeps each model alias on one food
+// (cmd/ofl's soleModelAliases).
 func mergeRun(dir, model, at string, taken map[string]string) (mergeResult, error) {
 	res := mergeResult{refused: map[string]string{}}
 	names, err := filepath.Glob(filepath.Join(dir, "batch-*.json"))
@@ -93,7 +94,6 @@ func mergeRun(dir, model, at string, taken map[string]string) (mergeResult, erro
 	}
 	sort.Strings(names)
 	kept := map[string][]string{}
-	familyOfID := map[string]string{}
 	var order []string
 	for _, name := range names {
 		var b batchFile
@@ -119,45 +119,14 @@ func mergeRun(dir, model, at string, taken map[string]string) (mergeResult, erro
 		for _, fam := range b.Families {
 			for _, f := range fam.Foods {
 				kept[f.ID] = got[f.ID]
-				familyOfID[f.ID] = familyOf(f.Name)
 				order = append(order, f.ID)
 			}
 		}
 	}
-	// Across batches: an alias held by two foods of one family names neither for sure.
-	holders := map[string][]string{}
 	for _, id := range order {
-		for _, a := range kept[id] {
-			k := familyOfID[id] + "\x00" + normalize(a)
-			holders[k] = append(holders[k], id)
-		}
-	}
-	for _, id := range order {
-		var out []string
-		for _, a := range kept[id] {
-			k := familyOfID[id] + "\x00" + normalize(a)
-			if len(holders[k]) > 1 {
-				res.dropped = append(res.dropped, fmt.Sprintf("%s: %q was also given to %s", id, a, strings.Join(without(holders[k], id), ", ")))
-				continue
-			}
-			out = append(out, a)
-		}
-		if out == nil {
-			out = []string{}
-		}
-		res.entries = append(res.entries, entry{ID: id, Aliases: out, Model: model, At: at})
+		res.entries = append(res.entries, entry{ID: id, Aliases: kept[id], Model: model, At: at})
 	}
 	return res, nil
-}
-
-func without(ids []string, id string) []string {
-	var out []string
-	for _, x := range ids {
-		if x != id {
-			out = append(out, x)
-		}
-	}
-	return out
 }
 
 // readTaken reads the aliases a model mustn't move, by normalized alias, naming the food each

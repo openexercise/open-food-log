@@ -167,3 +167,38 @@ func TestAliasChecks(t *testing.T) {
 		}
 	}
 }
+
+func TestSoleModelAliases(t *testing.T) {
+	withDefault := []portionDoc{{ID: "q", Label: "Quantity not specified", Grams: 100, IsDefault: true}}
+	foods := []*catalogueFood{
+		{ID: "ofc:meat-loaf-ns", Name: "Meat loaf, NS as to type of meat", Portions: withDefault},
+		{ID: "ofc:beef-loaf", Name: "Beef, ground, loaf, cooked"},
+		{ID: "ofc:fries-fast-food", Name: "Fast foods, potato, french fried", Portions: withDefault},
+		{ID: "ofc:fries-home", Name: "Potato, french fries, home made", Portions: withDefault},
+		{ID: "ofc:fries-frozen", Name: "Potatoes, french fried, frozen"},
+		{ID: "ofc:oatmeal-nfs", Name: "Oatmeal, NFS"},
+		{ID: "ofc:oatmeal-instant", Name: "Oatmeal, instant"},
+	}
+	model := map[string]modelAliases{
+		"ofc:meat-loaf-ns":    {Aliases: []string{"meatloaf"}},
+		"ofc:beef-loaf":       {Aliases: []string{"meatloaf", "beef loaf"}},
+		"ofc:fries-fast-food": {Aliases: []string{"french fries", "fast food fries"}},
+		"ofc:fries-home":      {Aliases: []string{"french fries"}},
+		"ofc:fries-frozen":    {Aliases: []string{"french fries"}},
+		"ofc:oatmeal-instant": {Aliases: []string{"oatmeal", "instant oatmeal"}}, // "oatmeal" is the NFS record's by rule
+	}
+	got := soleModelAliases(foods, nil, model)
+	want := map[string][]string{
+		"ofc:meat-loaf-ns":    {"meatloaf"}, // unspecified wins
+		"ofc:beef-loaf":       {"beef loaf"},
+		"ofc:fries-fast-food": {"fast food fries"},
+		"ofc:fries-home":      {"french fries"}, // a default portion and the shorter name
+		"ofc:fries-frozen":    nil,
+		"ofc:oatmeal-instant": {"instant oatmeal"},
+	}
+	for id, w := range want {
+		if !slices.Equal(got[id].Aliases, w) {
+			t.Errorf("%s: %q, want %q", id, got[id].Aliases, w)
+		}
+	}
+}

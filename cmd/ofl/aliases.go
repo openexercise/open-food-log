@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/openexercise/open-food-log/internal/alias"
@@ -219,3 +220,94 @@ func aliasReport(foods, withAliases int, n aliasCounts) string {
 }
 
 var aliasReportLine = regexp.MustCompile("(?m)^\\d+ foods in `foods\\.jsonl`, .*$")
+
+// unspecified marks a record USDA describes as the food with nothing further said: what a person
+// means by the plain name.
+var unspecified = regexp.MustCompile(`(?i)(^|, )(nfs|ns as to )`)
+
+// preferredFirst orders the foods that could keep a plain name, best first, by the rule the model
+// is asked to follow: the record USDA leaves unspecified, then one with a default portion (an
+// everyday survey food), then the shortest name, then the ID.
+func preferredFirst(a, b *catalogueFood) int {
+	if ua, ub := unspecified.MatchString(a.Name), unspecified.MatchString(b.Name); ua != ub {
+		if ua {
+			return -1
+		}
+		return 1
+	}
+	if da, db := hasDefaultPortion(a), hasDefaultPortion(b); da != db {
+		if da {
+			return -1
+		}
+		return 1
+	}
+	if len(a.Name) != len(b.Name) {
+		return len(a.Name) - len(b.Name)
+	}
+	return strings.Compare(a.ID, b.ID)
+}
+
+func hasDefaultPortion(f *catalogueFood) bool {
+	for _, p := range f.Portions {
+		if p.IsDefault {
+			return true
+		}
+	}
+	return false
+}
+
+// soleModelAliases keeps each of a model's aliases on one food only, so the plain names a model
+// gives are names a matcher can be sure of. A model asked about one family at a time can give
+// "meatloaf" to a meat loaf and to a beef record in another family, or "french fries" to a fast
+// food and a home version. An alias that is already another food's name, or one a rule or a
+// person gave another food, is left to that food; otherwise the foods asked about share it and
+// preferredFirst picks one. It returns the model's answers with the others' copies taken out.
+func soleModelAliases(foods []*catalogueFood, curated map[string]curatedAliases, model map[string]modelAliases) map[string]modelAliases {
+	fixed := map[string]string{} // a name, rule or curated alias: whose it is
+	for _, f := range foods {
+		phrases := append([]string{f.Name}, ruleAliases(f.Name)...)
+		phrases = append(phrases, curated[f.ID].Aliases...)
+		for _, p := range phrases {
+			if _, ok := fixed[normalize(p)]; !ok {
+				fixed[normalize(p)] = f.ID
+			}
+		}
+	}
+	byID := map[string]*catalogueFood{}
+	for _, f := range foods {
+		byID[f.ID] = f
+	}
+	claims := map[string][]*catalogueFood{}
+	for id, m := range model {
+		f, ok := byID[id]
+		if !ok {
+			continue
+		}
+		for _, a := range m.Aliases {
+			k := normalize(a)
+			if !slices.Contains(claims[k], f) {
+				claims[k] = append(claims[k], f)
+			}
+		}
+	}
+	keeper := map[string]string{}
+	for k, holders := range claims {
+		if owner, ok := fixed[k]; ok {
+			keeper[k] = owner
+			continue
+		}
+		keeper[k] = slices.MinFunc(holders, preferredFirst).ID
+	}
+	out := make(map[string]modelAliases, len(model))
+	for id, m := range model {
+		kept := m
+		kept.Aliases = nil
+		for _, a := range m.Aliases {
+			if keeper[normalize(a)] == id {
+				kept.Aliases = append(kept.Aliases, a)
+			}
+		}
+		out[id] = kept
+	}
+	return out
+}

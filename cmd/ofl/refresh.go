@@ -48,6 +48,7 @@ func refreshCatalogue(root string) (foods, report []byte, err error) {
 	if err := checkCurated(curated, names); err != nil {
 		return nil, nil, err
 	}
+	model = soleModelAliases(all, curated, model)
 	var buf bytes.Buffer
 	var n aliasCounts
 	withAliases := 0

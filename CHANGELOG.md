@@ -13,9 +13,11 @@ Lifterclub with the specification; this file covers the whole repository. `git l
 
 Known gaps and deferred work, removed when it ships (and recorded under Unreleased).
 
-- **Model-suggested aliases for the whole catalogue:** `/food-aliases` has only been run on a trial
-  set of families; run it on everything (about 350 batches), then snapshot the release into
-  Lifterclub (`make foods-snapshot`, `make foods-load`, `make eval`).
+- **Lifterclub doesn't have the model aliases yet:** after the next release, snapshot it there
+  (`make foods-snapshot`, `make foods-load`, `make eval`).
+- **Review the model aliases:** 6,524 of them, none checked by a person; `sources/alias-checks.jsonl`
+  holds 20 phrases. Some plain names went to a less likely record ("mac and cheese" to a box mix);
+  correct them in `sources/curated-aliases.jsonl` and add a check.
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
 - **A place for reviews** that the generator merges in (aliases have one now:
   `sources/curated-aliases.jsonl`).
@@ -26,6 +28,17 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   ([README.md](README.md)).
 
 ## Unreleased
+
+- **Added:** model-suggested aliases for the whole catalogue, from `/food-aliases` (Claude Haiku,
+  `claude-haiku-5-5`) over the 12,140 foods the trial didn't cover. 6,961 foods now have aliases
+  (1,807 before), 6,524 of them suggested by the model ("french fries", "hash browns", "salmon",
+  "pot roast"), each listed in its record's `provenance.generated`. None is shared by two foods.
+- **Changed:** a model's alias stays on one food. When a model gives one alias to several foods
+  (asked a family at a time, it gave "meatloaf" to a beef record as well as the meat loaf), the
+  build keeps it on the record USDA leaves unspecified, else one with a default portion, else the
+  shortest name, and never on a food whose name or rule or person-chosen alias another food
+  already has. `cmd/aliases merge` no longer drops a name two batches gave to one family; the
+  build decides.
 
 - **Added:** the `/food-aliases` Claude Code skill (`.claude/skills/food-aliases`), which asks
   Claude Haiku what people call the catalogue's foods, a family of related records at a time, so
