@@ -1,6 +1,6 @@
 # The Open Food Catalogue
 
-Generic foods in the Open Food Log format, one record per line in [`foods.jsonl`](foods.jsonl), with `ofc:` IDs. Branded and packaged foods aren't here: name them by barcode (`gtin:`) and look them up where they're kept.
+Generic foods in the Open Food Log format, one record per line in [`foods.jsonl`](foods.jsonl), with `ofc:` IDs. Branded and packaged foods aren't here: name them by barcode (`gtin:`) and look them up where they're kept. A branded catalogue from USDA's Branded Foods (CC0) is planned as a separate release asset; [BRANDED-REPORT.md](BRANDED-REPORT.md) measures what its rules would keep (`ofl catalogue branded-report`).
 
 **Status: v0 draft.** IDs may change until v1. No record has been reviewed by a person; each says so in `provenance.review`.
 

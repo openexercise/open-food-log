@@ -24,7 +24,8 @@ const usage = `usage:
   ofl vectors [--json] -- <command> [args...]            check an amount calculation against the vectors
   ofl site [outdir]                                      build the website (dist/ by default)
   ofl catalogue <dir>                                    rebuild catalogue/ from the FoodData Central downloads in dir
-  ofl catalogue refresh                                  apply the record rules (portions, aliases) again, over the built catalogue`
+  ofl catalogue refresh                                  apply the record rules (portions, aliases) again, over the built catalogue
+  ofl catalogue branded-report <file>                    count what the branded rules drop from the Branded Foods JSON download (writes catalogue/BRANDED-REPORT.md)`
 
 func main() {
 	if len(os.Args) < 2 {
@@ -56,6 +57,10 @@ func main() {
 		// "aliases" was this command's first name.
 		if len(os.Args) == 3 && (os.Args[2] == "refresh" || os.Args[2] == "aliases") {
 			err = writeRefreshedCatalogue(".")
+			break
+		}
+		if len(os.Args) == 4 && os.Args[2] == "branded-report" {
+			err = brandedReport(os.Args[3], ".")
 			break
 		}
 		if len(os.Args) < 3 {
