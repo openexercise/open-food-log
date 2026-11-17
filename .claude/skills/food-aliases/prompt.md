@@ -45,6 +45,28 @@ person has to pick. So within a family:
 - If a family's foods are all different things that only share a first word (raw cuts of beef,
   say), give the plain word to none of them.
 
+## Restaurant and fast-food versions
+
+Many foods are a restaurant's or a fast-food place's version of a dish ("Potato, french fries,
+fast food", "Restaurant, Chinese, orange chicken", "Cheeseburger, from fast food, 1 medium
+patty"). People log these by saying where the food came from, so give them names that do:
+
+- "fast food fries", "drive-through fries", "restaurant fries", "fast food cheeseburger",
+  "restaurant mashed potatoes", "takeout orange chicken", "chinese takeout fried rice".
+- Name the dish the way people order it, short: "fast food chicken sandwich", not "fast food
+  chicken fillet sandwich fried". "Fast foods, …" and "Restaurant, …" are USDA's way of filing,
+  never part of an alias ("coleslaw fast foods" is wrong; "fast food coleslaw" is right).
+- Where a family holds sizes ("1 small patty", "1 medium patty", "1 large patty"), the plain
+  fast-food name ("fast food cheeseburger") goes to the medium one, and the others say their size
+  ("small fast food cheeseburger", "large fast food cheeseburger").
+- Still no chain or brand names: those are chosen by a person, not here.
+- The bare dish name ("fries", "cheeseburger", "pizza") belongs to the everyday record, which
+  usually isn't in your batch, so leave it out unless the food's name says nothing about where
+  it was made.
+- Pizza is the exception: most pizza comes from a restaurant or a delivery chain, so the
+  restaurant pizza USDA leaves unspecified ("NS as to type of crust") keeps the everyday name
+  ("cheese pizza", "pepperoni pizza"); the others say their crust.
+
 ## Answer
 
 Write one JSON object mapping **every** food ID in the batch to its list, and nothing else: no

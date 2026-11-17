@@ -182,3 +182,20 @@ func TestMergeRunAcrossBatches(t *testing.T) {
 		t.Errorf("entry %+v", res.entries[0])
 	}
 }
+
+func TestMatchesTakesAnyOfSeveralTexts(t *testing.T) {
+	cases := []struct {
+		text, match string
+		want        bool
+	}{
+		{"potato, french fries, fast food", "", true},
+		{"potato, french fries, fast food", "fast food|restaurant", true},
+		{"pasta with cream sauce, restaurant", "fast food|restaurant", true},
+		{"potato, french fries, from frozen", "fast food|restaurant", false},
+	}
+	for _, c := range cases {
+		if got := matches(c.text, c.match); got != c.want {
+			t.Errorf("matches(%q, %q) = %v, want %v", c.text, c.match, got, c.want)
+		}
+	}
+}

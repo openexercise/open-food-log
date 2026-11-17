@@ -173,6 +173,7 @@ func runBatches(args []string) error {
 	fs := flag.NewFlagSet("batches", flag.ExitOnError)
 	out := fs.String("out", "", "directory to write batch-NNN.json files into")
 	match := fs.String("match", "", "only families whose name contains this text (several separated by |)")
+	name := fs.String("name", "", "only foods whose own name contains this text (several separated by |): a kind of food across families, such as restaurant dishes")
 	limit := fs.Int("limit", 0, "stop after this many foods")
 	size := fs.Int("size", batch, "foods per batch")
 	redo := fs.Bool("redo", false, "ask again about foods sources/aliases.jsonl already holds")
@@ -193,7 +194,7 @@ func runBatches(args []string) error {
 	}
 	var todo []batchFood
 	for _, f := range foods {
-		if !done[f.ID] && matches(familyOf(f.Name), *match) {
+		if !done[f.ID] && matches(familyOf(f.Name), *match) && matches(strings.ToLower(f.Name), *name) {
 			todo = append(todo, f)
 		}
 	}
@@ -223,8 +224,8 @@ func runBatches(args []string) error {
 	return nil
 }
 
-// matches says whether a family is one of those asked for: any of the |-separated texts, or all
-// families when there are none.
+// matches says whether a lowercase family or food name is one of those asked for: any of the
+// |-separated texts, or all when there are none.
 func matches(fam, match string) bool {
 	if strings.TrimSpace(match) == "" {
 		return true

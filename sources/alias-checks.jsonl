@@ -108,3 +108,53 @@
 {"phrase": "banana", "id": "ofc:banana-raw"}
 {"phrase": "almonds", "id": "ofc:almonds-nfs"}
 {"phrase": "almond", "id": "ofc:almonds-nfs"}
+{"phrase": "french fries", "id": "ofc:potato-french-fries-nfs"}
+{"phrase": "fast food fries", "id": "ofc:potato-french-fries-fast-food"}
+{"phrase": "restaurant fries", "id": "ofc:potato-french-fries-restaurant"}
+{"phrase": "cheeseburger", "id": "ofc:cheeseburger-nfs"}
+{"phrase": "hamburger", "id": "ofc:hamburger-nfs"}
+{"phrase": "fast food hamburger", "id": "ofc:hamburger-from-fast-food-1-medium-patty"}
+{"phrase": "chicken nuggets", "id": "ofc:chicken-nuggets-nfs"}
+{"phrase": "cheese pizza", "id": "ofc:pizza-cheese-from-restaurant-or-fast-food-ns-as-to-type-of-crust"}
+{"phrase": "pepperoni pizza", "id": "ofc:pizza-with-pepperoni-from-restaurant-or-fast-food-ns-as-to-type-of-crust"}
+{"phrase": "big mac", "id": "ofc:big-mac-mcdonalds"}
+{"phrase": "mcdonalds big mac", "id": "ofc:big-mac-mcdonalds"}
+{"phrase": "mcdouble", "id": "ofc:mcdouble-mcdonalds"}
+{"phrase": "mcdonalds mcdouble", "id": "ofc:mcdouble-mcdonalds"}
+{"phrase": "quarter pounder", "id": "ofc:quarter-pounder-mcdonalds"}
+{"phrase": "mcdonalds quarter pounder", "id": "ofc:quarter-pounder-mcdonalds"}
+{"phrase": "quarter pounder with cheese", "id": "ofc:quarter-pounder-with-cheese-mcdonalds"}
+{"phrase": "mcdonalds quarter pounder with cheese", "id": "ofc:quarter-pounder-with-cheese-mcdonalds"}
+{"phrase": "mcdonalds hamburger", "id": "ofc:hamburger-mcdonalds"}
+{"phrase": "mcdonalds cheeseburger", "id": "ofc:cheeseburger-mcdonalds"}
+{"phrase": "mcdonalds double cheeseburger", "id": "ofc:double-cheeseburger-mcdonalds"}
+{"phrase": "whopper", "id": "ofc:whopper-burger-king"}
+{"phrase": "burger king whopper", "id": "ofc:whopper-burger-king"}
+{"phrase": "whopper with cheese", "id": "ofc:whopper-with-cheese-burger-king"}
+{"phrase": "burger king whopper with cheese", "id": "ofc:whopper-with-cheese-burger-king"}
+{"phrase": "whopper jr", "id": "ofc:whopper-jr-burger-king"}
+{"phrase": "whopper junior", "id": "ofc:whopper-jr-burger-king"}
+{"phrase": "burger king whopper jr", "id": "ofc:whopper-jr-burger-king"}
+{"phrase": "whopper jr with cheese", "id": "ofc:whopper-jr-with-cheese-burger-king"}
+{"phrase": "whopper junior with cheese", "id": "ofc:whopper-jr-with-cheese-burger-king"}
+{"phrase": "burger king hamburger", "id": "ofc:hamburger-burger-king"}
+{"phrase": "burger king cheeseburger", "id": "ofc:cheeseburger-burger-king"}
+{"phrase": "burger king double cheeseburger", "id": "ofc:double-cheeseburger-burger-king"}
+{"phrase": "fast food cheeseburger", "id": "ofc:cheeseburger-from-fast-food-1-medium-patty"}
+{"phrase": "small fast food cheeseburger", "id": "ofc:cheeseburger-from-fast-food-1-small-patty"}
+{"phrase": "fast food chicken nuggets", "id": "ofc:chicken-nuggets-from-fast-food"}
+{"phrase": "fast food chicken tenders", "id": "ofc:chicken-tenders-or-strips-breaded-from-fast-food"}
+{"phrase": "drive-through fries", "id": "ofc:potato-french-fries-fast-food"}
+{"phrase": "restaurant french fries", "id": "ofc:potato-french-fries-restaurant"}
+{"phrase": "fast food coleslaw", "id": "ofc:coleslaw-fast-food-restaurant"}
+{"phrase": "takeout orange chicken", "id": "ofc:restaurant-chinese-orange-chicken"}
+{"phrase": "chinese takeout general tso chicken", "id": "ofc:restaurant-chinese-general-tso-s-chicken"}
+{"phrase": "fast food milkshake", "id": "ofc:milk-shake-fast-food-chocolate"}
+{"phrase": "chinese takeout egg rolls", "id": "ofc:restaurant-chinese-egg-rolls-assorted"}
+{"phrase": "restaurant mozzarella sticks", "id": "ofc:restaurant-family-style-fried-mozzarella-sticks"}
+{"phrase": "fast food onion rings", "id": "ofc:fast-foods-onion-rings-breaded-and-fried"}
+{"phrase": "fast food chicken sandwich", "id": "ofc:chicken-fillet-sandwich-ns-as-to-fried-or-grilled-from-fast-food"}
+{"phrase": "fast food fish sandwich", "id": "ofc:fish-sandwich-fried-from-fast-food"}
+{"phrase": "fast food breakfast burrito", "id": "ofc:fast-foods-breakfast-burrito-with-egg-cheese-and-sausage"}
+{"phrase": "fast food hash browns", "id": "ofc:potato-hash-brown-from-fast-food"}
+{"phrase": "restaurant mashed potatoes", "id": "ofc:potato-mashed-from-restaurant"}

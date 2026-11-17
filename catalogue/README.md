@@ -51,6 +51,7 @@ In Claude Code, from this repository's root:
 ```
 /food-aliases                 # every food sources/aliases.jsonl doesn't hold yet
 /food-aliases "meat loaf"     # only families whose plain name contains the text
+/food-aliases name:"fast food|restaurant"   # only foods whose own name contains the text
 ```
 
 `go run ./cmd/aliases batches` writes the questions, Haiku subagents answer one batch each, and `go run ./cmd/aliases merge` checks every answer (each food answered, no name given to two foods of one family) before appending it. Or ask Gemini, one food at a time:
