@@ -44,6 +44,9 @@ const (
 	aliasSource = "sources/aliases.jsonl"
 	// curatedSource is where people keep the aliases they chose, merged into every build.
 	curatedSource = "sources/curated-aliases.jsonl"
+	// withheldSource lists names a person decided no single food should hold, so a model's alias by
+	// that name is kept off every food and a matcher asks.
+	withheldSource = "sources/withheld-aliases.jsonl"
 	// curatedSourceName names curated aliases among a record's sources.
 	curatedSourceName = "Aliases chosen by a person (sources/curated-aliases.jsonl)"
 	// modelSourcePrefix starts the name of a model's aliases among a record's sources.
@@ -94,6 +97,41 @@ func readModelAliases(root string) (map[string]modelAliases, error) {
 // line for a food replaces an earlier one.
 func readCuratedAliases(root string) (map[string]curatedAliases, error) {
 	return readByID(root, curatedSource, func(c curatedAliases) string { return c.ID })
+}
+
+// withheldAlias is one line of sources/withheld-aliases.jsonl: a name too vague for one food, and
+// why ("baby peaches": strained or diced, a person should say which).
+type withheldAlias struct {
+	Alias string `json:"alias"`
+	Why   string `json:"why"`
+}
+
+// readWithheld reads sources/withheld-aliases.jsonl, if there is one, as a set of normalized names.
+func readWithheld(root string) (map[string]bool, error) {
+	byAlias, err := readByID(root, withheldSource, func(w withheldAlias) string { return normalize(w.Alias) })
+	if err != nil {
+		return nil, err
+	}
+	out := map[string]bool{}
+	for k, w := range byAlias {
+		if k == "" || strings.TrimSpace(w.Why) == "" {
+			return nil, fmt.Errorf("%s: %q needs an alias and a why", withheldSource, w.Alias)
+		}
+		out[k] = true
+	}
+	return out, nil
+}
+
+// checkWithheld refuses a name both withheld and given to a food by a person: the two disagree.
+func checkWithheld(withheld map[string]bool, curated map[string]curatedAliases) error {
+	for id, c := range curated {
+		for _, a := range c.Aliases {
+			if withheld[normalize(a)] {
+				return fmt.Errorf("%s: %q is withheld but %s gives it to %s", withheldSource, a, curatedSource, id)
+			}
+		}
+	}
+	return nil
 }
 
 // readByID reads a JSON Lines file under root, keyed by each line's ID; a missing file is empty.
@@ -261,8 +299,9 @@ func hasDefaultPortion(f *catalogueFood) bool {
 // "meatloaf" to a meat loaf and to a beef record in another family, or "french fries" to a fast
 // food and a home version. An alias that is already another food's name, or one a rule or a
 // person gave another food, is left to that food; otherwise the foods asked about share it and
-// preferredFirst picks one. It returns the model's answers with the others' copies taken out.
-func soleModelAliases(foods []*catalogueFood, curated map[string]curatedAliases, model map[string]modelAliases) map[string]modelAliases {
+// preferredFirst picks one. A withheld name stays on none of them. It returns the model's answers
+// with the others' copies taken out.
+func soleModelAliases(foods []*catalogueFood, curated map[string]curatedAliases, model map[string]modelAliases, withheld map[string]bool) map[string]modelAliases {
 	fixed := map[string]string{} // a name, rule or curated alias: whose it is
 	for _, f := range foods {
 		phrases := append([]string{f.Name}, ruleAliases(f.Name)...)
@@ -292,6 +331,9 @@ func soleModelAliases(foods []*catalogueFood, curated map[string]curatedAliases,
 	}
 	keeper := map[string]string{}
 	for k, holders := range claims {
+		if withheld[k] {
+			continue
+		}
 		if owner, ok := fixed[k]; ok {
 			keeper[k] = owner
 			continue

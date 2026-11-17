@@ -158,3 +158,59 @@
 {"phrase": "fast food breakfast burrito", "id": "ofc:fast-foods-breakfast-burrito-with-egg-cheese-and-sausage"}
 {"phrase": "fast food hash browns", "id": "ofc:potato-hash-brown-from-fast-food"}
 {"phrase": "restaurant mashed potatoes", "id": "ofc:potato-mashed-from-restaurant"}
+{"phrase": "baby green beans", "id": "none"}
+{"phrase": "baby mixed vegetables", "id": "none"}
+{"phrase": "baby peaches", "id": "none"}
+{"phrase": "baby pears", "id": "none"}
+{"phrase": "baby rice cereal", "id": "none"}
+{"phrase": "baked tortilla chips", "id": "ofc:tortilla-chips-low-fat-baked-without-fat"}
+{"phrase": "blueberry muffin", "id": "ofc:muffins-blueberry-commercially-prepared-includes-mini-muffins"}
+{"phrase": "boston butt", "id": "ofc:pork-fresh-loin-blade-roasts-boneless-separable-lean-and-fat-cooked-roasted"}
+{"phrase": "bread flour", "id": "ofc:flour-bread-white-enriched-unbleached"}
+{"phrase": "breaded shrimp", "id": "ofc:crustaceans-shrimp-mixed-species-cooked-breaded-and-fried"}
+{"phrase": "canned black eyed peas", "id": "ofc:blackeye-pea-canned-sodium-added-drained-and-rinsed"}
+{"phrase": "cheese sandwich crackers", "id": "ofc:crackers-cheese-sandwich-type-with-cheese-filling"}
+{"phrase": "chicken and potatoes", "id": "none"}
+{"phrase": "chicken broth", "id": "ofc:soup-chicken-broth-canned-prepared-with-equal-volume-water"}
+{"phrase": "chicken chow mein", "id": "ofc:chicken-or-turkey-chow-mein-or-chop-suey-with-noodles"}
+{"phrase": "chocolate covered coffee beans", "id": "ofc:candies-dark-chocolate-coated-coffee-beans"}
+{"phrase": "chocolate malted milk", "id": "ofc:beverages-chocolate-malt-powder-prepared-with-1-milk-fortified"}
+{"phrase": "chocolate pudding mix", "id": "ofc:puddings-chocolate-dry-mix-regular"}
+{"phrase": "cooked black beans", "id": "ofc:black-beans-nfs"}
+{"phrase": "cooked pinto beans", "id": "ofc:pinto-beans-nfs"}
+{"phrase": "cranberry juice", "id": "ofc:cranberry-juice-100-not-a-blend"}
+{"phrase": "custard apple", "id": "ofc:custard-apple-bullock-s-heart-raw"}
+{"phrase": "decaf coffee", "id": "ofc:coffee-ns-as-to-brewed-or-instant-decaffeinated"}
+{"phrase": "decaffeinated coffee", "id": "ofc:coffee-ns-as-to-brewed-or-instant-decaffeinated"}
+{"phrase": "deli chicken breast", "id": "ofc:chicken-breast-deli-rotisserie-seasoned-sliced-prepackaged"}
+{"phrase": "diet iced tea", "id": "ofc:tea-iced-brewed-black-pre-sweetened-with-low-calorie-sweetener"}
+{"phrase": "dried parsley", "id": "ofc:spices-parsley-dried"}
+{"phrase": "fish stock", "id": "ofc:fish-broth"}
+{"phrase": "frosting", "id": "ofc:frostings-vanilla-creamy-ready-to-eat"}
+{"phrase": "frozen turkey dinner", "id": "ofc:turkey-with-vegetable-stuffing-diet-frozen-meal"}
+{"phrase": "fruit cocktail in water", "id": "ofc:fruit-cocktail-peach-and-pineapple-and-pear-and-grape-and-cherry-canned-water-pack-solids-and-liquids"}
+{"phrase": "fruit drink", "id": "ofc:fruit-juice-drink"}
+{"phrase": "iced tea", "id": "ofc:tea-iced-brewed-black-unsweetened"}
+{"phrase": "lamb kidney", "id": "ofc:lamb-variety-meats-and-by-products-kidneys-cooked-braised"}
+{"phrase": "lamb liver", "id": "ofc:lamb-variety-meats-and-by-products-liver-cooked-pan-fried"}
+{"phrase": "mahi mahi", "id": "ofc:fish-mahimahi-cooked-dry-heat"}
+{"phrase": "no pulp orange juice", "id": "ofc:beverages-orange-juice-light-no-pulp"}
+{"phrase": "oatmeal cookies", "id": "ofc:cookies-oatmeal-prepared-from-recipe-without-raisins"}
+{"phrase": "peanut butter cookies", "id": "ofc:cookies-peanut-butter-prepared-from-recipe"}
+{"phrase": "protein fruit smoothie", "id": "ofc:fruit-smoothie-with-whole-fruit-and-dairy-added-protein"}
+{"phrase": "queso blanco", "id": "ofc:cheese-white-queso-blanco"}
+{"phrase": "ramen", "id": "ofc:ramen-bowl-nfs"}
+{"phrase": "raw chicken breast", "id": "ofc:chicken-broilers-or-fryers-light-meat-meat-only-raw"}
+{"phrase": "raw chicken wings", "id": "ofc:chicken-broilers-or-fryers-wing-meat-and-skin-raw"}
+{"phrase": "roast chicken", "id": "ofc:chicken-broilers-or-fryers-meat-and-skin-cooked-roasted"}
+{"phrase": "rotisserie chicken back", "id": "ofc:chicken-broilers-or-fryers-rotisserie-original-seasoning-back-meat-and-skin-cooked"}
+{"phrase": "rotisserie chicken skin", "id": "ofc:chicken-broilers-or-fryers-rotisserie-original-seasoning-skin-only-cooked"}
+{"phrase": "skinless rotisserie chicken breast", "id": "ofc:chicken-broilers-or-fryers-rotisserie-original-seasoning-breast-meat-only-cooked"}
+{"phrase": "skinless rotisserie chicken thigh", "id": "ofc:chicken-broilers-or-fryers-rotisserie-original-seasoning-thigh-meat-only-cooked"}
+{"phrase": "skinless rotisserie chicken wing", "id": "ofc:chicken-broilers-or-fryers-rotisserie-original-seasoning-wing-meat-only-cooked"}
+{"phrase": "stewed chicken", "id": "ofc:chicken-broilers-or-fryers-meat-and-skin-cooked-stewed"}
+{"phrase": "stewed chicken thigh", "id": "ofc:chicken-broilers-or-fryers-thigh-meat-and-skin-cooked-stewed"}
+{"phrase": "stewed prunes", "id": "ofc:prunes-dehydrated-low-moisture-stewed"}
+{"phrase": "stewed turkey", "id": "ofc:turkey-light-or-dark-meat-stewed-skin-not-eaten"}
+{"phrase": "vanilla pudding mix", "id": "ofc:puddings-vanilla-dry-mix-regular"}
+{"phrase": "wine", "id": "ofc:alcoholic-beverage-wine-table-all"}

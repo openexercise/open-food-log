@@ -119,7 +119,8 @@ func TestCuratedEggs(t *testing.T) {
 }
 
 // TestAliasChecks holds the built catalogue to sources/alias-checks.jsonl: each phrase is a name or
-// alias that one food alone holds, the food named, which a matcher can take as a sure match. A
+// alias that one food alone holds, the food named, which a matcher can take as a sure match, or,
+// with the ID "none", a name no food holds, so a matcher asks. A
 // model run that moves a plain name, or gives it to two foods, fails here.
 func TestAliasChecks(t *testing.T) {
 	root := filepath.Join("..", "..")
@@ -162,7 +163,14 @@ func TestAliasChecks(t *testing.T) {
 		if err := json.Unmarshal([]byte(line), &c); err != nil || c.Phrase == "" || c.ID == "" {
 			t.Fatalf("alias-checks.jsonl line %d: want {phrase, id}: %v", i+1, err)
 		}
-		if got := holders[normalize(c.Phrase)]; !slices.Equal(got, []string{c.ID}) {
+		got := holders[normalize(c.Phrase)]
+		if c.ID == "none" {
+			if len(got) > 0 {
+				t.Errorf("%q is held by %v, want no food (a matcher asks)", c.Phrase, got)
+			}
+			continue
+		}
+		if !slices.Equal(got, []string{c.ID}) {
 			t.Errorf("%q is held by %v, want %s alone", c.Phrase, got, c.ID)
 		}
 	}
@@ -187,11 +195,11 @@ func TestSoleModelAliases(t *testing.T) {
 		"ofc:fries-frozen":    {Aliases: []string{"french fries"}},
 		"ofc:oatmeal-instant": {Aliases: []string{"oatmeal", "instant oatmeal"}}, // "oatmeal" is the NFS record's by rule
 	}
-	got := soleModelAliases(foods, nil, model)
+	got := soleModelAliases(foods, nil, model, map[string]bool{"fast food fries": true})
 	want := map[string][]string{
 		"ofc:meat-loaf-ns":    {"meatloaf"}, // unspecified wins
 		"ofc:beef-loaf":       {"beef loaf"},
-		"ofc:fries-fast-food": {"fast food fries"},
+		"ofc:fries-fast-food": nil,              // "fast food fries" is withheld
 		"ofc:fries-home":      {"french fries"}, // a default portion and the shorter name
 		"ofc:fries-frozen":    nil,
 		"ofc:oatmeal-instant": {"instant oatmeal"},
@@ -200,5 +208,15 @@ func TestSoleModelAliases(t *testing.T) {
 		if !slices.Equal(got[id].Aliases, w) {
 			t.Errorf("%s: %q, want %q", id, got[id].Aliases, w)
 		}
+	}
+}
+
+func TestCheckWithheld(t *testing.T) {
+	withheld := map[string]bool{"baby peaches": true}
+	if err := checkWithheld(withheld, map[string]curatedAliases{"ofc:x": {Aliases: []string{"peaches"}}}); err != nil {
+		t.Errorf("a different name: %v", err)
+	}
+	if err := checkWithheld(withheld, map[string]curatedAliases{"ofc:x": {Aliases: []string{"Baby Peaches"}}}); err == nil {
+		t.Error("a name both withheld and curated passed")
 	}
 }

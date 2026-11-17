@@ -13,10 +13,11 @@ Lifterclub with the specification; this file covers the whole repository. `git l
 
 Known gaps and deferred work, removed when it ships (and recorded under Unreleased).
 
-- **Review the model aliases:** 6,524 of them, none checked by a person. 432 names were given to
-  several foods and kept on one by rule; those are the likeliest to be wrong. "Spaghetti and
-  meatballs" finds a canned version (the catalogue has no everyday one). Correct them in
-  `sources/curated-aliases.jsonl` and add a line to `sources/alias-checks.jsonl`.
+- **Review the model aliases:** 6,747 of them, none checked one by one. Of the 432 names given to
+  several foods, the build's rule and a blind Claude Haiku review agreed on 374, and a person settled
+  the other 58 (v0.10.2). "Spaghetti and meatballs" finds a canned version (the catalogue has no
+  everyday one). Correct a name in `sources/curated-aliases.jsonl`, or withhold it in
+  `sources/withheld-aliases.jsonl`, and add a line to `sources/alias-checks.jsonl`.
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
 - **A place for reviews** that the generator merges in (aliases have one now:
   `sources/curated-aliases.jsonl`).
