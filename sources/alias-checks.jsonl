@@ -105,3 +105,6 @@
 {"phrase": "scrambled eggs", "id": "ofc:egg-omelet-or-scrambled-egg-ns-as-to-fat"}
 {"phrase": "mac and cheese", "id": "ofc:macaroni-or-noodles-with-cheese"}
 {"phrase": "macaroni and cheese", "id": "ofc:macaroni-or-noodles-with-cheese"}
+{"phrase": "banana", "id": "ofc:banana-raw"}
+{"phrase": "almonds", "id": "ofc:almonds-nfs"}
+{"phrase": "almond", "id": "ofc:almonds-nfs"}
