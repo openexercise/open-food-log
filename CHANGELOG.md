@@ -24,20 +24,22 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 - **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
   allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
 - **Branded catalogue** (phase A of Lifterclub's `docs/fdc-branded.md`): build
-  `branded-foods.jsonl.gz` from USDA's Branded Foods and attach it to a release. Rules to settle
-  first, from [`catalogue/BRANDED-REPORT.md`](catalogue/BRANDED-REPORT.md): whether to zero-pad
-  the 1,162 short codes that pass the check digit padded, what basis the 5,081 records served in
-  MG, IU or MC have, and the Atwater tolerance (20% and 40 kcal drops 12,044).
+  `branded-foods.jsonl.gz` from USDA's Branded Foods by the rules `ofl catalogue branded-report`
+  applies and attach it to a release.
 - **v1:** freezes when the first application outside Lifterclub writes the format in production
   ([README.md](README.md)).
 
 ## Unreleased
 
 - **Added:** `ofl catalogue branded-report <file>` measures USDA FoodData Central's Branded Foods
-  download against the rules planned for a branded catalogue and writes
-  [`catalogue/BRANDED-REPORT.md`](catalogue/BRANDED-REPORT.md), writing no records. Of the
-  2026-10-29 release's 434,001 records, 395,815 would be kept (US market, a valid GTIN, newest per
-  GTIN, not discontinued, plausible numbers): about 84 MB gzipped with ingredients, 53 MB without.
+  download against the rules for a branded catalogue and writes
+  [`catalogue/BRANDED-REPORT.md`](catalogue/BRANDED-REPORT.md), writing no records. The rules: the
+  US market (written `United States` or `US`, kept as `US`); a GTIN zero-padded to 14 digits with a
+  valid check digit (an 11-digit code is a UPC-A that lost its leading zero); the newest record per
+  GTIN; not discontinued; and plausible numbers (energy within 20% or 40 kcal of 4·protein +
+  4·carbohydrate + 9·fat). A serving given in MG, IU or MC is read as grams or millilitres when the
+  label's calories confirm it. Of the 2026-10-29 release's 434,001 records, 396,916 are kept: about
+  85 MB gzipped with ingredients, 53 MB without.
 
 ## v0.11.0 — 2026-11-17
 
