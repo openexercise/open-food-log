@@ -17,7 +17,7 @@ Guides: the [developer guide](docs/developer-guide.md) (also on the site at [ope
 | `schema/v0/log.json` | A whole log as one file: meals, the person's own foods, recipes, saved meals, targets and deleted meals |
 | `schema/v0/nutrients.json` | The nutrient keys, each ending in its unit, mapped to FAO INFOODS tagnames, USDA FoodData Central numbers, Health Connect and HealthKit |
 | `schema/v0/amount-vectors.json` | Worked cases every implementation must agree on: an amount on a food, as grams, millilitres or servings, then as nutrients |
-| `schema/v0/recipe-vectors.json`, `target-vectors.json` | The same for a recipe's yield and nutrients, and for which target applies and whether it was met |
+| `schema/v0/recipe-vectors.json`, `target-vectors.json`, `label-vectors.json` | The same for a recipe's yield and nutrients, for which target applies and whether it was met, and for a package's label as a food's values, or inconsistent or implausible |
 | `schema/README.md` | Versions and the registry of `x-<vendor>-` extensions |
 | `schema/CHANGELOG.md` | What changed in v0 |
 | `examples` | Foods (generic, packaged with its label, a supplement), meals, a recipe, a saved meal, targets and a log |

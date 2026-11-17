@@ -18,12 +18,12 @@
     "name": { "type": "string", "minLength": 1, "description": "The canonical name, in English for the catalogue." },
     "kind": {
       "enum": ["generic", "branded", "restaurant", "custom", "supplement"],
-      "description": "generic: a food as such (a raw egg). branded: a packaged product. restaurant: a dish as one restaurant serves it. custom: a person's own food. supplement: a dietary supplement, dosed per serving (label.nutrients_per_serving) rather than weighed."
+      "description": "generic: a food as such (a raw egg). branded: a packaged product from a product database. restaurant: a dish as one restaurant serves it. custom: a person's own food, which may carry gtin and brand for a product they entered (v0.3). supplement: a dietary supplement, dosed per serving (label.nutrients_per_serving) rather than weighed."
     },
     "brand": { "type": "string" },
     "gtin": {
       "type": "array",
-      "description": "Barcodes the product is sold under, as 14 digits (shorter codes zero-padded on the left).",
+      "description": "Barcodes the product is sold under, as 14 digits (shorter codes zero-padded on the left). On a custom food (v0.3), the codes the person gave it, which resolve to it for that person first (section 3).",
       "items": { "type": "string", "pattern": "^[0-9]{14}$" }
     },
     "aliases": {

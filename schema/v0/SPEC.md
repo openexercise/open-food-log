@@ -1,6 +1,6 @@
 # Open Food Log v0
 
-**Status: v0.2 draft, 2026-11-13** (v0.1 2026-11-12, first draft 2026-11-09). Anything may change until v1; section 13 says how. The key words MUST, SHOULD and MAY are
+**Status: v0.3 draft, 2026-11-17** (v0.2 2026-11-13, v0.1 2026-11-12, first draft 2026-11-09). Anything may change until v1; section 13 says how. The key words MUST, SHOULD and MAY are
 used as in RFC 2119. Its home is [openfoodlog.org](https://openfoodlog.org).
 
 The Open Food Log (OFL) describes what a person ate so any app or assistant can record it, read it
@@ -35,7 +35,7 @@ things:
 | Targets | [`targets.json`](targets.json) | The nutrition targets a person keeps |
 | Log | [`log.json`](log.json) | A whole log as one file: meals, the person's own foods, recipes and saved meals, targets, deleted meals |
 | Nutrients | [`nutrients.json`](nutrients.json) | The nutrient keys and their mappings to other systems |
-| Vectors | [`amount-vectors.json`](amount-vectors.json), [`recipe-vectors.json`](recipe-vectors.json), [`target-vectors.json`](target-vectors.json) | Worked cases every implementation must agree on |
+| Vectors | [`amount-vectors.json`](amount-vectors.json), [`recipe-vectors.json`](recipe-vectors.json), [`target-vectors.json`](target-vectors.json), [`label-vectors.json`](label-vectors.json) (v0.3) | Worked cases every implementation must agree on |
 
 Documents are UTF-8 JSON, valid against JSON Schema draft 2020-12, and MAY say which version they
 were written to in `ofl_version` (section 13). Consumers MUST ignore members starting `x-` that they
@@ -68,6 +68,10 @@ id = namespace ":" slug
     that has the product, and names that source in `provenance.sources`, so a person and an
     assistant can see where the label came from. A logged item keeps the nutrients it was logged
     with, so a later answer never changes past days.
+  - A person's own food may carry a product's barcode (v0.3, section 5). Resolving a `gtin:`
+    reference for that person, a system SHOULD answer with their food before any product database,
+    under the food's own `usr:` ID with the code in its `gtin`: it is the label they checked. One
+    person's barcodes never answer for another.
 - `usr:` is one person's own food, `recipe:` one person's recipe and `saved:` one person's saved meal
   (v0.2), each meaningful only inside the system that made it. An export MUST include the `usr:`
   foods and `recipe:` recipes its meals and saved meals name, in `foods` and `recipes`, and the
@@ -123,10 +127,13 @@ skimmed are different foods.
   (`label.nutrients_per_serving`, as a supplement's does). A producer SHOULD work out the other sets
   where it can (per 100 g from per 100 ml with a density, or from per serving with the serving's
   weight); where it can't, `nutrients_per_100g` is `{}`, since every value is unknown.
-- `kind` is `generic` (a food as such), `branded` (a packaged product; give `brand` and `gtin`),
-  `restaurant` (a dish as one restaurant serves it), `custom` (a person's own) or `supplement` (a
-  dietary supplement, dosed per serving; give `identifiers.dsld_id` when it is in the NIH Dietary
-  Supplement Label Database).
+- `kind` is `generic` (a food as such), `branded` (a packaged product from a product database; give
+  `brand` and `gtin`), `restaurant` (a dish as one restaurant serves it), `custom` (a person's own)
+  or `supplement` (a dietary supplement, dosed per serving; give `identifiers.dsld_id` when it is in
+  the NIH Dietary Supplement Label Database).
+- A `custom` food MAY carry `gtin` and `brand` (v0.3) for a product the person entered themselves,
+  such as one no database knows: it stays `custom`, since its numbers are the person's, not a
+  database's. Section 3 says how its barcode resolves.
 - `portions` are named measures with their weight (`"1 large"`, 50 g). Cups and spoons are portions,
   not units, because what a cup weighs depends on the food. At most one portion is `is_default`: the
   one to assume when a person names the food without a size ("an egg").
@@ -137,6 +144,31 @@ skimmed are different foods.
   declared `serving` (its text, and its grams or ml where printed), `servings_per_container`,
   `nutrients_per_serving` and `percent_daily_values` keyed by nutrient. Percentages are kept as
   printed, never turned into amounts.
+- **A food from its label** (v0.3). With the serving's `grams`, `nutrients_per_100g` is
+  `nutrients_per_serving × 100 / grams`, and the serving SHOULD become the default portion; with its
+  `ml`, `nutrients_per_100ml` is worked out the same way over the millilitres. With only `ml`,
+  `nutrients_basis` is `100ml` and per 100 g is known only through `density_g_per_ml`: millilitres
+  are never taken for grams. With neither, `nutrients_basis` is `serving`, and no weight is invented.
+  - A label is **consistent** when no part is more than the whole that includes it: saturated,
+    trans, mono- and polyunsaturated fat within fat; sugars, starch and polyols within carbohydrate
+    (`carbohydrate_g` or `carbohydrate_available_g`); added sugars within sugars; and, under `us` and
+    `ca` rules only, fibre within `carbohydrate_g` (available carbohydrate excludes fibre, so fibre
+    may exceed it). Labels round a part and its whole by the same rule, so a part over its whole is a
+    misreading. An implementation SHOULD NOT store an inconsistent label as declared: it refuses
+    typed values, or drops values read from a photo for the person to read again, naming each part
+    and whole.
+  - Values per 100 g or per 100 ml over 900 kcal, or with more than 100 g of protein, fat and
+    carbohydrate together, are **implausible**: a serving read as smaller than it is, or the reverse.
+    Other checks (energy against the macronutrients, kJ against kcal, a %DV against its amount) need
+    tolerances for each region's rounding and are left to implementations until measured ones are
+    agreed.
+  - The [label vectors](label-vectors.json) are worked cases of all three.
+- **A label read by a model** (v0.3). Until the person has checked it, a food read from a photo of
+  its label lists every value the model read in `provenance.generated`, so a reader can tell. Once
+  the person has confirmed or corrected the values they are the person's: `generated` is empty and
+  `provenance.sources` names the label (for example "Package label, read from a photo and checked by
+  the person", with `retrieved_at`). The barcode comes from a scan or the person, never from the
+  photo.
 - **Attributes** describe the food, and each says its `basis`: `declared` (by the label, the maker,
   or a database that measured it) or `inferred` (worked out from the name or ingredients, or guessed
   by a model). A reader MUST NOT present an inferred attribute as a declaration.
@@ -294,7 +326,9 @@ is generated from the first implementation, each tool marked in its `_meta` unde
 `dev.openfoodlog/profile`. Its neutral core is:
 
 - meals: `log_meal`, `get_meals`, `update_meal`, `delete_meal` and `undo`;
-- foods: `search_foods`;
+- foods: `search_foods` and `create_food` (v0.3: one of the person's own foods, from nutrients or its
+  label, with `gtin` and `brand` where the person gives them; an assistant creates it only after the
+  person has confirmed the numbers);
 - recipes (v0.2): `save_recipe`, `get_recipes` and `delete_recipe`;
 - saved meals (v0.2): `save_meal`, `get_saved_meals`, `delete_saved_meal` and `log_meal_again`
   (a saved meal, or the same as an earlier meal, counted again as section 8 says);
@@ -344,7 +378,7 @@ both by volume; `water_g` in foods maps to neither.
 
 ## 13. Versions and extensions
 
-- `ofl_version` names the version a document was written to, as `MAJOR.MINOR` (`"0.2"`). A document
+- `ofl_version` names the version a document was written to, as `MAJOR.MINOR` (`"0.3"`). A document
   without one is `0.0`, the first draft. The schemas' `$id`s stay `…/schema/v0/` for every 0.x.
 - **A minor version only adds**: new optional members, nutrient keys, enum values and documents. It
   never removes or renames a member, never changes a unit or what a value means, and never makes an

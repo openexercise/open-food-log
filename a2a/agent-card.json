@@ -274,6 +274,52 @@
           ]
         }
       ]
+    },
+    {
+      "description": "Read a photo of a package's nutrition label (a raw part, JPEG, PNG, HEIC, HEIF or WebP, at most 8 MB, with its mediaType) into a draft of one of the person's own foods, with metadata.skill \"read-food-label\" and, when the package was scanned, a data part {\"barcode\": \"0012345678905\"} (the barcode is never read from the photo). Nothing is saved; the answer is the draft as a data part. Every number in it is printed on the label and agrees with the rest of it; one that couldn't be read or checked is left out and named in warnings, for the person to read off the package. Lifterclub reads the photo with Gemini and keeps it in memory only.",
+      "examples": [
+        "a photo of a protein bar's Nutrition Facts panel, with {\"barcode\": \"0096619756803\"}"
+      ],
+      "id": "read-food-label",
+      "inputModes": [
+        "text/plain",
+        "application/json",
+        "image/jpeg",
+        "image/png",
+        "image/heic",
+        "image/heif",
+        "image/webp"
+      ],
+      "name": "Read a food label from a photo",
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "oauth": {
+              "list": [
+                "meals:write"
+              ]
+            }
+          }
+        }
+      ],
+      "tags": [
+        "nutrition",
+        "foods",
+        "barcode",
+        "photo",
+        "openfoodlog:lifterclub"
+      ],
+      "security": [
+        {
+          "oauth": [
+            "meals:write"
+          ]
+        }
+      ]
     }
   ],
   "securitySchemes": {
@@ -308,7 +354,8 @@
             "targets"
           ],
           "extension_skills": [
-            "log-meal-photo"
+            "log-meal-photo",
+            "read-food-label"
           ],
           "version": "v0"
         },

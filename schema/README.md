@@ -15,7 +15,7 @@ directory stays the source of truth until v1.
 | [`v0/SPEC.md`](v0/SPEC.md) | The specification |
 | [`v0/food.json`](v0/food.json), [`v0/meal.json`](v0/meal.json), [`v0/recipe.json`](v0/recipe.json), [`v0/saved-meal.json`](v0/saved-meal.json) (v0.2), [`v0/targets.json`](v0/targets.json), [`v0/log.json`](v0/log.json) | JSON Schemas (draft 2020-12) |
 | [`v0/nutrients.json`](v0/nutrients.json) | 52 nutrient keys, mapped to INFOODS, FoodData Central, Health Connect and HealthKit |
-| [`v0/amount-vectors.json`](v0/amount-vectors.json), [`v0/recipe-vectors.json`](v0/recipe-vectors.json), [`v0/target-vectors.json`](v0/target-vectors.json) | Cases every implementation must agree on: amounts to grams to nutrients, recipes, and targets met or not |
+| [`v0/amount-vectors.json`](v0/amount-vectors.json), [`v0/recipe-vectors.json`](v0/recipe-vectors.json), [`v0/target-vectors.json`](v0/target-vectors.json), [`v0/label-vectors.json`](v0/label-vectors.json) | Cases every implementation must agree on: amounts to grams to nutrients, recipes, targets met or not, and a package's label to its food |
 | [`examples`](../examples) | Foods (generic, packaged with a label, a supplement), meals, a recipe, a saved meal, targets and a log |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed |
 
@@ -37,7 +37,7 @@ v1.2), and the Health Connect and HealthKit references.
 
 ## Versions
 
-Documents name the version they were written to in `ofl_version` (`"0.2"`); none means 0.0. A
+Documents name the version they were written to in `ofl_version` (`"0.3"`); none means 0.0. A
 minor version only adds: optional members, nutrient keys, enum values, documents. A document valid
 under one 0.x stays valid under the next, and a reader keeps what it doesn't understand rather than
 dropping it. Breaking changes before v1 are rare, fix mistakes, and are marked in the changelog.

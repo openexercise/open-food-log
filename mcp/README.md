@@ -14,7 +14,9 @@ mark when they list their tools:
   server offers all of them, with these shapes.
   - Meals: `log_meal`, `get_meals`, `update_meal` (a meal, or an item, including confirming its
     food), `delete_meal` and `undo`.
-  - Foods: `search_foods`.
+  - Foods: `search_foods` and `create_food` (v0.3: one of the person's own foods, from its values
+    or its label as printed, with a barcode and brand where given; created only after the person
+    confirms the numbers).
   - Recipes (v0.2): `save_recipe`, `get_recipes` and `delete_recipe`.
   - Saved meals (v0.2): `save_meal`, `get_saved_meals`, `delete_saved_meal` and `log_meal_again`
     (a saved meal, or the same as an earlier meal, counted again).
@@ -25,8 +27,9 @@ mark when they list their tools:
   from USDA FoodData Central first, then Open Food Facts live; the result names its source, and a
   product logs by its `gtin:` ID; the user's own food with that barcode answers first, under its
   `usr:` ID), `import_recipe` (a web page's schema.org Recipe read into a draft for `save_recipe`),
-  and the user's own foods: `create_food` (with a barcode, brand and label as printed),
-  `update_food` and `delete_food`. `create_food` is planned for the core in v0.3.
+  and editing or deleting the user's own foods: `update_food` and `delete_food`. `read_food_label`
+  reads a photo of a nutrition label into a draft for `create_food`, every number checked against
+  the label and nothing saved.
 
 `undo` is shared with the Open Workout profile (`dev.openworkout/profile` too): a server that keeps
 both logs restores whatever the token was given for, with one tool.
