@@ -29,6 +29,13 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+### Changed
+
+- The MCP profile (`mcp/tools.json`, `mcp/README.md`) lists Lifterclub's own-food tools,
+  `create_food`, `update_food` and `delete_food`, in the `lifterclub` part, and `lookup_barcode` now
+  answers with the user's own food carrying the barcode first. The core is unchanged; `create_food`
+  is planned for the core in v0.3.
+
 ## v0.12.2 — 2026-11-17
 
 The 58 names where the build's rule and a second review disagreed are settled by a person, and
