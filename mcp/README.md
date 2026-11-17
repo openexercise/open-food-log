@@ -29,7 +29,8 @@ mark when they list their tools:
   `usr:` ID), `import_recipe` (a web page's schema.org Recipe read into a draft for `save_recipe`),
   and editing or deleting the user's own foods: `update_food` and `delete_food`. `read_food_label`
   reads a photo of a nutrition label into a draft for `create_food`, every number checked against
-  the label and nothing saved.
+  the label and nothing saved; an optional `front_image` of the package's front gives the name and
+  brand as printed there.
 
 `undo` is shared with the Open Workout profile (`dev.openworkout/profile` too): a server that keeps
 both logs restores whatever the token was given for, with one tool.

@@ -276,7 +276,7 @@
       ]
     },
     {
-      "description": "Read a photo of a package's nutrition label (a raw part, JPEG, PNG, HEIC, HEIF or WebP, at most 8 MB, with its mediaType) into a draft of one of the person's own foods, with metadata.skill \"read-food-label\" and, when the package was scanned, a data part {\"barcode\": \"0012345678905\"} (the barcode is never read from the photo). Nothing is saved; the answer is the draft as a data part. Every number in it is printed on the label and agrees with the rest of it; one that couldn't be read or checked is left out and named in warnings, for the person to read off the package. Lifterclub reads the photo with Gemini and keeps it in memory only.",
+      "description": "Read a photo of a package's nutrition label (a raw part, JPEG, PNG, HEIC, HEIF or WebP, at most 8 MB, with its mediaType) into a draft of one of the person's own foods, with metadata.skill \"read-food-label\" and, when the package was scanned, a data part {\"barcode\": \"0012345678905\"} (the barcode is never read from the photo). Nothing is saved; the answer is the draft as a data part. Every number in it is printed on the label and agrees with the rest of it; one that couldn't be read or checked is left out and named in warnings, for the person to read off the package. A second raw part, a photo of the package's front, gives the product's name and brand as printed there (both photos at most 8 MB together). Lifterclub reads the photos with Gemini and keeps them in memory only.",
       "examples": [
         "a photo of a protein bar's Nutrition Facts panel, with {\"barcode\": \"0096619756803\"}"
       ],

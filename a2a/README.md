@@ -33,7 +33,8 @@ Its `params.core_skills` lists the core; each skill also carries the tag `openfo
   unless the message's `metadata.save` is true; then it logs as `log-meal` does. A photo by URL is
   never fetched. `read-food-label`, a photo of a nutrition label as a raw part (with
   `metadata.skill` and the scanned barcode as a data part `{"barcode": "…"}`), read into a draft of
-  one of the person's own foods whose every number is printed on the label; nothing is saved.
+  one of the person's own foods whose every number is printed on the label; nothing is saved. A
+  second raw part, a photo of the package's front, gives the name and brand as printed there.
 
 Descriptions of core skills name no product.
 
