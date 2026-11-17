@@ -27,7 +27,9 @@ mark when they list their tools:
   from USDA FoodData Central first, then Open Food Facts live; the result names its source, and a
   product logs by its `gtin:` ID; the user's own food with that barcode answers first, under its
   `usr:` ID), `import_recipe` (a web page's schema.org Recipe read into a draft for `save_recipe`),
-  and editing or deleting the user's own foods: `update_food` and `delete_food`.
+  and editing or deleting the user's own foods: `update_food` and `delete_food`. `read_food_label`
+  reads a photo of a nutrition label into a draft for `create_food`, every number checked against
+  the label and nothing saved.
 
 `undo` is shared with the Open Workout profile (`dev.openworkout/profile` too): a server that keeps
 both logs restores whatever the token was given for, with one tool.

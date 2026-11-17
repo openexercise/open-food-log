@@ -44,6 +44,8 @@ Open Food Log v0.3 (`ofl_version` `"0.3"`): every v0.2 document stays valid.
 - The API core's `createFood` takes `gtin`, `brand`, `label` and `nutrients_per_100ml`, and
   `getFood` answers a `gtin:` with the user's own food first; the MCP profile's core adds
   `create_food`.
+- The reference server's extensions in the MCP profile and the A2A card add `read_food_label` and
+  `read-food-label`: a photo of a nutrition label read into a draft for `create_food`.
 
 ### Changed
 

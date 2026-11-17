@@ -31,7 +31,9 @@ Its `params.core_skills` lists the core; each skill also carries the tag `openfo
 - **Extensions** in the reference agent: `log-meal-photo`, a photo of a meal as a raw part (with its
   `mediaType`), read by a model into a draft whose every amount is an estimate. Nothing is saved
   unless the message's `metadata.save` is true; then it logs as `log-meal` does. A photo by URL is
-  never fetched.
+  never fetched. `read-food-label`, a photo of a nutrition label as a raw part (with
+  `metadata.skill` and the scanned barcode as a data part `{"barcode": "…"}`), read into a draft of
+  one of the person's own foods whose every number is printed on the label; nothing is saved.
 
 Descriptions of core skills name no product.
 

@@ -24,6 +24,9 @@ A person's own foods for packaged products, labels worked out the same way every
   and refuses a label with a part over its whole; `getFood` answers a `gtin:` ID with the user's own
   food first and still reads one they deleted, as `status: "deprecated"`. The MCP profile's core
   adds `create_food`, which an assistant calls only after the person confirms the numbers.
+- The reference server's extensions (the `lifterclub` part of the MCP profile, and the A2A
+  card's extension skills) add `read_food_label` and `read-food-label`: a photo of a nutrition
+  label read into a draft for `create_food`, every number checked against the label, nothing saved.
 - Targets documents in the API core give `ofl_version` as any `0.x` rather than the constant
   `"0.2"`, so a server writing a newer minor version still matches.
 - Changed: the API core's `FoodMatch` (search results) may be `kind: branded`, a packaged product
