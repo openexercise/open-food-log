@@ -9,14 +9,16 @@ import (
 
 func TestNormalizeGTIN(t *testing.T) {
 	cases := map[string]struct{ gtin, why string }{
-		"036000291452":   {"00036000291452", ""},
-		"1633636543505":  {"01633636543505", ""},
-		"96385074":       {"00000096385074", ""},
-		"00036000291452": {"00036000291452", ""},
-		"":               {"", "none"},
-		"03600029145X":   {"", "not digits"},
-		"0360002914":     {"", "wrong length"},
-		"036000291453":   {"", "check digit"},
+		"036000291452":    {"00036000291452", ""},
+		"1633636543505":   {"01633636543505", ""},
+		"96385074":        {"00000096385074", ""},
+		"00036000291452":  {"00036000291452", ""},
+		"":                {"", "none"},
+		"03600029145X":    {"", "not digits"},
+		"0360002914":      {"", "check digit"},
+		"36000291452":     {"00036000291452", ""},
+		"123456789012345": {"", "over 14 digits"},
+		"036000291453":    {"", "check digit"},
 	}
 	for in, want := range cases {
 		gtin, why := normalizeGTIN(in)
@@ -26,12 +28,33 @@ func TestNormalizeGTIN(t *testing.T) {
 	}
 }
 
-func TestPaddedValid(t *testing.T) {
-	if !paddedValid("36000291452") {
-		t.Error("a UPC-A without its leading zero should pass once padded")
+func TestBasis(t *testing.T) {
+	v := func(f float64) *float64 { return &f }
+	label := func(kcal float64) map[string]struct {
+		Value *float64 `json:"value"`
+	} {
+		return map[string]struct {
+			Value *float64 `json:"value"`
+		}{"calories": {Value: v(kcal)}}
 	}
-	if paddedValid("36000291453") || paddedValid("12X") || paddedValid("123456789012345") {
-		t.Error("a bad check digit, a letter or 15 digits shouldn't pass")
+	cases := []struct {
+		name string
+		food brandedFood
+		kcal float64
+		want string
+	}{
+		{"grams", brandedFood{ServingSizeUnit: "GRM"}, 100, "100g"},
+		{"millilitres", brandedFood{ServingSizeUnit: "mlt"}, 100, "100ml"},
+		{"MG that is grams", brandedFood{ServingSizeUnit: "MG", ServingSize: v(38), PackageWeight: "5.3 oz/150 g", LabelNutrients: label(230)}, 605, "100g"},
+		{"MG that is millilitres", brandedFood{ServingSizeUnit: "MG", ServingSize: v(250), PackageWeight: "8.4 fl oz", LabelNutrients: label(10)}, 4, "100ml"},
+		{"IU with a weight beside fl oz", brandedFood{ServingSizeUnit: "IU", ServingSize: v(15), HouseholdServingFullText: "1 tbs", PackageWeight: "8.5 FL OZ/250 g", LabelNutrients: label(50)}, 333, "100g"},
+		{"label disagrees", brandedFood{ServingSizeUnit: "MG", ServingSize: v(38), LabelNutrients: label(100)}, 605, ""},
+		{"no label", brandedFood{ServingSizeUnit: "IU", ServingSize: v(38)}, 605, ""},
+	}
+	for _, c := range cases {
+		if got, _ := basis(c.food, map[string]float64{"energy_kcal": c.kcal}); got != c.want {
+			t.Errorf("%s: got %q, want %q", c.name, got, c.want)
+		}
 	}
 }
 
@@ -59,14 +82,15 @@ func TestImplausible(t *testing.T) {
 		n    map[string]float64
 		want string
 	}{
-		{"fine", brandedFood{}, map[string]float64{"energy_kcal": 500, "protein_g": 10.7, "fat_g": 25, "carbohydrate_g": 57.1}, ""},
-		{"no energy", brandedFood{}, map[string]float64{"protein_g": 1}, whyNoEnergy},
+		{"fine", brandedFood{ServingSizeUnit: "g"}, map[string]float64{"energy_kcal": 500, "protein_g": 10.7, "fat_g": 25, "carbohydrate_g": 57.1}, ""},
+		{"no energy", brandedFood{ServingSizeUnit: "g"}, map[string]float64{"protein_g": 1}, whyNoEnergy},
 		{"zero serving", brandedFood{ServingSize: serving(0)}, map[string]float64{"energy_kcal": 1}, whyNegative},
-		{"over 100 g", brandedFood{}, map[string]float64{"energy_kcal": 400, "protein_g": 50, "fat_g": 10, "carbohydrate_g": 50}, whyOverLimit},
-		{"over 900 kcal", brandedFood{}, map[string]float64{"energy_kcal": 901}, whyOverEnergy},
-		{"Atwater far off", brandedFood{}, map[string]float64{"energy_kcal": 100, "protein_g": 20, "fat_g": 10, "carbohydrate_g": 20}, whyEnergyAtwater},
-		{"Atwater small gap", brandedFood{}, map[string]float64{"energy_kcal": 20, "protein_g": 0, "fat_g": 0, "carbohydrate_g": 10}, ""},
-		{"no macros, no check", brandedFood{}, map[string]float64{"energy_kcal": 100}, ""},
+		{"over 100 g", brandedFood{ServingSizeUnit: "g"}, map[string]float64{"energy_kcal": 400, "protein_g": 50, "fat_g": 10, "carbohydrate_g": 50}, whyOverLimit},
+		{"unit unread", brandedFood{ServingSizeUnit: "IU"}, map[string]float64{"energy_kcal": 100}, whyNoBasis},
+		{"over 900 kcal", brandedFood{ServingSizeUnit: "g"}, map[string]float64{"energy_kcal": 901}, whyOverEnergy},
+		{"Atwater far off", brandedFood{ServingSizeUnit: "g"}, map[string]float64{"energy_kcal": 100, "protein_g": 20, "fat_g": 10, "carbohydrate_g": 20}, whyEnergyAtwater},
+		{"Atwater small gap", brandedFood{ServingSizeUnit: "g"}, map[string]float64{"energy_kcal": 20, "protein_g": 0, "fat_g": 0, "carbohydrate_g": 10}, ""},
+		{"no macros, no check", brandedFood{ServingSizeUnit: "g"}, map[string]float64{"energy_kcal": 100}, ""},
 	}
 	for _, c := range cases {
 		if got := implausible(c.food, c.n); got != c.want {
@@ -125,8 +149,8 @@ func TestBrandedReport(t *testing.T) {
 	}
 	for _, want := range []string{
 		"| Read | 6 | |",
-		"| 1. US market only (`United States` or `US`) | 5 | 1 |",
-		"| 2. A valid GTIN (8, 12, 13 or 14 digits, check digit) | 4 | 1 |",
+		"| 1. US market only (`United States` or `US`, kept as `US`) | 5 | 1 |",
+		"| 2. A valid GTIN (up to 14 digits, zero-padded, check digit) | 4 | 1 |",
 		"| 3. One per GTIN, newest kept | 3 | 1 |",
 		"| 4. Not discontinued | 2 | 1 |",
 		"| 5. Plausible numbers | 1 | 1 |",
