@@ -23,8 +23,10 @@ mark when they list their tools:
   not: `log_meal_text` (sentence reading by an LLM), `log_meal_photo` (a photo read by an LLM into
   foods and estimated amounts), `lookup_barcode` (packaged foods by barcode: hosted branded foods
   from USDA FoodData Central first, then Open Food Facts live; the result names its source, and a
-  product logs by its `gtin:` ID) and `import_recipe` (a web page's schema.org Recipe read into a
-  draft for `save_recipe`).
+  product logs by its `gtin:` ID; the user's own food with that barcode answers first, under its
+  `usr:` ID), `import_recipe` (a web page's schema.org Recipe read into a draft for `save_recipe`),
+  and the user's own foods: `create_food` (with a barcode, brand and label as printed),
+  `update_food` and `delete_food`. `create_food` is planned for the core in v0.3.
 
 `undo` is shared with the Open Workout profile (`dev.openworkout/profile` too): a server that keeps
 both logs restores whatever the token was given for, with one tool.
