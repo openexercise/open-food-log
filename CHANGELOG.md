@@ -29,6 +29,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.12.3 — 2026-11-17
+
+Profile only: Lifterclub's own-food tools and the barcode lookup order in the MCP profile. No schema,
+core or catalogue changes.
+
 ### Changed
 
 - The MCP profile (`mcp/tools.json`, `mcp/README.md`) lists Lifterclub's own-food tools,
