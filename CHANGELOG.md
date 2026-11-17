@@ -28,6 +28,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.12.1 — 2026-11-17
+
+Wording only: hosted branded foods in the specification and barcode lookup in the MCP profile. No
+schema or catalogue changes; the v0.12.0 branded file stays as it is.
+
 ### Changed
 
 - The specification (section 3) lets a catalogue host `kind: branded` foods from a source whose
