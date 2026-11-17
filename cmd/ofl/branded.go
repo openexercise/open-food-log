@@ -35,6 +35,7 @@ type brandedFood struct {
 	ServingSize              *float64 `json:"servingSize"`
 	ServingSizeUnit          string   `json:"servingSizeUnit"`
 	HouseholdServingFullText string   `json:"householdServingFullText"`
+	PackageWeight            string   `json:"packageWeight"`
 	BrandedFoodCategory      string   `json:"brandedFoodCategory"`
 	DataSource               string   `json:"dataSource"`
 	MarketCountry            string   `json:"marketCountry"`
@@ -63,8 +64,10 @@ func fdcDate(s string) (time.Time, bool) {
 	return t, err == nil
 }
 
-// normalizeGTIN is Lifterclub's NormalizeGTIN: 8, 12, 13 or 14 digits with a valid check digit,
-// returned as 14. The reason names why a code isn't one.
+// normalizeGTIN reads a GTIN as 14 digits with a valid check digit. A code shorter than 14 digits
+// is zero-padded on the left, as Lifterclub's NormalizeGTIN pads 8, 12 and 13: the download also
+// gives codes that lost leading zeros (an 11-digit UPC-A), and padding gives the same 14 digits a
+// scan of the package does. The reason names why a code isn't one.
 func normalizeGTIN(code string) (gtin, reason string) {
 	code = strings.TrimSpace(code)
 	switch {
@@ -72,11 +75,8 @@ func normalizeGTIN(code string) (gtin, reason string) {
 		return "", "none"
 	case strings.Trim(code, "0123456789") != "":
 		return "", "not digits"
-	}
-	switch len(code) {
-	case 8, 12, 13, 14:
-	default:
-		return "", "wrong length"
+	case len(code) > 14:
+		return "", "over 14 digits"
 	}
 	code = strings.Repeat("0", 14-len(code)) + code
 	sum := 0
@@ -91,6 +91,15 @@ func normalizeGTIN(code string) (gtin, reason string) {
 		return "", "check digit"
 	}
 	return code, ""
+}
+
+// isPadded says whether a code is a length a scanner doesn't read as it is (not 8, 12, 13 or 14).
+func isPadded(code string) bool {
+	switch len(strings.TrimSpace(code)) {
+	case 8, 12, 13, 14:
+		return false
+	}
+	return true
 }
 
 // newer says whether a is the version of a product to keep over b: the later available date, then
@@ -117,28 +126,9 @@ func isUS(market string) bool {
 	return m == "United States" || m == "US"
 }
 
-// paddedValid says whether a code of digits passes the GTIN check digit once zero-padded to 14,
-// as a UPC-A whose leading zero was dropped (11 digits) would.
-func paddedValid(code string) bool {
-	code = strings.TrimSpace(code)
-	if code == "" || len(code) > 14 || strings.Trim(code, "0123456789") != "" {
-		return false
-	}
-	code = strings.Repeat("0", 14-len(code)) + code
-	sum := 0
-	for i := 0; i < 13; i++ {
-		d := int(code[i] - '0')
-		if i%2 == 0 {
-			d *= 3
-		}
-		sum += d
-	}
-	return (10-sum%10)%10 == int(code[13]-'0')
-}
-
-// basis is the record's nutrient basis: FoodData Central gives values per 100 g or per 100 ml,
-// "depending on which was received from the data provider", by the serving's unit.
-func basis(unit string) string {
+// unitBasis is the nutrient basis a serving unit names: FoodData Central gives values per 100 g or
+// per 100 ml, "depending on which was received from the data provider", by the serving's unit.
+func unitBasis(unit string) string {
 	switch strings.ToLower(strings.TrimSpace(unit)) {
 	case "ml", "mlt":
 		return "100ml"
@@ -148,16 +138,48 @@ func basis(unit string) string {
 	return ""
 }
 
+var (
+	liquidWords = regexp.MustCompile(`(?i)\bfl\.?\s*oz\b|\bml\b|\blit(er|re)s?\b|\d\s*l\b`)
+	solidWords  = regexp.MustCompile(`(?i)\d\s*(g|kg|lbs?)\b`)
+)
+
+// basis is the record's nutrient basis and how it was read. A serving in g or ml names it. Some
+// records give their serving in MG, IU or MC, but the number is the grams or millilitres the
+// nutrients are per 100 of: the label's calories per serving equal energy per 100 × serving / 100.
+// Where they agree (within 10% or 5 kcal), the serving is read as millilitres when the household
+// serving or package names fluid ounces, millilitres or litres and the package names no weight,
+// else as grams. Where they don't, the basis is unknown and the record is dropped.
+func basis(b brandedFood, n map[string]float64) (bs, how string) {
+	if bs = unitBasis(b.ServingSizeUnit); bs != "" {
+		return bs, "unit"
+	}
+	kcal, ok := n["energy_kcal"]
+	label := b.LabelNutrients["calories"].Value
+	if !ok || label == nil || b.ServingSize == nil || *b.ServingSize <= 0 {
+		return "", ""
+	}
+	perServing := kcal * *b.ServingSize / 100
+	if d := math.Abs(perServing - *label); d > 0.10**label && d > 5 {
+		return "", ""
+	}
+	words := b.HouseholdServingFullText + " " + b.PackageWeight
+	if liquidWords.MatchString(words) && !solidWords.MatchString(b.PackageWeight) {
+		return "100ml", "label calories"
+	}
+	return "100g", "label calories"
+}
+
 // Plausibility reasons, in the order they're checked; a record counts under the first it fails.
 const (
 	whyNegative      = "a negative value, or a serving of 0"
 	whyNoEnergy      = "no energy in kcal"
+	whyNoBasis       = "serving unit not g or ml, and the label's calories don't confirm the serving as either"
 	whyOverLimit     = "protein + fat + carbohydrate over 100 g per 100"
 	whyOverEnergy    = "energy over 900 kcal per 100"
 	whyEnergyAtwater = "energy more than 20% and 40 kcal from 4·protein + 4·carbohydrate + 9·fat (+ 7·alcohol)"
 )
 
-var plausibilityOrder = []string{whyNegative, whyNoEnergy, whyOverLimit, whyOverEnergy, whyEnergyAtwater}
+var plausibilityOrder = []string{whyNegative, whyNoEnergy, whyNoBasis, whyOverLimit, whyOverEnergy, whyEnergyAtwater}
 
 // atwater is 4·protein + 4·carbohydrate + 9·fat + 7·alcohol, and whether the three macros are given.
 func atwater(n map[string]float64) (float64, bool) {
@@ -183,6 +205,9 @@ func implausible(b brandedFood, n map[string]float64) string {
 	kcal, ok := n["energy_kcal"]
 	if !ok {
 		return whyNoEnergy
+	}
+	if bs, _ := basis(b, n); bs == "" {
+		return whyNoBasis
 	}
 	if n["protein_g"]+n["fat_g"]+n["carbohydrate_g"] > 100 {
 		return whyOverLimit
@@ -243,7 +268,8 @@ func draftRecord(b brandedFood, gtin string, n map[string]float64, withIngredien
 			"review":  "unreviewed",
 		},
 	}
-	if basis(b.ServingSizeUnit) == "100ml" {
+	bs, _ := basis(b, n)
+	if bs == "100ml" {
 		rec["nutrients_basis"] = "100ml"
 		rec["nutrients_per_100ml"] = n
 	} else {
@@ -251,7 +277,7 @@ func draftRecord(b brandedFood, gtin string, n map[string]float64, withIngredien
 	}
 	if b.ServingSize != nil {
 		serving := map[string]any{"label": strings.TrimSpace(b.HouseholdServingFullText)}
-		if basis(b.ServingSizeUnit) == "100ml" {
+		if bs == "100ml" {
 			serving["ml"] = *b.ServingSize
 		} else {
 			serving["grams"] = *b.ServingSize
@@ -378,7 +404,7 @@ func brandedReport(path, root string) error {
 	// Pass 1: markets, GTINs, the version of each product to keep, and field coverage.
 	var read int
 	fields, markets, sourcesSeen, gtinDrops, units := tally{}, tally{}, tally{}, tally{}, tally{}
-	labelKeys, gtinLengths, paddable := tally{}, tally{}, tally{}
+	labelKeys, gtinLengths, padded := tally{}, tally{}, tally{}
 	best := map[string]brandedFood{}
 	copies := map[string]int{}
 	err = eachBranded(path, func(raw json.RawMessage) error {
@@ -411,10 +437,10 @@ func brandedReport(path, root string) error {
 		gtin, why := normalizeGTIN(b.GtinUpc)
 		if why != "" {
 			gtinDrops[why]++
-			if why == "wrong length" && paddedValid(b.GtinUpc) {
-				paddable[strconv.Itoa(len(strings.TrimSpace(b.GtinUpc)))]++
-			}
 			return nil
+		}
+		if isPadded(b.GtinUpc) {
+			padded[strconv.Itoa(len(strings.TrimSpace(b.GtinUpc)))]++
 		}
 		copies[gtin]++
 		if cur, ok := best[gtin]; !ok || newer(b, cur) {
@@ -447,13 +473,13 @@ func brandedReport(path, root string) error {
 	var withIngr, ingrBytes, maxIngr int
 	ingrLens := []int{}
 	coverage := tally{}
-	bases, keptSources := tally{}, tally{}
+	bases, keptSources, fromLabel := tally{}, tally{}, tally{}
 	var notCheckable, onlyKJ int
 	tolerance := map[string]int{}
 	tolerances := []struct {
 		name      string
 		pct, kcal float64
-	}{{"10% and 20 kcal", 0.10, 20}, {"20% and 40 kcal (planned)", 0.20, 40}, {"30% and 50 kcal", 0.30, 50}, {"50% and 80 kcal", 0.50, 80}}
+	}{{"10% and 20 kcal", 0.10, 20}, {"20% and 40 kcal (the rule)", 0.20, 40}, {"30% and 50 kcal", 0.30, 50}, {"50% and 80 kcal", 0.50, 80}}
 	withIngrSize, withoutIngrSize := newSizer(), newSizer()
 	fiveYears := release.AddDate(-5, 0, 0)
 	err = eachBranded(path, func(raw json.RawMessage) error {
@@ -494,7 +520,11 @@ func brandedReport(path, root string) error {
 			return nil
 		}
 		kept++
-		bases[basis(b.ServingSizeUnit)]++
+		bs, how := basis(b, n)
+		bases[bs]++
+		if how == "label calories" {
+			fromLabel[strings.ToUpper(strings.TrimSpace(b.ServingSizeUnit))+" as "+bs]++
+		}
 		keptSources[b.DataSource]++
 		deriveNutrients(n)
 		for k := range n {
@@ -555,8 +585,8 @@ func brandedReport(path, root string) error {
 	fmt.Fprintf(&b, "What `ofl catalogue branded-report` found in USDA FoodData Central's Global Branded Food Products Database, the JSON download of %s (`%s`), measured against the filtering rules planned for a branded catalogue. It writes no records: this is phase 0 of the plan, and nothing here is in `foods.jsonl`.\n\n", release.Format("2006-01-02"), filepath.Base(path))
 	b.WriteString("## Each rule, in order\n\n| Step | Records | Dropped |\n| --- | --- | --- |\n")
 	fmt.Fprintf(&b, "| Read | %d | |\n", read)
-	fmt.Fprintf(&b, "| 1. US market only (`United States` or `US`) | %d | %d |\n", us, read-us)
-	fmt.Fprintf(&b, "| 2. A valid GTIN (8, 12, 13 or 14 digits, check digit) | %d | %d |\n", validGTIN, us-validGTIN)
+	fmt.Fprintf(&b, "| 1. US market only (`United States` or `US`, kept as `US`) | %d | %d |\n", us, read-us)
+	fmt.Fprintf(&b, "| 2. A valid GTIN (up to 14 digits, zero-padded, check digit) | %d | %d |\n", validGTIN, us-validGTIN)
 	fmt.Fprintf(&b, "| 3. One per GTIN, newest kept | %d | %d |\n", unique, dupRecords)
 	fmt.Fprintf(&b, "| 4. Not discontinued | %d | %d |\n", unique-discontinued, discontinued)
 	fmt.Fprintf(&b, "| 5. Plausible numbers | %d | %d |\n", kept, unique-discontinued-kept)
@@ -570,6 +600,7 @@ func brandedReport(path, root string) error {
 		}
 		fmt.Fprintf(&b, "| %s | %d |\n", name, markets[k])
 	}
+	b.WriteString("\nThe download names the market both ways; a branded record keeps it as `US`, the shorter form (in OFL, `label.region` is `us`).\n")
 	b.WriteString("\nUS records by `dataSource` (GDSN is GS1's network; LI is Label Insight):\n\n| Source | Records |\n| --- | --- |\n")
 	for _, k := range sourcesSeen.sorted() {
 		fmt.Fprintf(&b, "| %s | %d |\n", orNone(k), sourcesSeen[k])
@@ -579,15 +610,15 @@ func brandedReport(path, root string) error {
 	for _, k := range gtinDrops.sorted() {
 		fmt.Fprintf(&b, "| %s | %d |\n", k, gtinDrops[k])
 	}
-	var paddableAll int
-	for _, c := range paddable {
-		paddableAll += c
+	var paddedAll int
+	for _, c := range padded {
+		paddedAll += c
 	}
-	fmt.Fprintf(&b, "\nOf the wrong lengths, %d would pass the check digit once zero-padded to 14 digits (by length:", paddableAll)
-	for _, k := range paddable.sorted() {
-		fmt.Fprintf(&b, " %s digits %d;", k, paddable[k])
+	fmt.Fprintf(&b, "\nA code shorter than 14 digits is zero-padded on the left before the check digit is checked, as a scanner's 8, 12 and 13 are. %d US records with a valid GTIN gave it in a length a scanner doesn't (by length:", paddedAll)
+	for _, k := range padded.sorted() {
+		fmt.Fprintf(&b, " %s digits %d;", k, padded[k])
 	}
-	b.WriteString(" an 11-digit code is most likely a UPC-A that lost its leading zero). The planned rule drops them; padding them would keep them.\n")
+	b.WriteString(" an 11-digit code is a UPC-A that lost its leading zero), and padding gives them the 14 digits a scan of the package does.\n")
 	b.WriteString("\nLength of `gtinUpc` as given, US records:\n\n| Digits | Records |\n| --- | --- |\n")
 	for _, k := range gtinLengths.sorted() {
 		fmt.Fprintf(&b, "| %s | %d |\n", k, gtinLengths[k])
@@ -622,9 +653,13 @@ func brandedReport(path, root string) error {
 	for _, k := range keptSources.sorted() {
 		fmt.Fprintf(&b, "| %s | %d |\n", orNone(k), keptSources[k])
 	}
-	b.WriteString("\n### Basis\n\nBy `servingSizeUnit`: g, GRM or GM is per 100 g, ml or MLT per 100 ml. Any other unit (MG, IU, MC) says nothing about the basis, so those records are counted under (none) and need a rule in phase A.\n\n| Nutrients per | Records |\n| --- | --- |\n")
+	b.WriteString("\n### Basis\n\nA serving in g, GRM or GM means nutrients per 100 g; ml or MLT per 100 ml. Some records give their serving in MG, IU or MC, but the number is the grams or millilitres the nutrients are per 100 of: the label's calories per serving equal energy per 100 × serving / 100 (a chocolate at 605 kcal per 100 with a serving of 38 \"MG\" labels 230 kcal). Where the two agree within 10% or 5 kcal, the serving is read as millilitres when the household serving or package names fluid ounces, millilitres or litres and the package names no weight, else as grams. Where they don't, the record is dropped (step 5).\n\n| Nutrients per | Records |\n| --- | --- |\n")
 	for _, k := range bases.sorted() {
 		fmt.Fprintf(&b, "| %s | %d |\n", orNone(k), bases[k])
+	}
+	b.WriteString("\nRead from the label's calories:\n\n| Unit given, read as | Records |\n| --- | --- |\n")
+	for _, k := range fromLabel.sorted() {
+		fmt.Fprintf(&b, "| %s | %d |\n", k, fromLabel[k])
 	}
 	b.WriteString("\nServing units as given, US records:\n\n| `servingSizeUnit` | Records |\n| --- | --- |\n")
 	for _, k := range units.sorted() {
