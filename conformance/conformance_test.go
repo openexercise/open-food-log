@@ -32,11 +32,16 @@ type reference struct {
 	// Broken v0.2 behaviour: a copy that ignores its key, a saved meal logged without its name, a
 	// recipe counted per 100 g rather than per serving.
 	copyIgnoresKey, savedUntitled, recipeMiscounts bool
+
+	foods map[string]map[string]any
+	// Broken v0.3 behaviour: a person's own food that its barcode doesn't find.
+	gtinSkipsOwnFoods bool
 }
 
 func newReference() *reference {
 	return &reference{byID: map[string]map[string]any{}, keys: map[string]string{}, external: map[string]string{}, deleted: map[string]bool{},
-		deletedAt: map[string]string{}, hooks: map[string]bool{}, saved: map[string]map[string]any{}, recipes: map[string]map[string]any{}}
+		deletedAt: map[string]string{}, hooks: map[string]bool{}, saved: map[string]map[string]any{}, recipes: map[string]map[string]any{},
+		foods: map[string]map[string]any{}}
 }
 
 func (s *reference) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +69,8 @@ func (s *reference) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		s.savedMeals(w, r)
 	case strings.HasPrefix(r.URL.Path, "/v1/recipes"):
 		s.recipesRoute(w, r)
+	case strings.HasPrefix(r.URL.Path, "/v1/foods"):
+		s.foodsRoute(w, r)
 	case strings.HasPrefix(r.URL.Path, "/v1/meals/"):
 		id := strings.TrimPrefix(r.URL.Path, "/v1/meals/")
 		m, ok := s.byID[id]
@@ -264,8 +271,8 @@ func TestReferenceServerPasses(t *testing.T) {
 	if len(s.hooks) > 0 {
 		t.Errorf("webhooks left subscribed: %v", s.hooks)
 	}
-	if len(s.saved) > 0 || len(s.recipes) > 0 {
-		t.Errorf("left behind: %d saved meals, %d recipes", len(s.saved), len(s.recipes))
+	if len(s.saved) > 0 || len(s.recipes) > 0 || len(s.foods) > 0 {
+		t.Errorf("left behind: %d saved meals, %d recipes, %d foods", len(s.saved), len(s.recipes), len(s.foods))
 	}
 }
 
@@ -288,6 +295,7 @@ func TestEachCheckCatchesItsBehaviour(t *testing.T) {
 		{"no change feed", func(s *reference) { s.noFeed = true }, []string{"change-feed", "tombstone"}},
 		{"no tombstones", func(s *reference) { s.noTombstones = true }, []string{"tombstone"}},
 		{"secret listed", func(s *reference) { s.listsSecret = true }, []string{"webhooks"}},
+		{"barcode skips own foods", func(s *reference) { s.gtinSkipsOwnFoods = true }, []string{"own-food"}},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
@@ -334,7 +342,7 @@ func TestCreateFailureSkipsTheRest(t *testing.T) {
 	}
 	for _, name := range Checks[2:] {
 		want := Skip
-		if name == "webhooks" || name == "recipe" { // need no meal, so they run, and fail here like everything else
+		if name == "webhooks" || name == "recipe" || name == "own-food" { // need no meal, so they run, and fail here like everything else
 			want = Fail
 		}
 		if got[name] != want {
@@ -351,5 +359,55 @@ func TestConfigIsChecked(t *testing.T) {
 		if _, err := Run(context.Background(), cfg); err == nil {
 			t.Errorf("%+v: no error", cfg)
 		}
+	}
+}
+
+// foodsRoute keeps the person's own foods: POST makes one, GET reads one by its ID or a gtin: it
+// carries, DELETE removes one (not core, but the run tidies up with it where offered).
+func (s *reference) foodsRoute(w http.ResponseWriter, r *http.Request) {
+	id := strings.TrimPrefix(strings.TrimPrefix(r.URL.Path, "/v1/foods"), "/")
+	switch {
+	case r.Method == http.MethodPost && id == "":
+		var in map[string]any
+		_ = json.NewDecoder(r.Body).Decode(&in)
+		s.next++
+		f := map[string]any{"id": fmt.Sprintf("usr:food-%d", s.next), "name": in["name"], "kind": "custom",
+			"brand": in["brand"], "nutrients_per_100g": in["nutrients_per_100g"]}
+		if code, _ := in["gtin"].(string); code != "" {
+			f["gtin"] = []any{strings.Repeat("0", 14-len(code)) + code}
+		}
+		s.foods[f["id"].(string)] = f
+		writeJSON(w, http.StatusCreated, f)
+	case r.Method == http.MethodGet && strings.HasPrefix(id, "gtin:"):
+		code := strings.TrimPrefix(id, "gtin:")
+		code = strings.Repeat("0", max(0, 14-len(code))) + code
+		for _, f := range s.foods {
+			if g, _ := f["gtin"].([]any); len(g) > 0 && g[0] == code && !s.gtinSkipsOwnFoods {
+				writeJSON(w, http.StatusOK, f)
+				return
+			}
+		}
+		problem(w, http.StatusNotFound, "not_found")
+	case r.Method == http.MethodDelete && s.foods[id] != nil:
+		delete(s.foods, id)
+		w.WriteHeader(http.StatusNoContent)
+	default:
+		problem(w, http.StatusNotFound, "not_found")
+	}
+}
+
+func TestOwnFoodGTINIsValid(t *testing.T) {
+	for range 50 {
+		code := ownFoodGTIN()
+		if len(code) != 13 || code[0] != '2' {
+			t.Fatalf("%s: want 13 digits starting 2", code)
+		}
+		if got := code[12] - '0'; got != checkDigit(code[:12]) {
+			t.Fatalf("%s: check digit %d, want %d", code, got, checkDigit(code[:12]))
+		}
+	}
+	// A known code: 4006381333931 (GS1's example).
+	if d := checkDigit("400638133393"); d != 1 {
+		t.Errorf("check digit of 400638133393 = %d, want 1", d)
 	}
 }
