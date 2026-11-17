@@ -1502,7 +1502,7 @@ components:
           type: object
           properties:
             fdc_id: {type: integer, description: USDA FoodData Central's ID.}
-            off_code: {type: string, description: "The Open Food Facts product code, for a gtin: food."}
+            off_code: {type: string, description: "The Open Food Facts product code, for a gtin: food looked up there."}
         provenance:
           type: object
           required: [sources, review]

@@ -55,6 +55,19 @@ id = namespace ":" slug
 - `ofc:` is reserved for the Open Food Catalogue.
 - `gtin:` names a packaged product by its barcode, as 14 digits with shorter codes zero-padded on the
   left (`gtin:00012345678905`). Any system can resolve it, in any database, without a shared copy.
+  - A catalogue MAY host `kind: branded` foods copied from a source whose licence allows it
+    (CC0, such as USDA FoodData Central's Global Branded Food Products Database) and still names
+    them `gtin:`: hosting a record doesn't change its ID. Its `provenance.sources` entry names the
+    source and the release it came from (`name`), its record ID there (`id`, and the matching
+    `identifiers` member, such as `fdc_id`), the source's `license`, and the release's date
+    (`retrieved_at`).
+  - Products from a share-alike source (Open Food Facts is ODbL) stay looked up by `gtin:` when
+    needed, never copied into a catalogue that isn't share-alike (section 5).
+  - Two sources may answer for the same GTIN with different numbers. A reader doesn't merge them:
+    the system that hosts or looks up the food picks an order of sources, answers with the first
+    that has the product, and names that source in `provenance.sources`, so a person and an
+    assistant can see where the label came from. A logged item keeps the nutrients it was logged
+    with, so a later answer never changes past days.
 - `usr:` is one person's own food, `recipe:` one person's recipe and `saved:` one person's saved meal
   (v0.2), each meaningful only inside the system that made it. An export MUST include the `usr:`
   foods and `recipe:` recipes its meals and saved meals name, in `foods` and `recipes`, and the
@@ -140,7 +153,8 @@ skimmed are different foods.
 - `provenance` names each source with its licence, lists values a model produced in `generated`, and
   says whether a person has `reviewed` the record. A catalogue SHOULD NOT copy records from a database
   whose licence requires derived databases to share its terms (Open Food Facts is ODbL) into one that
-  doesn't; a `gtin:` reference avoids copying.
+  doesn't; a `gtin:` reference avoids copying. Records from a source that allows copying (CC0) may
+  be hosted (section 3).
 
 ## 6. Amounts and grams
 
