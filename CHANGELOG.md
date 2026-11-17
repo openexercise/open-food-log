@@ -28,6 +28,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.11.0 — 2026-11-17
+
+Restaurant and fast-food dishes, and the chain items FoodData Central names ("big mac",
+"whopper"), are found by the names people log them by. Every v0.2 document stays valid.
+
 - **Added:** restaurant and fast-food dishes have the names people log them by. A `/food-aliases`
   run over the 354 foods whose name says "fast food" or "restaurant" gave them 504 aliases ("fast
   food cheeseburger", "drive-through fries", "takeout orange chicken", "restaurant mashed
