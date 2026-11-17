@@ -28,6 +28,27 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.11.0 — 2026-11-17
+
+Restaurant and fast-food dishes, and the chain items FoodData Central names ("big mac",
+"whopper"), are found by the names people log them by. Every v0.2 document stays valid.
+
+- **Added:** restaurant and fast-food dishes have the names people log them by. A `/food-aliases`
+  run over the 354 foods whose name says "fast food" or "restaurant" gave them 504 aliases ("fast
+  food cheeseburger", "drive-through fries", "takeout orange chicken", "restaurant mashed
+  potatoes"); 39 of them still have none, down from 186. Plain dish names stay with the everyday
+  record ("fries", "cheeseburger"), except restaurant pizza, which keeps "cheese pizza" and
+  "pepperoni pizza". "Pizza" and two "baked chicken thigh" names were dropped from the run's
+  answers as too plain for a restaurant's version.
+- **Added:** the 14 chain items FoodData Central names outright have their plain names, chosen by a
+  person in `sources/curated-aliases.jsonl`: "big mac", "mcdouble", "quarter pounder", "quarter
+  pounder with cheese", "whopper", "whopper jr" and the rest, plus "mcdonalds …" and "burger king
+  …" forms of the hamburgers and cheeseburgers. SR Legacy's 2018 chain records stay out.
+- **Added:** 50 more phrases in `sources/alias-checks.jsonl` (160 in all): every chain alias, the
+  new restaurant names, and the plain names that must stay with the everyday food.
+- **Added:** `cmd/aliases batches -name` picks foods by their own name, across families; the
+  skill's prompt says how to name a restaurant's version.
+
 ## v0.10.1 — 2026-11-17
 
 Everyday words find the food a person means for sure in four more cases, and 110 phrases now

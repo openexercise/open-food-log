@@ -10,7 +10,7 @@
 // The /food-aliases skill asks Claude Haiku instead, a family of related foods at a time, so the
 // plain name of a dish goes to one food alone. Go writes the questions and checks the answers:
 //
-//	go run ./cmd/aliases batches -out <dir> [-match <text>] [-limit N]
+//	go run ./cmd/aliases batches -out <dir> [-match <text>] [-name <text>] [-limit N]
 //	go run ./cmd/aliases merge -in <dir> -model <model>
 package main
 

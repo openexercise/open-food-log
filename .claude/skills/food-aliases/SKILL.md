@@ -20,6 +20,7 @@ land in `sources/aliases.jsonl` with the model named, and the build marks each o
 /food-aliases                 # every food sources/aliases.jsonl doesn't hold yet (~350 batches)
 /food-aliases "meat loaf"     # only families whose plain name contains the text
 /food-aliases "" 200          # the first families, about 200 foods
+/food-aliases name:"fast food|restaurant"   # foods whose own name holds the text, across families
 ```
 
 Run from the root of `open-food-log`, on a branch.
@@ -29,8 +30,11 @@ Run from the root of `open-food-log`, on a branch.
 1. **Batches.** Make a run directory in the scratchpad (`$RUN`), then:
 
    ```bash
-   go run ./cmd/aliases batches -out "$RUN" [-match "<text>"] [-limit N]
+   go run ./cmd/aliases batches -out "$RUN" [-match "<text>"] [-name "<text>"] [-limit N]
    ```
+
+   `-match` picks families by their plain name; `-name` picks foods by their own full name, for a
+   kind of food spread over many families (restaurant dishes, say).
 
    Add `-redo` to ask again about foods already answered (a later line replaces an earlier one).
    Stop if it reports 0 batches.

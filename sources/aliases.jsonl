@@ -12440,3 +12440,357 @@
 {"id":"ofc:zucchini-pickled","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
 {"id":"ofc:zwieback","aliases":["teething biscuit"],"model":"claude-haiku-5-5","at":"2026-11-16"}
 {"id":"ofc:zwieback-toast","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-16"}
+{"id":"ofc:baked-beans-from-fast-food-restaurant","aliases":["fast food baked beans","restaurant baked beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:beans-and-rice-from-fast-food-restaurant","aliases":["fast food beans and rice","restaurant beans and rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:beans-from-fast-food-restaurant-ns-as-to-type","aliases":["fast food beans","restaurant beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:beverages-coffee-brewed-espresso-restaurant-prepared","aliases":["espresso"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:beverages-coffee-brewed-espresso-restaurant-prepared-decaffeinated","aliases":["decaf espresso"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:beverages-horchata-as-served-in-restaurant","aliases":["restaurant horchata"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:beverages-shake-fast-food-strawberry","aliases":["fast food strawberry shake","fast food strawberry milkshake"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:biscuit-from-fast-food-restaurant","aliases":["fast food biscuit","restaurant biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:black-beans-and-rice-from-fast-food-restaurant","aliases":["fast food black beans and rice","restaurant black beans and rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:black-beans-from-fast-food-restaurant","aliases":["fast food black beans","restaurant black beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:breadsticks-soft-fast-food-restaurant","aliases":["fast food breadsticks","restaurant breadsticks"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:breadsticks-soft-with-parmesan-cheese-fast-food-restaurant","aliases":["fast food cheesy breadsticks","restaurant parmesan breadsticks"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:broccoli-cooked-from-restaurant","aliases":["restaurant broccoli"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:carrots-cooked-from-restaurant","aliases":["restaurant carrots"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:cheese-american-restaurant","aliases":["restaurant american cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:cheeseburger-from-fast-food-1-large-patty","aliases":["large fast food cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:cheeseburger-from-fast-food-1-medium-patty","aliases":["fast food cheeseburger","restaurant cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:cheeseburger-from-fast-food-1-small-patty","aliases":["small fast food cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:cheeseburger-slider-from-fast-food","aliases":["fast food cheeseburger slider","fast food slider"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-breast-baked-or-broiled-skin-eaten-from-fast-food-restaurant","aliases":["fast food baked chicken breast with skin","fast food broiled chicken breast with skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-breast-baked-or-broiled-skin-not-eaten-from-fast-food-restaurant","aliases":["fast food baked chicken breast skinless"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-breast-fried-coated-skin-coating-eaten-from-fast-food-restaurant","aliases":["fast food fried chicken breast","restaurant fried chicken breast"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-breast-fried-coated-skin-coating-not-eaten-from-fast-food-restaurant","aliases":["fast food fried chicken breast skinless"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-deli-sandwich-or-sub-restaurant","aliases":["restaurant chicken sub","takeout chicken sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-deli-sandwich-or-sub-with-cheese-restaurant","aliases":["restaurant chicken deli sandwich with cheese","restaurant chicken sub with cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-drumstick-baked-or-broiled-skin-eaten-from-fast-food-restaurant","aliases":["fast food baked chicken drumstick","fast food broiled chicken drumstick"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-drumstick-baked-or-broiled-skin-not-eaten-from-fast-food-restaurant","aliases":["fast food baked chicken drumstick skinless"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-drumstick-fried-coated-skin-coating-eaten-from-fast-food-restaurant","aliases":["fast food fried chicken drumstick","restaurant fried chicken drumstick"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-drumstick-fried-coated-skin-coating-not-eaten-from-fast-food-restaurant","aliases":["fast food fried chicken drumstick skinless"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-biscuit-from-fast-food","aliases":["fast food chicken biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-sandwich-fried-from-fast-food","aliases":["fast food fried chicken sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-sandwich-fried-from-fast-food-with-cheese","aliases":["fast food chicken sandwich with cheese","fast food cheese chicken sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-sandwich-grilled-from-fast-food","aliases":["fast food grilled chicken sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-sandwich-grilled-from-fast-food-with-cheese","aliases":["fast food grilled chicken sandwich with cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-sandwich-ns-as-to-fried-or-grilled-from-fast-food","aliases":["fast food chicken sandwich","fast food chicken fillet sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-wrap-sandwich-fried-from-fast-food","aliases":["fast food fried chicken wrap"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-fillet-wrap-sandwich-grilled-from-fast-food","aliases":["fast food grilled chicken wrap"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-nuggets-from-fast-food","aliases":["fast food chicken nuggets","fast food nuggets"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-nuggets-from-restaurant","aliases":["restaurant nuggets"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-tenders-or-strips-breaded-from-fast-food","aliases":["fast food chicken tenders","fast food chicken strips"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-tenders-or-strips-breaded-from-restaurant","aliases":["restaurant chicken tenders","restaurant chicken strips"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-thigh-baked-or-broiled-skin-eaten-from-fast-food-restaurant","aliases":["restaurant baked chicken thigh"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-thigh-baked-or-broiled-skin-not-eaten-from-fast-food-restaurant","aliases":["restaurant baked skinless chicken thigh"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-thigh-fried-coated-skin-coating-eaten-from-fast-food","aliases":["fast food fried chicken thigh","fast food chicken thigh with skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-thigh-fried-coated-skin-coating-eaten-from-restaurant","aliases":["restaurant fried chicken thigh","restaurant chicken thigh with skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-thigh-fried-coated-skin-coating-not-eaten-from-fast-food","aliases":["fast food skinless fried chicken thigh"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-thigh-fried-coated-skin-coating-not-eaten-from-restaurant","aliases":["restaurant skinless fried chicken thigh"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-wing-baked-or-broiled-from-fast-food-restaurant","aliases":["restaurant baked chicken wing"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-wing-fried-coated-from-fast-food","aliases":["fast food fried chicken wing"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-wing-fried-coated-from-restaurant","aliases":["restaurant fried chicken wing"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-wings-boneless-with-hot-sauce-from-fast-food-restaurant","aliases":["fast food boneless wings","restaurant boneless hot wings"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-wings-plain-from-fast-food-restaurant","aliases":["fast food plain wings","restaurant wings without sauce"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-wings-with-hot-sauce-from-fast-food-restaurant","aliases":["fast food hot wings","buffalo wings"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chicken-wings-with-other-sauces-or-seasoning-from-fast-food-restaurant","aliases":["fast food bbq wings","restaurant bbq wings"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:chili-with-meat-from-restaurant","aliases":["restaurant chili","restaurant chili con carne"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:classic-mixed-vegetables-cooked-from-restaurant","aliases":["restaurant mixed vegetables"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:club-sandwich-or-sub-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:coleslaw-fast-food-restaurant","aliases":["fast food coleslaw","restaurant coleslaw"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:corn-cooked-from-restaurant","aliases":["restaurant corn"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:double-cheeseburger-from-fast-food-2-large-patties","aliases":["large fast food double cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:double-cheeseburger-from-fast-food-2-medium-patties","aliases":["fast food double cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:double-cheeseburger-from-fast-food-2-small-patties","aliases":["small fast food double cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:double-hamburger-from-fast-food-2-large-patties","aliases":["large fast food double hamburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:double-hamburger-from-fast-food-2-medium-patties","aliases":["fast food double hamburger","fast food double burger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:double-hamburger-from-fast-food-2-small-patties","aliases":["small fast food double hamburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:egg-omelet-or-scrambled-egg-from-fast-food-restaurant","aliases":["restaurant omelet","restaurant scrambled eggs"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:egg-whole-fried-from-fast-food-restaurant","aliases":["fast food fried egg","restaurant fried egg"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-biscuit","aliases":["drive-through biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-cheese-topping-regular-crust","aliases":["fast food cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-cheese-topping-stuffed-crust","aliases":["fast food stuffed crust cheese pizza","stuffed crust cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-cheese-topping-thick-crust","aliases":["fast food thick crust cheese pizza","thick crust cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-cheese-topping-thin-crust","aliases":["fast food thin crust cheese pizza","thin crust cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-meat-and-vegetable-topping-regular-crust","aliases":["fast food supreme pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-pepperoni-topping-regular-crust","aliases":["fast food pepperoni pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-pepperoni-topping-thick-crust","aliases":["fast food thick crust pepperoni pizza","thick crust pepperoni pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-pepperoni-topping-thin-crust","aliases":["fast food thin crust pepperoni pizza","thin crust pepperoni pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-sausage-topping-regular-crust","aliases":["fast food sausage pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-sausage-topping-thick-crust","aliases":["fast food thick crust sausage pizza","thick crust sausage pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-food-pizza-chain-14-pizza-sausage-topping-thin-crust","aliases":["fast food thin crust sausage pizza","thin crust sausage pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-bagel-with-breakfast-steak-egg-cheese-and-condiments","aliases":["fast food steak egg and cheese bagel"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-bagel-with-egg-sausage-patty-cheese-and-condiments","aliases":["fast food sausage egg and cheese bagel"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-biscuit-with-crispy-chicken-fillet","aliases":["fast food chicken biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-biscuit-with-egg-and-bacon","aliases":["fast food bacon egg biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-biscuit-with-egg-and-ham","aliases":["fast food ham egg biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-biscuit-with-egg-and-sausage","aliases":["fast food sausage egg biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-biscuit-with-egg-cheese-and-bacon","aliases":["fast food bacon egg and cheese biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-biscuit-with-ham","aliases":["fast food ham biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-biscuit-with-sausage","aliases":["fast food sausage biscuit"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-breadstick-soft-prepared-with-garlic-and-parmesan-cheese","aliases":["fast food breadstick","fast food garlic parmesan breadstick"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-breakfast-burrito-with-egg-cheese-and-sausage","aliases":["fast food breakfast burrito","fast food sausage egg and cheese burrito"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-burrito-with-beans","aliases":["fast food bean burrito"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-burrito-with-beans-and-beef","aliases":["fast food beef and bean burrito"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-burrito-with-beans-and-cheese","aliases":["fast food bean and cheese burrito"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-burrito-with-beans-cheese-and-beef","aliases":["fast food beef bean and cheese burrito"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-double-large-patty-with-condiments","aliases":["fast food large double cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-double-large-patty-with-condiments-vegetables-and-mayonnaise","aliases":["fast food large double cheeseburger with mayo"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-double-regular-patty-double-decker-bun-with-condiments-and-special-sauce","aliases":["fast food double decker cheeseburger","fast food special sauce double cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-double-regular-patty-with-condiments","aliases":["fast food double cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-double-regular-patty-and-bun-with-condiments","aliases":["fast food double patty cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-single-large-patty-plain","aliases":["fast food large plain cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-single-large-patty-with-condiments","aliases":["fast food large cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-single-large-patty-with-condiments-vegetables-and-mayonnaise","aliases":["fast food large cheeseburger with mayo"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-single-regular-patty-plain","aliases":["fast food plain cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-single-regular-patty-with-condiments","aliases":["fast food cheeseburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-cheeseburger-single-regular-patty-with-condiments-and-vegetables","aliases":["fast food cheeseburger with lettuce and tomato"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-chicken-breaded-and-fried-boneless-pieces-plain","aliases":["fast food chicken pieces","fast food boneless chicken"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-chicken-fillet-sandwich-plain-with-pickles","aliases":["fast food chicken sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-chicken-tenders","aliases":["fast food chicken tenders"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-coleslaw","aliases":["fast food coleslaw"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-crispy-chicken-bacon-and-tomato-club-sandwich-with-cheese-lettuce-and-mayonnaise","aliases":["fast food chicken club sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-crispy-chicken-filet-sandwich-with-lettuce-and-mayonnaise","aliases":["fast food crispy chicken sandwich","fast food crispy chicken fillet sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-crispy-chicken-in-tortilla-with-lettuce-cheese-and-ranch-sauce","aliases":["fast food chicken wrap","fast food crispy chicken wrap"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-croissant-with-egg-cheese-and-bacon","aliases":["fast food bacon egg and cheese croissant"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-croissant-with-egg-cheese-and-ham","aliases":["fast food ham egg and cheese croissant"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-croissant-with-egg-cheese-and-sausage","aliases":["fast food sausage egg and cheese croissant"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-egg-scrambled","aliases":["fast food scrambled eggs"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-english-muffin-with-cheese-and-sausage","aliases":["fast food sausage and cheese english muffin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-english-muffin-with-egg-cheese-and-canadian-bacon","aliases":["fast food canadian bacon egg and cheese english muffin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-english-muffin-with-egg-cheese-and-sausage","aliases":["fast food sausage egg and cheese english muffin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fish-sandwich-with-tartar-sauce","aliases":["fast food fish sandwich","drive-through fish sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fish-sandwich-with-tartar-sauce-and-cheese","aliases":["fast food fish sandwich with cheese","fast food cheese fish sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-french-toast-sticks","aliases":["fast food french toast sticks","restaurant french toast sticks"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-breast-meat-and-skin-and-breading","aliases":["fast food fried chicken","fast food fried chicken breast"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-breast-meat-only-skin-and-breading-removed","aliases":["fast food fried chicken breast without skin","fast food chicken breast no skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-drumstick-meat-and-skin-with-breading","aliases":["fast food fried chicken drumstick","fast food drumstick"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-drumstick-meat-only-skin-and-breading-removed","aliases":["fast food chicken drumstick without skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-skin-and-breading-from-all-pieces","aliases":["fast food chicken skin","fast food fried chicken skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-thigh-meat-and-skin-and-breading","aliases":["fast food fried chicken thigh","fast food chicken thigh"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-thigh-meat-only-skin-and-breading-removed","aliases":["fast food chicken thigh without skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-wing-meat-and-skin-and-breading","aliases":["fast food fried chicken wing","fast food chicken wings"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-fried-chicken-wing-meat-only-skin-and-breading-removed","aliases":["fast food chicken wing without skin"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-griddle-cake-sandwich-egg-cheese-and-bacon","aliases":["fast food pancake sandwich","fast food pancake sandwich with bacon"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-griddle-cake-sandwich-egg-cheese-and-sausage","aliases":["fast food pancake sandwich with sausage","fast food sausage pancake sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-griddle-cake-sandwich-sausage","aliases":["fast food pancake sausage sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-grilled-chicken-bacon-and-tomato-club-sandwich-with-cheese-lettuce-and-mayonnaise","aliases":["fast food chicken club sandwich","fast food grilled chicken club sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-grilled-chicken-filet-sandwich-with-lettuce-tomato-and-spread","aliases":["fast food grilled chicken sandwich","fast food grilled chicken filet sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-grilled-chicken-in-tortilla-with-lettuce-cheese-and-ranch-sauce","aliases":["fast food chicken wrap","fast food grilled chicken wrap"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-hamburger-double-large-patty-with-condiments-vegetables-and-mayonnaise","aliases":["fast food double hamburger","fast food double patty hamburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-hamburger-large-single-patty-with-condiments","aliases":["fast food large hamburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-hamburger-single-large-patty-with-condiments-vegetables-and-mayonnaise","aliases":["fast food large hamburger with mayo"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-hamburger-single-regular-patty-double-decker-bun-with-condiments-and-special-sauce","aliases":["fast food double decker hamburger","fast food hamburger with special sauce"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-hamburger-single-regular-patty-plain","aliases":["fast food plain hamburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-hamburger-single-regular-patty-with-condiments","aliases":["fast food hamburger","fast food regular hamburger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-hush-puppies","aliases":["fast food hush puppies"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-miniature-cinnamon-rolls","aliases":["fast food mini cinnamon rolls","fast food cinnamon rolls"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-nachos-with-cheese","aliases":["fast food nachos","fast food cheese nachos"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-nachos-with-cheese-beans-ground-beef-and-tomatoes","aliases":["fast food nachos with beef","fast food loaded nachos"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-onion-rings-breaded-and-fried","aliases":["fast food onion rings","restaurant onion rings"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-potato-french-fried-in-vegetable-oil","aliases":["fast food fries","drive-through fries","restaurant fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-potato-mashed","aliases":["fast food mashed potatoes","restaurant mashed potatoes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-potatoes-hash-browns-round-pieces-or-patty","aliases":["fast food hash browns","drive-through hash browns"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-quesadilla-with-chicken","aliases":["fast food chicken quesadilla"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-roast-beef-sandwich-plain","aliases":["fast food roast beef sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-shrimp-breaded-and-fried","aliases":["fast food fried shrimp","restaurant fried shrimp"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-strawberry-banana-smoothie-made-with-ice-and-low-fat-yogurt","aliases":["strawberry banana smoothie","fast food smoothie"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-bacon-lettuce-and-tomato-on-white-bread","aliases":["fast food bacon sub","fast food blt sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-cold-cut-on-white-bread-with-lettuce-and-tomato","aliases":["fast food cold cut sub","fast food cold cut sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-ham-on-white-bread-with-lettuce-and-tomato","aliases":["fast food ham sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-meatball-marinara-on-white-bread","aliases":["fast food meatball sub","fast food meatball marinara sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-oven-roasted-chicken-on-white-bread-with-lettuce-and-tomato","aliases":["fast food roasted chicken sub","fast food oven roasted chicken sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-roast-beef-on-white-bread-with-lettuce-and-tomato","aliases":["fast food roast beef sub","fast food roast beef sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-steak-and-cheese-on-white-bread-with-cheese-lettuce-and-tomato","aliases":["fast food steak and cheese sub","fast food steak sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-sweet-onion-chicken-teriyaki-on-white-bread-with-lettuce-tomato-and-sweet-onion-sauce","aliases":["fast food teriyaki chicken sub","fast food chicken teriyaki sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-tuna-on-white-bread-with-lettuce-and-tomato","aliases":["fast food tuna sub","fast food tuna sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-turkey-breast-on-white-bread-with-lettuce-and-tomato","aliases":["fast food turkey sub","fast food turkey breast sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-submarine-sandwich-turkey-roast-beef-and-ham-on-white-bread-with-lettuce-and-tomato","aliases":["fast food turkey roast beef and ham sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-sundae-caramel","aliases":["fast food caramel sundae","fast food caramel ice cream sundae"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-sundae-hot-fudge","aliases":["fast food hot fudge sundae","fast food fudge sundae"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-sundae-strawberry","aliases":["fast food strawberry sundae","fast food strawberry ice cream sundae"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-taco-with-beef-cheese-and-lettuce-hard-shell","aliases":["fast food beef taco","fast food hard shell taco","hard shell beef taco"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-taco-with-beef-cheese-and-lettuce-soft","aliases":["soft beef taco","fast food soft beef taco"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-taco-with-chicken-lettuce-and-cheese-soft","aliases":["fast food chicken taco","soft chicken taco"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fast-foods-vanilla-light-soft-serve-ice-cream-with-cone","aliases":["fast food soft serve cone","fast food vanilla cone","fast food ice cream cone"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fish-sandwich-fried-from-fast-food","aliases":["fast food fish sandwich","fast food fried fish sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:fish-sandwich-fried-from-fast-food-with-cheese","aliases":["fast food fish sandwich with cheese","fast food cheese fish sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:french-toast-fast-food-restaurant","aliases":["restaurant french toast","fast food french toast"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:french-toast-sticks-fast-food-restaurant","aliases":["fast food french toast sticks","restaurant french toast sticks"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:frozen-novelties-ice-type-italian-restaurant-prepared","aliases":["restaurant italian ice","italian ice from restaurant"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:garlic-bread-from-fast-food-restaurant","aliases":["fast food garlic bread","restaurant garlic bread","takeout garlic bread"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:garlic-bread-with-melted-cheese-from-fast-food-restaurant","aliases":["fast food cheesy garlic bread","fast food garlic bread with melted cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:garlic-bread-with-parmesan-cheese-from-fast-food-restaurant","aliases":["fast food parmesan garlic bread","fast food garlic bread with parmesan"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:green-beans-cooked-from-restaurant","aliases":["restaurant green beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:green-peas-cooked-from-restaurant","aliases":["restaurant green peas"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:ham-sandwich-or-sub-restaurant","aliases":["restaurant ham sandwich","restaurant ham sub","takeout ham sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:ham-sandwich-or-sub-with-cheese-restaurant","aliases":["restaurant ham and cheese sandwich","restaurant ham and cheese sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:ham-sliced-restaurant","aliases":["restaurant sliced ham"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:hamburger-from-fast-food-1-large-patty","aliases":["large fast food hamburger","large fast food burger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:hamburger-from-fast-food-1-medium-patty","aliases":["fast food hamburger","fast food burger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:hamburger-from-fast-food-1-small-patty","aliases":["small fast food hamburger","small fast food burger"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:hamburger-slider-from-fast-food","aliases":["fast food slider","fast food hamburger slider"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:hamburger-wrap-sandwich-from-fast-food","aliases":["fast food hamburger wrap","fast food burger wrap"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:italian-sandwich-or-sub-restaurant","aliases":["restaurant italian sub","restaurant italian sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:ketchup-restaurant","aliases":["fast food ketchup"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:kidney-beans-and-rice-from-fast-food-restaurant","aliases":["restaurant kidney beans and rice","fast food kidney beans and rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:kidney-beans-from-fast-food-restaurant","aliases":["restaurant kidney beans","fast food kidney beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:lasagna-with-meat-from-restaurant","aliases":["restaurant lasagna","takeout lasagna"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:macaroni-or-noodles-with-cheese-from-restaurant","aliases":["restaurant mac and cheese","restaurant macaroni and cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:milk-shake-fast-food-chocolate","aliases":["fast food milkshake","fast food chocolate milkshake","fast food chocolate shake"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:milk-shake-fast-food-flavors-other-than-chocolate","aliases":["fast food vanilla milkshake","fast food strawberry milkshake"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:multiple-meat-sandwich-or-sub-restaurant","aliases":["restaurant multiple meat sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:multiple-meat-sandwich-or-sub-with-cheese-restaurant","aliases":["restaurant multiple meat sandwich with cheese","restaurant multiple meat sub with cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:noodles-flat-crunchy-chinese-restaurant","aliases":["chinese restaurant crunchy noodles","crispy chow mein noodles"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:oatmeal-fast-food-flavored","aliases":["fast food flavored oatmeal"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:oatmeal-fast-food-plain","aliases":["fast food oatmeal","fast food plain oatmeal"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pancakes-chocolate-fast-food-restaurant","aliases":["restaurant chocolate pancakes","fast food chocolate pancakes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pancakes-fruit-fast-food-restaurant","aliases":["restaurant fruit pancakes","fast food fruit pancakes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pancakes-plain-fast-food-restaurant","aliases":["fast food pancakes","restaurant pancakes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pancakes-whole-grain-fast-food-restaurant","aliases":["restaurant whole grain pancakes","fast food whole grain pancakes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-and-meat-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-and-poultry-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-and-seafood-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-meat-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-poultry-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-restaurant","aliases":["restaurant whole wheat pasta with cream sauce"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-cream-sauce-seafood-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-and-meat-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-and-poultry-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-and-seafood-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-meat-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-poultry-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-restaurant","aliases":["restaurant whole wheat pasta with tomato sauce"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-whole-grain-with-tomato-based-sauce-seafood-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-and-meat-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-and-poultry-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-and-seafood-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-meat-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-poultry-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-cream-sauce-seafood-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-and-meat-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-and-poultry-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-and-seafood-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-meat-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-poultry-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pasta-with-tomato-based-sauce-seafood-and-added-vegetables-restaurant","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pie-apple-fast-food","aliases":["fast food apple pie"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pinto-beans-and-rice-from-fast-food-restaurant","aliases":["fast food pinto beans and rice","restaurant pinto beans and rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pinto-beans-from-fast-food-restaurant","aliases":["fast food pinto beans","restaurant pinto beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-cheese-from-restaurant-or-fast-food-medium-crust","aliases":["medium crust cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-cheese-from-restaurant-or-fast-food-ns-as-to-type-of-crust","aliases":["cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-cheese-from-restaurant-or-fast-food-thick-crust","aliases":["thick crust cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-cheese-from-restaurant-or-fast-food-thin-crust","aliases":["thin crust cheese pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-cheese-with-vegetables-from-restaurant-or-fast-food-medium-crust","aliases":["medium crust veggie pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-cheese-with-vegetables-from-restaurant-or-fast-food-thick-crust","aliases":["thick crust veggie pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-cheese-with-vegetables-from-restaurant-or-fast-food-thin-crust","aliases":["thin crust veggie pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-meat-and-vegetables-from-restaurant-or-fast-food-medium-crust","aliases":["medium crust meat and veggie pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-meat-and-vegetables-from-restaurant-or-fast-food-thick-crust","aliases":["thick crust meat and veggie pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-meat-and-vegetables-from-restaurant-or-fast-food-thin-crust","aliases":["thin crust meat and veggie pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-meat-other-than-pepperoni-from-restaurant-or-fast-food-medium-crust","aliases":["medium crust sausage pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-meat-other-than-pepperoni-from-restaurant-or-fast-food-ns-as-to-type-of-crust","aliases":["meat pizza","sausage pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-meat-other-than-pepperoni-from-restaurant-or-fast-food-thick-crust","aliases":["thick crust sausage pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-meat-other-than-pepperoni-from-restaurant-or-fast-food-thin-crust","aliases":["thin crust sausage pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-pepperoni-from-restaurant-or-fast-food-medium-crust","aliases":["medium crust pepperoni pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-pepperoni-from-restaurant-or-fast-food-ns-as-to-type-of-crust","aliases":["pepperoni pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-pepperoni-from-restaurant-or-fast-food-thick-crust","aliases":["thick crust pepperoni pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pizza-with-pepperoni-from-restaurant-or-fast-food-thin-crust","aliases":["thin crust pepperoni pizza"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:plantains-yellow-fried-latino-restaurant","aliases":["maduros","fried sweet plantains"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:pork-cured-bacon-cooked-restaurant","aliases":["restaurant bacon","cooked restaurant bacon"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-french-fries-fast-food","aliases":["fast food fries","drive-through fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-french-fries-restaurant","aliases":["restaurant fries","restaurant french fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-french-fries-with-cheese-fast-food-restaurant","aliases":["cheese fries","fast food cheese fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-french-fries-with-chili-and-cheese-fast-food-restaurant","aliases":["chili cheese fries","fast food chili cheese fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-french-fries-with-chili-fast-food-restaurant","aliases":["chili fries","fast food chili fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-hash-brown-from-fast-food","aliases":["fast food hash browns","drive-through hash browns"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-hash-brown-from-fast-food-with-cheese","aliases":["fast food cheese hash browns"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-hash-brown-from-restaurant","aliases":["restaurant hash browns"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-hash-brown-from-restaurant-with-cheese","aliases":["restaurant cheese hash browns"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-home-fries-from-restaurant-fast-food","aliases":["restaurant home fries","fast food home fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-mashed-from-fast-food","aliases":["fast food mashed potatoes","drive-through mashed potatoes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-mashed-from-fast-food-with-gravy","aliases":["fast food mashed potatoes with gravy"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-mashed-from-restaurant","aliases":["restaurant mashed potatoes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-mashed-from-restaurant-with-gravy","aliases":["restaurant mashed potatoes with gravy"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-scalloped-from-fast-food-or-restaurant","aliases":["restaurant scalloped potatoes","fast food scalloped potatoes"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-salad-from-restaurant","aliases":["restaurant potato salad"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-salad-with-egg-from-restaurant","aliases":["restaurant potato salad with egg"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:potato-tots-fast-food-restaurant","aliases":["fast food tater tots","restaurant tater tots"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:refried-beans-from-fast-food-restaurant","aliases":["restaurant refried beans","fast food refried beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-beef-and-vegetables","aliases":["chinese takeout beef and vegetables"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-chicken-and-vegetables","aliases":["chinese takeout chicken and vegetables"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-chicken-chow-mein","aliases":["chinese takeout chicken chow mein"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-egg-rolls-assorted","aliases":["chinese takeout egg rolls"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-fried-rice-without-meat","aliases":["chinese takeout vegetable fried rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-general-tso-s-chicken","aliases":["general tso chicken","chinese takeout general tso chicken"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-kung-pao-chicken","aliases":["chinese takeout kung pao chicken"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-lemon-chicken","aliases":["chinese takeout lemon chicken"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-orange-chicken","aliases":["takeout orange chicken"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-sesame-chicken","aliases":["chinese takeout sesame chicken"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-shrimp-and-vegetables","aliases":["chinese takeout shrimp and vegetables"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-sweet-and-sour-chicken","aliases":["chinese takeout sweet and sour chicken"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-sweet-and-sour-pork","aliases":["chinese takeout sweet and sour pork"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-vegetable-chow-mein-without-meat-or-noodles","aliases":[],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-chinese-vegetable-lo-mein-without-meat","aliases":["chinese takeout vegetable lo mein"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-chicken-fingers-from-kid-s-menu","aliases":["restaurant chicken fingers","kids menu chicken fingers"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-chicken-tenders","aliases":["restaurant chicken tenders"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-chili-with-meat-and-beans","aliases":["restaurant chili","restaurant chili with meat and beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-coleslaw","aliases":["restaurant coleslaw"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-fish-fillet-battered-or-breaded-fried","aliases":["restaurant fried fish fillet","restaurant fried fish"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-french-fries","aliases":["restaurant fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-fried-mozzarella-sticks","aliases":["restaurant fried mozzarella sticks","restaurant mozzarella sticks"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-hash-browns","aliases":["restaurant hash browns"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-macaroni-cheese-from-kids-menu","aliases":["restaurant mac and cheese","kids menu mac and cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-onion-rings","aliases":["restaurant onion rings"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-shrimp-breaded-and-fried","aliases":["restaurant fried shrimp"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-sirloin-steak","aliases":["restaurant sirloin steak"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-family-style-spaghetti-and-meatballs","aliases":["restaurant spaghetti and meatballs"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-italian-cheese-ravioli-with-marinara-sauce","aliases":["restaurant cheese ravioli","restaurant ravioli with marinara"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-italian-chicken-parmesan-without-pasta","aliases":["restaurant chicken parmesan without pasta"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-italian-lasagna-with-meat","aliases":["restaurant lasagna","restaurant meat lasagna"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-italian-spaghetti-with-meat-sauce","aliases":["restaurant spaghetti with meat sauce","restaurant spaghetti bolognese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-italian-spaghetti-with-pomodoro-sauce-no-meat","aliases":["restaurant spaghetti with tomato sauce","restaurant spaghetti marinara"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-arepa-unleavened-cornmeal-bread","aliases":["restaurant arepa"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-arroz-con-frijoles-negros-rice-and-black-beans","aliases":["restaurant rice and black beans","restaurant arroz con frijoles negros"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-arroz-con-grandules-rice-and-pigeonpeas","aliases":["restaurant arroz con gandules","restaurant rice and pigeon peas"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-arroz-con-habichuelas-colorados-rice-and-red-beans","aliases":["restaurant rice and red beans","restaurant arroz con habichuelas"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-arroz-con-leche-rice-pudding","aliases":["restaurant arroz con leche","restaurant rice pudding"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-black-bean-soup","aliases":["restaurant black bean soup"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-bunuelos-fried-yeast-bread","aliases":["restaurant bunuelos","restaurant buñuelos"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-chicken-and-rice-entree-prepared","aliases":["restaurant chicken and rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-empanadas-beef-prepared","aliases":["restaurant beef empanada","restaurant empanada"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-pupusas-con-frijoles-pupusas-bean","aliases":["restaurant bean pupusa","restaurant pupusas with beans"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-pupusas-con-queso-pupusas-cheese","aliases":["restaurant pupusa","restaurant cheese pupusa"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-pupusas-del-cerdo-pupusas-pork","aliases":["restaurant pork pupusa"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-tamale-corn","aliases":["restaurant tamale","restaurant corn tamale"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-tamale-pork","aliases":["restaurant pork tamale"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-latino-tripe-soup","aliases":["restaurant menudo"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-mexican-cheese-enchilada","aliases":["restaurant enchilada","restaurant cheese enchiladas"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-mexican-cheese-quesadilla","aliases":["restaurant quesadilla","restaurant cheese quesadillas"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-mexican-cheese-tamales","aliases":["restaurant cheese tamale"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-mexican-refried-beans","aliases":["restaurant refried beans","restaurant frijoles refritos"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-mexican-soft-taco-with-ground-beef-cheese-and-lettuce","aliases":["restaurant soft taco","restaurant beef taco"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:restaurant-mexican-spanish-rice","aliases":["mexican rice","restaurant mexican rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:rice-white-steamed-chinese-restaurant","aliases":["chinese restaurant rice","chinese takeout steamed rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:shake-fast-food-vanilla","aliases":["fast food vanilla shake","fast food shake","drive-through vanilla shake"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:soft-serve-blended-with-candy-or-cookies-from-fast-food","aliases":["fast food blended soft serve","fast food soft serve with candy","fast food soft serve with cookies"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:soup-egg-drop-chinese-restaurant","aliases":["chinese restaurant egg drop soup","chinese takeout egg drop soup"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:soup-hot-and-sour-chinese-restaurant","aliases":["chinese restaurant hot and sour soup","chinese takeout hot and sour soup"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:soup-shark-fin-restaurant-prepared","aliases":["restaurant shark fin soup"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:soup-wonton-chinese-restaurant","aliases":["chinese restaurant wonton soup","chinese takeout wonton soup"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:spanish-rice-from-restaurant","aliases":["restaurant spanish rice"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:sweet-potato-fries-fast-food-restaurant","aliases":["fast food sweet potato fries","restaurant sweet potato fries"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:sweet-potato-tots-fast-food-restaurant","aliases":["fast food sweet potato tots","restaurant sweet potato tots"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:turkey-and-ham-sandwich-or-sub-restaurant","aliases":["restaurant turkey and ham sub","restaurant ham and turkey sandwich"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:turkey-and-ham-sandwich-or-sub-with-cheese-restaurant","aliases":["restaurant turkey and ham sandwich with cheese","restaurant turkey and ham sub with cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:turkey-sandwich-or-sub-restaurant","aliases":["restaurant turkey sandwich","restaurant turkey sub"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:turkey-sandwich-or-sub-with-cheese-restaurant","aliases":["restaurant turkey sandwich with cheese","restaurant turkey sub with cheese"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:waffle-chocolate-fast-food-restaurant","aliases":["fast food chocolate waffle"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:waffle-fruit-fast-food-restaurant","aliases":["fast food fruit waffle"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:waffle-plain-fast-food-restaurant","aliases":["fast food waffle","fast food plain waffle"],"model":"claude-haiku-5-5","at":"2026-11-17"}
+{"id":"ofc:waffle-whole-grain-fast-food-restaurant","aliases":["fast food whole grain waffle","fast food whole wheat waffle"],"model":"claude-haiku-5-5","at":"2026-11-17"}
