@@ -247,7 +247,14 @@ func buildCatalogue(dir, root string) error {
 	for _, id := range ids {
 		sorted = append(sorted, byID[id])
 	}
-	model = soleModelAliases(sorted, curated, model)
+	withheld, err := readWithheld(root)
+	if err != nil {
+		return err
+	}
+	if err := checkWithheld(withheld, curated); err != nil {
+		return err
+	}
+	model = soleModelAliases(sorted, curated, model, withheld)
 	var aliases aliasCounts
 	withAliases := 0
 	for _, id := range ids {
