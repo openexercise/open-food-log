@@ -26,9 +26,9 @@ Guides: the [developer guide](docs/developer-guide.md) (also on the site at [ope
 | `a2a` | The A2A agent profile: the reference nutrition agent's card (`agent-card.json`), whose `https://openfoodlog.org/a2a/v0` extension lists the core skills, and what a compatible agent serves |
 | `conformance` | Package `conformance`: the checks behind `ofl conformance` and `ofl vectors`, and `VerifySignature` for webhook deliveries |
 | `clients/go` | A Go client for the API core on the standard library alone (a module of its own) |
-| `catalogue` | The Open Food Catalogue: 12,442 generic foods with `ofc:` IDs from USDA FoodData Central, CC0. See its README |
+| `catalogue` | The Open Food Catalogue: 12,442 generic foods with `ofc:` IDs from USDA FoodData Central, CC0, and the rules for its branded products (`branded-foods.jsonl.gz`, a release asset). See its README |
 | `openfoodlog.go` | Package `openfoodlog`: the embedded schemas, MCP profile and A2A profile, a validator, and the reference calculation of section 6 (`Measure`; `Grams` and `Nutrients` for weighed amounts) |
-| `cmd/ofl` | `ofl validate`, which checks documents against the schemas; `ofl conformance`, which checks a server; `ofl vectors`, which checks an amount calculation; `ofl catalogue`, which rebuilds the catalogue from FoodData Central; and `ofl site`, which builds the website |
+| `cmd/ofl` | `ofl validate`, which checks documents against the schemas; `ofl conformance`, which checks a server; `ofl vectors`, which checks an amount calculation; `ofl catalogue`, which rebuilds the catalogue from FoodData Central; `ofl catalogue branded`, which builds the branded file; and `ofl site`, which builds the website |
 
 ```bash
 go run ./cmd/ofl validate

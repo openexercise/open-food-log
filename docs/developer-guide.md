@@ -66,7 +66,7 @@ Two rules run through all of it:
 The `ofl` command validates documents, checks servers and checks calculations. Install a release:
 
 ```bash
-go install github.com/openexercise/open-food-log/cmd/ofl@v0.11.0
+go install github.com/openexercise/open-food-log/cmd/ofl@v0.12.0
 ```
 
 Or work from a checkout, where `go run ./cmd/ofl …` does the same:
@@ -91,6 +91,7 @@ ofl conformance a2a [--json] [--token T] [--read-token R] <agent-url>
 ofl vectors [--json] -- <command> [args...]            check an amount calculation against the vectors
 ofl site [outdir]                                      build the website (dist/ by default)
 ofl catalogue <dir>                                    rebuild catalogue/ from the FoodData Central downloads in dir
+ofl catalogue branded <file> [out]                     build branded-foods.jsonl.gz from the Branded Foods JSON download
 ```
 
 In Go, the root package (`import openfoodlog "github.com/openexercise/open-food-log"`) carries the
@@ -558,6 +559,13 @@ Foods, FNDDS survey foods and SR Legacy), one OFL food per line. Branded product
 `gtin:`. Each record carries its FoodData Central ID in `identifiers.fdc_id`, its sources in
 `provenance.sources`, and up to 52 nutrients, portions with FoodData Central's weights and wording,
 a density for most liquids, a FoodData Central category (`basis: inferred`) and aliases.
+
+US branded products from USDA's Branded Foods (CC0, about 400,000) come as a separate file,
+`branded-foods.jsonl.gz`, attached to the GitHub releases rather than kept in git: one `kind:
+branded` food per line, with a `gtin:` ID, `brand`, the US `label` and its ingredients. Look them up
+by barcode, rank them below generic foods when searching by name, and credit USDA FoodData Central.
+[`catalogue/README.md`](../catalogue/README.md#branded-foods-branded-foodsjsonlgz) has the rules,
+the checksum and how to use it.
 
 ```bash
 grep '"id":"ofc:bananas-raw"' catalogue/foods.jsonl

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"maps"
 	"math"
 	"os"
 	"path/filepath"
@@ -245,64 +246,6 @@ func sentenceCase(s string) string {
 	return string(rs)
 }
 
-// draftRecord is close to what phase A will write for a branded food, encoded only to measure size.
-func draftRecord(b brandedFood, gtin string, n map[string]float64, withIngredients bool) map[string]any {
-	brand := strings.TrimSpace(b.BrandName)
-	if brand == "" {
-		brand = strings.TrimSpace(b.BrandOwner)
-	}
-	rec := map[string]any{
-		"$schema":     "https://openfoodlog.org/schema/v0/food.json",
-		"id":          "gtin:" + gtin,
-		"name":        sentenceCase(strings.TrimSpace(b.Description)),
-		"kind":        "branded",
-		"brand":       brand,
-		"gtin":        gtin,
-		"identifiers": map[string]int{"fdc_id": b.FdcID},
-		"provenance": map[string]any{
-			"sources": []map[string]string{
-				{"name": "USDA FoodData Central, Global Branded Food Products Database (2026-10-29)", "id": strconv.Itoa(b.FdcID), "url": fmt.Sprintf("https://fdc.nal.usda.gov/food-details/%d/nutrients", b.FdcID), "license": "CC0-1.0"},
-				{"name": strings.TrimSpace(b.BrandOwner) + " (data provider)"},
-			},
-			"license": "CC0-1.0",
-			"review":  "unreviewed",
-		},
-	}
-	bs, _ := basis(b, n)
-	if bs == "100ml" {
-		rec["nutrients_basis"] = "100ml"
-		rec["nutrients_per_100ml"] = n
-	} else {
-		rec["nutrients_per_100g"] = n
-	}
-	if b.ServingSize != nil {
-		serving := map[string]any{"label": strings.TrimSpace(b.HouseholdServingFullText)}
-		if bs == "100ml" {
-			serving["ml"] = *b.ServingSize
-		} else {
-			serving["grams"] = *b.ServingSize
-		}
-		label := map[string]any{"serving": serving, "region": "us"}
-		perServing := map[string]float64{}
-		for k, v := range b.LabelNutrients {
-			if v.Value != nil {
-				perServing[k] = *v.Value
-			}
-		}
-		if len(perServing) > 0 {
-			label["nutrients_per_serving"] = perServing
-		}
-		rec["label"] = label
-	}
-	if c := strings.TrimSpace(b.BrandedFoodCategory); c != "" {
-		rec["category"] = map[string]string{"name": c, "scheme": "fdc", "basis": "inferred"}
-	}
-	if withIngredients && strings.TrimSpace(b.Ingredients) != "" {
-		rec["ingredients_text"] = strings.TrimSpace(b.Ingredients)
-	}
-	return rec
-}
-
 // eachBranded streams the download's BrandedFoods array, handing over each record's raw JSON.
 func eachBranded(path string, fn func(json.RawMessage) error) error {
 	f, err := os.Open(path)
@@ -361,7 +304,7 @@ func newSizer() *sizer {
 }
 
 func (s *sizer) add(rec any) error {
-	line, err := json.Marshal(rec)
+	line, err := marshalPlain(rec)
 	if err != nil {
 		return err
 	}
@@ -526,6 +469,14 @@ func brandedReport(path, root string) error {
 			fromLabel[strings.ToUpper(strings.TrimSpace(b.ServingSizeUnit))+" as "+bs]++
 		}
 		keptSources[b.DataSource]++
+		rec := brandedRecord(b, gtin, maps.Clone(n), release.Format("2006-01-02"))
+		if err := withIngrSize.add(rec); err != nil {
+			return err
+		}
+		rec.IngredientsText = nil
+		if err := withoutIngrSize.add(rec); err != nil {
+			return err
+		}
 		deriveNutrients(n)
 		for k := range n {
 			coverage[k]++
@@ -551,10 +502,7 @@ func brandedReport(path, root string) error {
 			maxIngr = max(maxIngr, len(ingr))
 			ingrLens = append(ingrLens, len(ingr))
 		}
-		if err := withIngrSize.add(draftRecord(b, gtin, n, true)); err != nil {
-			return err
-		}
-		return withoutIngrSize.add(draftRecord(b, gtin, n, false))
+		return nil
 	})
 	if err != nil {
 		return err
@@ -671,7 +619,7 @@ func brandedReport(path, root string) error {
 		fmt.Fprintf(&b, "%d kept records (%.1f%%) have `ingredients`: %.1f MB of text in all, %d bytes on average, a median of %d and a longest of %d.\n", withIngr, pct(withIngr, kept), float64(ingrBytes)/1e6, ingrBytes/withIngr, ingrLens[len(ingrLens)/2], maxIngr)
 	}
 
-	b.WriteString("\n### Size\n\nEach kept record encoded as a draft OFL food (`kind: branded`, `gtin:` ID, sentence-cased name, brand, nutrients per 100 g or 100 ml with the worked-out keys, the label's serving and per-serving values, category, `fdc_id`, provenance) and gzipped at the default level. Phase A's records will differ a little.\n\n| | JSONL | Gzipped |\n| --- | --- | --- |\n")
+	b.WriteString("\n### Size\n\nEach kept record encoded as `ofl catalogue branded` writes it (an OFL food: `kind: branded`, `gtin:` ID, sentence-cased name, brand, nutrients per 100 g or 100 ml as stated, the label's serving and per-serving values, category, ingredients, `fdc_id`, provenance) and gzipped at the default level. The release asset is gzipped at the best level, so it is a little smaller.\n\n| | JSONL | Gzipped |\n| --- | --- | --- |\n")
 	fmt.Fprintf(&b, "| With ingredients | %s | %s |\n", mb(withIngrSize.raw.n), mb(withIngrSize.zipped.n))
 	fmt.Fprintf(&b, "| Without ingredients | %s | %s |\n", mb(withoutIngrSize.raw.n), mb(withoutIngrSize.zipped.n))
 

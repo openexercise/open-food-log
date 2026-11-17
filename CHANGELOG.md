@@ -23,14 +23,29 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 - **69 liquids have no density** (`catalogue/REPORT.md`).
 - **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
   allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
-- **Branded catalogue** (phase A of Lifterclub's `docs/fdc-branded.md`): build
-  `branded-foods.jsonl.gz` from USDA's Branded Foods by the rules `ofl catalogue branded-report`
-  applies and attach it to a release.
 - **v1:** freezes when the first application outside Lifterclub writes the format in production
   ([README.md](README.md)).
 
 ## Unreleased
 
+## v0.12.0 — 2026-11-17
+
+USDA's Branded Foods, 396,916 US products by barcode, are published as `branded-foods.jsonl.gz`,
+an asset of this release (SHA-256 in `branded-foods.jsonl.gz.sha256`). Every v0.2 document stays
+valid.
+
+- **Added:** `ofl catalogue branded <download>` builds the branded catalogue,
+  `branded-foods.jsonl.gz`, from USDA FoodData Central's Branded Foods by the rules
+  `branded-report` measures: one OFL food per US product (`kind: branded`, `gtin:` ID, `brand`, the
+  US `label` with its serving and per-serving values, nutrients per 100 g or per 100 ml as stated,
+  `ingredients_text`, FoodData Central's category, and provenance naming the release, the FDC
+  record, the data provider and its dates), ordered by ID and validated against the food schema,
+  with a `.sha256` beside it. It's a release asset, never committed; `catalogue/README.md` covers
+  its licence (CC0, cite USDA), how apps should use it and how to release it. From the 2026-10-29
+  download: 396,916 records, 69.0 MB (648 MB unzipped), SHA-256
+  `926a9b6b52adce40f3d7511fcdd46fbd643d1293267e88a2548f2f45211e1555`.
+- **Changed:** `BRANDED-REPORT.md` measures the file's sizes from the records `ofl catalogue
+  branded` writes, not a draft shape.
 - **Added:** `ofl catalogue branded-report <file>` measures USDA FoodData Central's Branded Foods
   download against the rules for a branded catalogue and writes
   [`catalogue/BRANDED-REPORT.md`](catalogue/BRANDED-REPORT.md), writing no records. The rules: the
