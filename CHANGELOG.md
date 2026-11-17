@@ -13,11 +13,10 @@ Lifterclub with the specification; this file covers the whole repository. `git l
 
 Known gaps and deferred work, removed when it ships (and recorded under Unreleased).
 
-- **Lifterclub doesn't have the model aliases yet:** after the next release, snapshot it there
-  (`make foods-snapshot`, `make foods-load`, `make eval`).
-- **Review the model aliases:** 6,524 of them, none checked by a person; `sources/alias-checks.jsonl`
-  holds 20 phrases. Some plain names went to a less likely record ("mac and cheese" to a box mix);
-  correct them in `sources/curated-aliases.jsonl` and add a check.
+- **Review the model aliases:** 6,524 of them, none checked by a person. 432 names were given to
+  several foods and kept on one by rule; those are the likeliest to be wrong. "Spaghetti and
+  meatballs" finds a canned version (the catalogue has no everyday one). Correct them in
+  `sources/curated-aliases.jsonl` and add a line to `sources/alias-checks.jsonl`.
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
 - **A place for reviews** that the generator merges in (aliases have one now:
   `sources/curated-aliases.jsonl`).
@@ -28,6 +27,19 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   ([README.md](README.md)).
 
 ## Unreleased
+
+## v0.10.1 — 2026-11-17
+
+Everyday words find the food a person means for sure in four more cases, and 110 phrases now
+guard the catalogue's names. Every v0.2 document stays valid.
+
+- **Fixed:** "scrambled eggs" finds the survey's egg omelet or scrambled egg (a model had given it
+  to the fast-food one), "mac and cheese" and "macaroni and cheese" find "Macaroni or noodles with
+  cheese" (not the SR Legacy box mix), "banana" and "bananas" find "Banana, raw" (no food held the
+  plain word), and "almond" and "almonds" both find "Almonds, NFS" (the singular was another
+  record's, so neither was sure). Each is in `sources/curated-aliases.jsonl` with its reason.
+- **Added:** 90 phrases in `sources/alias-checks.jsonl` (110 in all): coffee, rice, chicken
+  breast, yogurt, steak, sushi and other everyday foods, each held by the one food it names.
 
 ## v0.10.0 — 2026-11-16
 
