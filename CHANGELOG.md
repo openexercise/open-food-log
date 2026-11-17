@@ -28,6 +28,16 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+### Changed
+
+- The specification (section 3) lets a catalogue host `kind: branded` foods from a source whose
+  licence allows copying (CC0, such as USDA FoodData Central's branded foods) under `gtin:` IDs;
+  share-alike sources such as Open Food Facts are still looked up, never copied. Wording only: no
+  schema changes (`schema/CHANGELOG.md`).
+- The MCP profile's `lookup_barcode` (a `lifterclub` extension) and its extension instructions say
+  a barcode is answered from hosted branded foods first, then Open Food Facts live, and to credit
+  the source the result names.
+
 ## v0.12.0 — 2026-11-17
 
 USDA's Branded Foods, 396,916 US products by barcode, are published as `branded-foods.jsonl.gz`,

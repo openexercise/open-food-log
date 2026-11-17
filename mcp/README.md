@@ -21,9 +21,10 @@ mark when they list their tools:
   - Targets (v0.1): `get_targets`, `set_targets` and `get_nutrition_summary`.
 - **`lifterclub`**: the reference server's own extensions, which other servers may copy but need
   not: `log_meal_text` (sentence reading by an LLM), `log_meal_photo` (a photo read by an LLM into
-  foods and estimated amounts), `lookup_barcode` (packaged foods by barcode at Open Food Facts,
-  live; a product logs by its `gtin:` ID) and `import_recipe` (a web page's schema.org Recipe read
-  into a draft for `save_recipe`).
+  foods and estimated amounts), `lookup_barcode` (packaged foods by barcode: hosted branded foods
+  from USDA FoodData Central first, then Open Food Facts live; the result names its source, and a
+  product logs by its `gtin:` ID) and `import_recipe` (a web page's schema.org Recipe read into a
+  draft for `save_recipe`).
 
 `undo` is shared with the Open Workout profile (`dev.openworkout/profile` too): a server that keeps
 both logs restores whatever the token was given for, with one tool.

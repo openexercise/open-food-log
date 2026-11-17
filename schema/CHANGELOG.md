@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Changed: a catalogue may host `kind: branded` foods from a source whose licence allows copying
+  (CC0, such as USDA FoodData Central's Global Branded Food Products Database) and still name them
+  `gtin:`, with `provenance.sources` naming the source and release, its record ID, licence and
+  date (section 3). Products from a share-alike source (Open Food Facts, ODbL) are still looked
+  up, never copied. When two sources answer for one GTIN, the hosting system picks an order,
+  answers with the first and names that source; readers don't merge them. Wording only: no schema
+  changes.
+
 - Fixed: the specification still read as v0.1 in places. Its status is v0.2; section 2 lists
   `saved-meal.json`, section 3 the `saved:` namespace (and `example:`, for documentation, which
   never names a real record), section 11 every core tool (recipes, saved meals, `log_meal_again`,
