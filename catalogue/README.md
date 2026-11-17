@@ -1,6 +1,6 @@
 # The Open Food Catalogue
 
-Generic foods in the Open Food Log format, one record per line in [`foods.jsonl`](foods.jsonl), with `ofc:` IDs. Branded and packaged foods aren't here: name them by barcode (`gtin:`) and look them up where they're kept. A branded catalogue from USDA's Branded Foods (CC0) is planned as a separate release asset; [BRANDED-REPORT.md](BRANDED-REPORT.md) measures what its rules would keep (`ofl catalogue branded-report`).
+Generic foods in the Open Food Log format, one record per line in [`foods.jsonl`](foods.jsonl), with `ofc:` IDs. Branded and packaged foods aren't here: name them by barcode (`gtin:`). USDA's Branded Foods (CC0), about 400,000 US products, are published beside it as a release asset, [`branded-foods.jsonl.gz`](#branded-foods-branded-foodsjsonlgz), too large for git.
 
 **Status: v0 draft.** IDs may change until v1. No record has been reviewed by a person; each says so in `provenance.review`.
 
@@ -70,3 +70,56 @@ Download the three JSON files from [FoodData Central's downloads](https://fdc.na
 go run ./cmd/ofl catalogue <that directory>
 go test ./...
 ```
+
+## Branded foods (`branded-foods.jsonl.gz`)
+
+US packaged products from USDA FoodData Central's [Global Branded Food Products Database](https://fdc.nal.usda.gov), one OFL food per line, gzipped, ordered by ID. It's attached to the catalogue's [GitHub releases](https://github.com/openexercise/open-food-log/releases) as an asset with its checksum (`branded-foods.jsonl.gz.sha256`), never committed: at about 70 MB it would pass GitHub's file limit and grow the history by that much each release. A release that doesn't rebuild it carries no asset; use the latest release that has one.
+
+**Licence.** CC0 1.0, like its source: USDA FoodData Central data are in the public domain. USDA asks to be named as the source, and so do we. Cite it as *U.S. Department of Agriculture, Agricultural Research Service. FoodData Central: USDA Global Branded Food Products Database, release 2026-10-29. fdc.nal.usda.gov*, and show "USDA FoodData Central" where your app shows a branded food's numbers. The data is submitted by manufacturers and retailers (through Label Insight, GS1's GDSN or Euromonitor), who USDA says are responsible for it.
+
+**Each record:**
+
+- `id` is `gtin:` and the product's barcode as 14 digits; `gtin` lists the same barcode. `kind` is `branded`.
+- `name` is USDA's description, sentence-cased when it was written all in capitals ("Original greek yogurt"); the original is quoted in `provenance.sources`. `brand` is the brand name, else the brand owner.
+- `nutrients_per_100g` holds the nutrients FoodData Central states per 100 g, read by the vocabulary's FoodData Central numbers as generic foods are, in the vocabulary's unit only. Nothing is worked out (no `energy_kj`, `salt_g` or `carbohydrate_available_g`); compute them by section 4 of the spec if you need them. A product labelled per 100 ml has `nutrients_basis: "100ml"`, its values in `nutrients_per_100ml`, and an empty `nutrients_per_100g`, since no density is known: log it by volume or by serving.
+- `label` is the US label (`region: us`): the serving as printed (`serving.text`, else its size), its weight in `grams` or volume in `ml`, and `nutrients_per_serving` as declared (calories, macros, sodium, cholesterol, sugars and added sugars, fibre, calcium, iron, potassium; vitamin D is left out, since the download doesn't say whether it's IU or µg). `carbohydrate_g` is total carbohydrate, as US labels give it.
+- `ingredients_text` is the label's ingredients list (`basis: declared`, `locale: en`), on one line; 99.4% of records have one.
+- `category` is FoodData Central's branded category (`scheme: fdc`, `basis: inferred`).
+- `identifiers.fdc_id` is USDA's record; `provenance.sources` names the release, the record's URL, the data provider, how it reached USDA, and the record's available, modified and published dates. No record has been reviewed by a person.
+
+**The rules**, measured in [BRANDED-REPORT.md](BRANDED-REPORT.md) (`ofl catalogue branded-report`), which counts every record each one drops:
+
+1. The US market only (written `United States` or `US`).
+2. A GTIN: up to 14 digits, zero-padded on the left, with a valid check digit (an 11-digit code is a UPC-A that lost its leading zero).
+3. One record per GTIN, the newest by available date, then modified date, then the highest FDC ID.
+4. Not discontinued. There's no age cutoff: an old label isn't wrong, and the product may still be in someone's cupboard. About 65% of records are dated over five years before the release.
+5. Plausible numbers: energy in kcal; no negative value or serving of 0; protein, fat and carbohydrate no more than 100 g per 100, energy no more than 900 kcal; energy within 20% or 40 kcal of 4·protein + 4·carbohydrate + 9·fat (+ 7·alcohol). A serving in g or ml names the basis; one given in MG, IU or MC is read as grams or millilitres when the label's calories confirm it, else the record is dropped.
+
+**Using it.** Read it a line at a time (`gzip -dc branded-foods.jsonl.gz | head`); the whole file is about 650 MB of JSON. Check the download against its `.sha256` (`shasum -a 256 -c branded-foods.jsonl.gz.sha256`) and pin the checksum, so a later release changes your data only when you choose. Things to know:
+
+- **Look products up by barcode.** Names repeat across brands and sizes, and outnumber the generic catalogue thirty to one: a matcher that treats a branded name as a sure match for a person's words will stop being sure about "banana". Rank branded results below generic foods, and ask before choosing one from words alone.
+- **When a product leaves a release** (discontinued, or its record failed a rule), keep what you loaded and stop offering it; a meal that named it keeps its numbers.
+- **Labels lag.** A manufacturer's submission can trail a reformulation; FoodData Central updates its downloads twice a year (April and October). Another product database may be newer for one product; say which source a number came from.
+- A meal item logged from a branded food should name it by its `gtin:` ID and keep its own nutrients, as for any food.
+
+**Build it** from the unzipped JSON download (`FoodData_Central_branded_food_json_YYYY-MM-DD.json`, about 3 GB unzipped, from FoodData Central's downloads), anywhere outside the repository:
+
+```bash
+go build -o ~/bin/ofl ./cmd/ofl        # in a checkout
+cd <a scratch directory>
+ofl catalogue branded <path>/FoodData_Central_branded_food_json_2026-10-29.json
+```
+
+It writes `branded-foods.jsonl.gz` and `branded-foods.jsonl.gz.sha256` in the current directory (or the path given after the download), validates every record against the food schema, and stops on the first that fails. The same download and Go version build the same bytes, so a checksum can be reproduced. The 2026-10-29 download took about two minutes and 1.5 GB of memory on an Apple-silicon Mac.
+
+**Release it** by hand, after the pull request that changes the rules (if any) has merged and `CHANGELOG.md` names the release:
+
+```bash
+gh release create vX.Y.Z --title vX.Y.Z --notes-file <notes> branded-foods.jsonl.gz branded-foods.jsonl.gz.sha256
+```
+
+or `gh release upload vX.Y.Z branded-foods.jsonl.gz branded-foods.jsonl.gz.sha256` for a release that exists. Put the record count and SHA-256 in the release notes and the changelog entry. The repository is public, so the asset downloads without a token from `https://github.com/openexercise/open-food-log/releases/download/vX.Y.Z/branded-foods.jsonl.gz`.
+
+| Built from | Records | Size | SHA-256 |
+| --- | --- | --- | --- |
+| 2026-10-29 (built with Go 1.26.2) | 396,916 | 68,970,860 bytes (69.0 MB; 648 MB unzipped) | `926a9b6b52adce40f3d7511fcdd46fbd643d1293267e88a2548f2f45211e1555` |

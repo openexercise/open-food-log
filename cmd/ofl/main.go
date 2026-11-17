@@ -25,7 +25,8 @@ const usage = `usage:
   ofl site [outdir]                                      build the website (dist/ by default)
   ofl catalogue <dir>                                    rebuild catalogue/ from the FoodData Central downloads in dir
   ofl catalogue refresh                                  apply the record rules (portions, aliases) again, over the built catalogue
-  ofl catalogue branded-report <file>                    count what the branded rules drop from the Branded Foods JSON download (writes catalogue/BRANDED-REPORT.md)`
+  ofl catalogue branded-report <file>                    count what the branded rules drop from the Branded Foods JSON download (writes catalogue/BRANDED-REPORT.md)
+  ofl catalogue branded <file> [out]                     build the branded catalogue from the Branded Foods JSON download (branded-foods.jsonl.gz and its .sha256)`
 
 func main() {
 	if len(os.Args) < 2 {
@@ -61,6 +62,10 @@ func main() {
 		}
 		if len(os.Args) == 4 && os.Args[2] == "branded-report" {
 			err = brandedReport(os.Args[3], ".")
+			break
+		}
+		if len(os.Args) >= 3 && os.Args[2] == "branded" {
+			err = runBranded(os.Args[3:])
 			break
 		}
 		if len(os.Args) < 3 {

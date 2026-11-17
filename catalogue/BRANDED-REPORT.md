@@ -165,12 +165,12 @@ Serving units as given, US records:
 
 ### Size
 
-Each kept record encoded as a draft OFL food (`kind: branded`, `gtin:` ID, sentence-cased name, brand, nutrients per 100 g or 100 ml with the worked-out keys, the label's serving and per-serving values, category, `fdc_id`, provenance) and gzipped at the default level. Phase A's records will differ a little.
+Each kept record encoded as `ofl catalogue branded` writes it (an OFL food: `kind: branded`, `gtin:` ID, sentence-cased name, brand, nutrients per 100 g or 100 ml as stated, the label's serving and per-serving values, category, ingredients, `fdc_id`, provenance) and gzipped at the default level. The release asset is gzipped at the best level, so it is a little smaller.
 
 | | JSONL | Gzipped |
 | --- | --- | --- |
-| With ingredients | 592 MB | 85 MB |
-| Without ingredients | 470 MB | 53 MB |
+| With ingredients | 648 MB | 89 MB |
+| Without ingredients | 509 MB | 59 MB |
 
 ## Field coverage
 
