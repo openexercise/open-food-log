@@ -18,3 +18,90 @@
 {"phrase":"grilled cheese sandwich","id":"ofc:grilled-cheese-sandwich-nfs"}
 {"phrase":"orange juice","id":"ofc:orange-juice-100-nfs"}
 {"phrase":"oj","id":"ofc:orange-juice-100-nfs"}
+{"phrase": "coffee", "id": "ofc:coffee-ns-as-to-type"}
+{"phrase": "black coffee", "id": "ofc:beverages-coffee-brewed-prepared-with-tap-water"}
+{"phrase": "latte", "id": "ofc:coffee-latte"}
+{"phrase": "cappuccino", "id": "ofc:coffee-cappuccino"}
+{"phrase": "espresso", "id": "ofc:coffee-espresso"}
+{"phrase": "green tea", "id": "ofc:tea-hot-leaf-green"}
+{"phrase": "tea", "id": "ofc:tea-hot-leaf-black"}
+{"phrase": "milk", "id": "ofc:milk-nfs"}
+{"phrase": "whole milk", "id": "ofc:milk-whole"}
+{"phrase": "skim milk", "id": "ofc:milk-fat-free-skim"}
+{"phrase": "almond milk", "id": "ofc:almond-milk-nfs"}
+{"phrase": "oat milk", "id": "ofc:oat-milk"}
+{"phrase": "apple juice", "id": "ofc:apple-juice-100"}
+{"phrase": "soda", "id": "ofc:soft-drink-nfs"}
+{"phrase": "cola", "id": "ofc:soft-drink-cola"}
+{"phrase": "beer", "id": "ofc:beer"}
+{"phrase": "red wine", "id": "ofc:wine-red"}
+{"phrase": "white wine", "id": "ofc:wine-white"}
+{"phrase": "water", "id": "ofc:water-nfs"}
+{"phrase": "white rice", "id": "ofc:rice-white-cooked-ns-as-to-fat"}
+{"phrase": "brown rice", "id": "ofc:rice-brown-cooked-ns-as-to-fat"}
+{"phrase": "rice", "id": "ofc:rice-cooked-nfs"}
+{"phrase": "pasta", "id": "ofc:pasta-cooked"}
+{"phrase": "granola", "id": "ofc:cereal-granola"}
+{"phrase": "cereal", "id": "ofc:cereal-ready-to-eat-nfs"}
+{"phrase": "bagel", "id": "ofc:bagel"}
+{"phrase": "toast", "id": "ofc:bread-ns-as-to-major-flour-toasted"}
+{"phrase": "white bread", "id": "ofc:bread-white"}
+{"phrase": "whole wheat bread", "id": "ofc:bread-whole-wheat"}
+{"phrase": "tortilla", "id": "ofc:tortilla-nfs"}
+{"phrase": "apple", "id": "ofc:apple-raw"}
+{"phrase": "orange", "id": "ofc:orange-raw"}
+{"phrase": "strawberries", "id": "ofc:strawberries-raw"}
+{"phrase": "blueberries", "id": "ofc:blueberries-raw"}
+{"phrase": "grapes", "id": "ofc:grapes-raw"}
+{"phrase": "avocado", "id": "ofc:avocado-raw"}
+{"phrase": "broccoli", "id": "ofc:broccoli-ns-as-to-form-cooked"}
+{"phrase": "spinach", "id": "ofc:spinach-ns-as-to-form-cooked"}
+{"phrase": "carrots", "id": "ofc:carrots-raw"}
+{"phrase": "potato", "id": "ofc:potato-nfs"}
+{"phrase": "baked potato", "id": "ofc:potato-baked-nfs"}
+{"phrase": "mashed potatoes", "id": "ofc:potato-mashed-nfs"}
+{"phrase": "sweet potato", "id": "ofc:sweet-potato-nfs"}
+{"phrase": "corn", "id": "ofc:corn-ns-as-to-form-cooked"}
+{"phrase": "green beans", "id": "ofc:green-beans-ns-as-to-form-cooked"}
+{"phrase": "chicken breast", "id": "ofc:chicken-breast-ns-as-to-cooking-method-skin-not-eaten"}
+{"phrase": "grilled chicken", "id": "ofc:chicken-ns-as-to-part-grilled-without-sauce-ns-as-to-skin-eaten"}
+{"phrase": "fried chicken", "id": "ofc:chicken-broilers-or-fryers-meat-and-skin-cooked-fried-flour"}
+{"phrase": "chicken nuggets", "id": "ofc:chicken-nuggets-nfs"}
+{"phrase": "chicken wings", "id": "ofc:chicken-wing-ns-as-to-cooking-method"}
+{"phrase": "ground beef", "id": "ofc:beef-ground"}
+{"phrase": "steak", "id": "ofc:beef-steak-nfs"}
+{"phrase": "cheeseburger", "id": "ofc:cheeseburger-nfs"}
+{"phrase": "hot dog", "id": "ofc:hot-dog-nfs"}
+{"phrase": "bacon", "id": "ofc:bacon-ns-as-to-type-of-meat-cooked"}
+{"phrase": "sausage", "id": "ofc:sausage-nfs"}
+{"phrase": "ham", "id": "ofc:ham"}
+{"phrase": "turkey", "id": "ofc:turkey-nfs"}
+{"phrase": "salmon", "id": "ofc:fish-salmon-nfs"}
+{"phrase": "tuna", "id": "ofc:fish-tuna-nfs"}
+{"phrase": "shrimp", "id": "ofc:shrimp-nfs"}
+{"phrase": "tofu", "id": "ofc:soybean-curd"}
+{"phrase": "peanut butter", "id": "ofc:peanut-butter"}
+{"phrase": "cheese", "id": "ofc:cheese-nfs"}
+{"phrase": "cheddar cheese", "id": "ofc:cheese-cheddar"}
+{"phrase": "greek yogurt", "id": "ofc:yogurt-greek-ns-as-to-type-of-milk-plain"}
+{"phrase": "yogurt", "id": "ofc:yogurt-nfs"}
+{"phrase": "butter", "id": "ofc:butter-nfs"}
+{"phrase": "cottage cheese", "id": "ofc:cheese-cottage-nfs"}
+{"phrase": "pepperoni pizza", "id": "ofc:pizza-with-pepperoni-from-restaurant-or-fast-food-ns-as-to-type-of-crust"}
+{"phrase": "lasagna", "id": "ofc:lasagna-with-meat"}
+{"phrase": "quesadilla", "id": "ofc:quesadilla-nfs"}
+{"phrase": "sushi", "id": "ofc:sushi-nfs"}
+{"phrase": "fried rice", "id": "ofc:rice-fried-nfs"}
+{"phrase": "soup", "id": "ofc:soup-nfs"}
+{"phrase": "chicken noodle soup", "id": "ofc:soup-chicken-noodle"}
+{"phrase": "french fries", "id": "ofc:potato-french-fries-nfs"}
+{"phrase": "popcorn", "id": "ofc:popcorn-nfs"}
+{"phrase": "ice cream", "id": "ofc:ice-cream-nfs"}
+{"phrase": "cookie", "id": "ofc:cookie-nfs"}
+{"phrase": "protein shake", "id": "ofc:nutritional-drink-or-shake-high-protein-ready-to-drink-nfs"}
+{"phrase": "apple pie", "id": "ofc:pie-apple"}
+{"phrase": "donut", "id": "ofc:doughnut-nfs"}
+{"phrase": "waffles", "id": "ofc:waffle-nfs"}
+{"phrase": "scrambled eggs", "id": "ofc:egg-omelet-or-scrambled-egg-ns-as-to-fat"}
+{"phrase": "mac and cheese", "id": "ofc:macaroni-or-noodles-with-cheese"}
+{"phrase": "macaroni and cheese", "id": "ofc:macaroni-or-noodles-with-cheese"}
