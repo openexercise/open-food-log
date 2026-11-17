@@ -15,7 +15,7 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 - **Review the model aliases:** 6,747 of them, none checked one by one. Of the 432 names given to
   several foods, the build's rule and a blind Claude Haiku review agreed on 374, and a person settled
-  the other 58 (v0.10.2). "Spaghetti and meatballs" finds a canned version (the catalogue has no
+  the other 58 (v0.12.2). "Spaghetti and meatballs" finds a canned version (the catalogue has no
   everyday one). Correct a name in `sources/curated-aliases.jsonl`, or withhold it in
   `sources/withheld-aliases.jsonl`, and add a line to `sources/alias-checks.jsonl`.
 - **Person review:** no catalogue record has been checked by a person (`catalogue/README.md`).
@@ -28,6 +28,22 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   ([README.md](README.md)).
 
 ## Unreleased
+
+## v0.12.2 — 2026-11-17
+
+The 58 names where the build's rule and a second review disagreed are settled by a person, and
+names too vague for one food can now be withheld. Every v0.2 document stays valid. (Briefly tagged
+v0.10.2 by mistake; that tag is withdrawn.)
+
+- **Changed:** 52 names a model gave to several foods now go where a person put them, as curated
+  aliases with their reason: 18 where the build's pick stood ("coffee", "cottage cheese",
+  "cranberry juice") and 34 where a blind Claude Haiku review's pick won ("Boston butt" is the
+  shoulder, "iced tea" the unsweetened brewed tea, "wine" table wine of any colour). The other 374
+  of the 432 contested names, where the two agreed, stay as they were.
+- **Added:** `sources/withheld-aliases.jsonl`, names a person judged too vague for any one food,
+  which the build keeps off every food so a matcher asks: "baby green beans", "baby mixed
+  vegetables", "baby peaches", "baby pears", "baby rice cereal" and "chicken and potatoes". A check
+  in `sources/alias-checks.jsonl` with the ID `none` wants a name no food holds; 216 checks in all.
 
 ## v0.12.1 — 2026-11-17
 
