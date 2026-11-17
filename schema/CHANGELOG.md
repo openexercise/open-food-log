@@ -2,6 +2,34 @@
 
 ## Unreleased
 
+## v0.3 draft, 2026-11-17
+
+A person's own foods for packaged products, labels worked out the same way everywhere, and
+`create_food` in the MCP core. Only additions: every v0.2 document stays valid.
+
+- **v0.3: barcodes on a person's own foods.** A `custom` food may carry `gtin` and `brand` for a
+  product the person entered themselves (section 5); it stays `custom`, since its numbers are the
+  person's. Resolving a `gtin:` reference for a person answers with their own food first, under its
+  `usr:` ID, before any product database, and never for anyone else (section 3).
+- **v0.3: a food from its label.** Section 5 says how a label's `nutrients_per_serving` become the
+  food's values: per 100 g over the serving's grams (the serving then the default portion), per
+  100 ml over its ml, and by servings with neither, never by an invented weight or millilitres taken
+  for grams. A label is consistent when no part (saturated, trans, mono- and polyunsaturated fat;
+  sugars, starch, polyols; added sugars; fibre under `us` and `ca` rules) is more than the whole
+  that includes it, and values over 900 kcal or 100 g of macronutrients per 100 g or 100 ml are
+  implausible. `label-vectors.json` holds 14 worked labels. A label read by a model lists what it
+  read in `provenance.generated` until the person has checked it, then names the label as its
+  source and lists nothing.
+- The API core's `createFood` takes `gtin` (one code), `brand`, `label` and `nutrients_per_100ml`,
+  and refuses a label with a part over its whole; `getFood` answers a `gtin:` ID with the user's own
+  food first and still reads one they deleted, as `status: "deprecated"`. The MCP profile's core
+  adds `create_food`, which an assistant calls only after the person confirms the numbers.
+- Targets documents in the API core give `ofl_version` as any `0.x` rather than the constant
+  `"0.2"`, so a server writing a newer minor version still matches.
+- Changed: the API core's `FoodMatch` (search results) may be `kind: branded`, a packaged product
+  named by its `gtin:` ID, with its `brand` and, for a drink, `nutrients_per_100ml`; a product
+  scores at most 0.8, or 0.85 when the query names its brand, so words alone never match it surely.
+
 - Changed: a catalogue may host `kind: branded` foods from a source whose licence allows copying
   (CC0, such as USDA FoodData Central's Global Branded Food Products Database) and still name them
   `gtin:`, with `provenance.sources` naming the source and release, its record ID, licence and

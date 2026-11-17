@@ -29,6 +29,28 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+Open Food Log v0.3 (`ofl_version` `"0.3"`): every v0.2 document stays valid.
+
+### Added
+
+- **v0.3: barcodes on a person's own foods.** A `custom` food may carry `gtin` and `brand` for a
+  product the person entered, and resolving a `gtin:` for that person answers with their own food
+  first (`schema/v0/SPEC.md` sections 3 and 5).
+- **v0.3: a food from its label.** Section 5 says how a label's per-serving values become a food's
+  (per 100 g, per 100 ml, or by servings, never an invented weight), when a label is inconsistent (a
+  part over its whole) or implausible, and how a label read by a model is marked until a person
+  checks it. `schema/v0/label-vectors.json` holds 14 worked cases, checked here by
+  `TestLabelVectors` in `calc_test.go`.
+- The API core's `createFood` takes `gtin`, `brand`, `label` and `nutrients_per_100ml`, and
+  `getFood` answers a `gtin:` with the user's own food first; the MCP profile's core adds
+  `create_food`.
+
+### Changed
+
+- The API core's search results (`FoodMatch`) may be `kind: branded` products with their `brand`
+  and `nutrients_per_100ml`, scored below generic foods (published from Lifterclub's branded
+  search). Targets documents give `ofl_version` as any `0.x`.
+
 ## v0.12.3 — 2026-11-17
 
 Profile only: Lifterclub's own-food tools and the barcode lookup order in the MCP profile. No schema,

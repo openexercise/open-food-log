@@ -615,3 +615,99 @@ func deref(s *string) string {
 	}
 	return *s
 }
+
+// labelWholes is the reference reading of section 5's consistency rule: each part and the wholes
+// that include it. Fibre is part of total carbohydrate only.
+var labelWholes = []struct{ part, whole string }{
+	{"saturated_fat_g", "fat_g"}, {"trans_fat_g", "fat_g"}, {"monounsaturated_fat_g", "fat_g"}, {"polyunsaturated_fat_g", "fat_g"},
+	{"sugars_g", "carbohydrate_g"}, {"sugars_g", "carbohydrate_available_g"}, {"added_sugars_g", "sugars_g"},
+	{"starch_g", "carbohydrate_g"}, {"starch_g", "carbohydrate_available_g"},
+	{"polyols_g", "carbohydrate_g"}, {"polyols_g", "carbohydrate_available_g"}, {"fiber_g", "carbohydrate_g"},
+}
+
+// TestLabelVectors works each label vector out from section 5 and compares: the parts over their
+// wholes, then the values per 100 g and 100 ml and the bounds on them.
+func TestLabelVectors(t *testing.T) {
+	var vectors struct {
+		Cases []struct {
+			Name          string
+			Label         label
+			DensityGPerML float64 `json:"density_g_per_ml"`
+			Expect        struct {
+				Error             string
+				Parts             []struct{ Part, Whole string }
+				NutrientsBasis    string             `json:"nutrients_basis"`
+				NutrientsPer100g  map[string]float64 `json:"nutrients_per_100g"`
+				NutrientsPer100ml map[string]float64 `json:"nutrients_per_100ml"`
+				ServingGrams      float64            `json:"serving_grams"`
+			}
+		}
+	}
+	readDoc(t, "schema/v0/label-vectors.json", &vectors)
+	for _, c := range vectors.Cases {
+		n, s := c.Label.NutrientsPerServing, c.Label.Serving
+		var parts []string
+		for _, p := range labelWholes {
+			part, hasPart := n[p.part]
+			whole, hasWhole := n[p.whole]
+			if hasPart && hasWhole && part > whole {
+				parts = append(parts, p.part+"/"+p.whole)
+			}
+		}
+		var wantParts []string
+		for _, p := range c.Expect.Parts {
+			wantParts = append(wantParts, p.Part+"/"+p.Whole)
+		}
+		if !slices.Equal(parts, wantParts) {
+			t.Errorf("%s: parts over their wholes %v, want %v", c.Name, parts, wantParts)
+		}
+		basis, per100g, per100ml := "serving", map[string]float64{}, map[string]float64(nil)
+		if s != nil && s.ML > 0 {
+			basis, per100ml = "100ml", scaled(n, 100/s.ML)
+			if c.DensityGPerML > 0 {
+				per100g = scaled(per100ml, 1/c.DensityGPerML)
+			}
+		}
+		if s != nil && s.Grams > 0 {
+			basis, per100g = "100g", scaled(n, 100/s.Grams)
+		}
+		implausible := false
+		for _, v := range []map[string]float64{per100g, per100ml} {
+			if v["energy_kcal"] > 900 || v["protein_g"]+v["fat_g"]+max(v["carbohydrate_g"], v["carbohydrate_available_g"]) > 100 {
+				implausible = true
+			}
+		}
+		switch {
+		case c.Expect.Error == "label_inconsistent":
+			if len(parts) == 0 {
+				t.Errorf("%s: consistent, want label_inconsistent", c.Name)
+			}
+			continue
+		case c.Expect.Error == "implausible":
+			if !implausible {
+				t.Errorf("%s: plausible, want implausible", c.Name)
+			}
+			continue
+		case implausible || len(parts) > 0:
+			t.Errorf("%s: implausible or inconsistent, want values", c.Name)
+			continue
+		}
+		if basis != c.Expect.NutrientsBasis {
+			t.Errorf("%s: basis %s, want %s", c.Name, basis, c.Expect.NutrientsBasis)
+		}
+		for what, pair := range map[string][2]map[string]float64{"per 100 g": {per100g, c.Expect.NutrientsPer100g}, "per 100 ml": {per100ml, c.Expect.NutrientsPer100ml}} {
+			got, want := pair[0], pair[1]
+			if len(got) != len(want) {
+				t.Errorf("%s %s: %v, want %v", c.Name, what, got, want)
+			}
+			for k, w := range want {
+				if !near(got[k], w, 0.01) {
+					t.Errorf("%s %s: %s = %v, want %v", c.Name, what, k, got[k], w)
+				}
+			}
+		}
+		if s != nil && s.Grams != c.Expect.ServingGrams {
+			t.Errorf("%s: serving %v g, want %v", c.Name, s.Grams, c.Expect.ServingGrams)
+		}
+	}
+}

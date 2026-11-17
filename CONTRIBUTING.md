@@ -73,7 +73,8 @@ A change to the format is complete when it has all of these:
 - **An example** in `examples/` that uses it and passes `ofl validate`.
 - **Vectors** when it touches a calculation: an amount to grams and nutrients
   (`amount-vectors.json`), a recipe's yield and nutrients (`recipe-vectors.json`), or which target
-  applies and its status (`target-vectors.json`). The reference calculation here
+  applies and its status (`target-vectors.json`), or a label as a food's values
+  (`label-vectors.json`). The reference calculation here
   (`openfoodlog.Measure`) and the tests in `calc_test.go` must agree with them.
 - **The version**: `ofl_version` moves to the next minor version, and the status line at the top of
   SPEC says so.

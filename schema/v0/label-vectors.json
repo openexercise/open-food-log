@@ -1,0 +1,438 @@
+{
+  "title": "Open Food Log v0: label vectors",
+  "description": "Worked labels every implementation should agree on (section 5 of the spec, v0.3). Each case is a package's label as printed (food.json's label) and, optionally, the food's density. A consistent label gives its food's values: with the serving's grams, nutrients_per_100g is nutrients_per_serving times 100 / grams and the serving is the default portion (serving_grams); with its ml, nutrients_per_100ml is the same over ml; with only ml, nutrients_basis is 100ml and nutrients_per_100g is empty unless density_g_per_ml is known, when it is per 100 ml over the density; with neither, nutrients_basis is serving and nutrients_per_100g is empty. An inconsistent label (label_inconsistent) declares a part more than the whole that includes it, listing every such part and whole; an implausible one (implausible) gives per 100 g or per 100 ml more than 900 kcal, or more than 100 g of protein, fat and carbohydrate together. Values are exact to four decimal places; within 0.01 agrees.",
+  "cases": [
+    {
+      "name": "US bar, serving by weight",
+      "note": "Per 100 g is per serving times 100 / 40. The serving becomes the default portion. The %DV is kept as printed and never turned into amounts.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 bar (40g)",
+          "grams": 40
+        },
+        "servings_per_container": 6,
+        "nutrients_per_serving": {
+          "energy_kcal": 190,
+          "fat_g": 7,
+          "saturated_fat_g": 2.5,
+          "trans_fat_g": 0,
+          "sodium_mg": 140,
+          "carbohydrate_g": 27,
+          "fiber_g": 3,
+          "sugars_g": 12,
+          "added_sugars_g": 10,
+          "protein_g": 4
+        },
+        "percent_daily_values": {
+          "fat_g": 9,
+          "saturated_fat_g": 13,
+          "sodium_mg": 6,
+          "carbohydrate_g": 10,
+          "fiber_g": 11,
+          "added_sugars_g": 20
+        }
+      },
+      "expect": {
+        "nutrients_basis": "100g",
+        "nutrients_per_100g": {
+          "energy_kcal": 475.0,
+          "fat_g": 17.5,
+          "saturated_fat_g": 6.25,
+          "trans_fat_g": 0.0,
+          "sodium_mg": 350.0,
+          "carbohydrate_g": 67.5,
+          "fiber_g": 7.5,
+          "sugars_g": 30.0,
+          "added_sugars_g": 25.0,
+          "protein_g": 10.0
+        },
+        "serving_grams": 40
+      }
+    },
+    {
+      "name": "US drink, volume only",
+      "note": "No weight printed: the values are per 100 ml, and per 100 g stays empty (unknown). Millilitres are never taken for grams.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 cup (240 mL)",
+          "ml": 240
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 110,
+          "fat_g": 0,
+          "sodium_mg": 10,
+          "carbohydrate_g": 26,
+          "sugars_g": 22,
+          "added_sugars_g": 22,
+          "protein_g": 2
+        }
+      },
+      "expect": {
+        "nutrients_basis": "100ml",
+        "nutrients_per_100ml": {
+          "energy_kcal": 45.8333,
+          "fat_g": 0.0,
+          "sodium_mg": 4.1667,
+          "carbohydrate_g": 10.8333,
+          "sugars_g": 9.1667,
+          "added_sugars_g": 9.1667,
+          "protein_g": 0.8333
+        },
+        "nutrients_per_100g": {}
+      }
+    },
+    {
+      "name": "The same drink with a known density",
+      "note": "With density_g_per_ml, per 100 g is per 100 ml over the density.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 cup (240 mL)",
+          "ml": 240
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 110,
+          "fat_g": 0,
+          "sodium_mg": 10,
+          "carbohydrate_g": 26,
+          "sugars_g": 22,
+          "added_sugars_g": 22,
+          "protein_g": 2
+        }
+      },
+      "density_g_per_ml": 1.04,
+      "expect": {
+        "nutrients_basis": "100ml",
+        "nutrients_per_100ml": {
+          "energy_kcal": 45.8333,
+          "fat_g": 0.0,
+          "sodium_mg": 4.1667,
+          "carbohydrate_g": 10.8333,
+          "sugars_g": 9.1667,
+          "added_sugars_g": 9.1667,
+          "protein_g": 0.8333
+        },
+        "nutrients_per_100g": {
+          "energy_kcal": 44.0705,
+          "fat_g": 0.0,
+          "sodium_mg": 4.0064,
+          "carbohydrate_g": 10.4167,
+          "sugars_g": 8.8141,
+          "added_sugars_g": 8.8141,
+          "protein_g": 0.8013
+        }
+      }
+    },
+    {
+      "name": "Weight and volume both printed",
+      "note": "Both sets are worked out, each from its own measure; the basis is 100g.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 bottle (355 mL / 370 g)",
+          "grams": 370,
+          "ml": 355
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 150,
+          "carbohydrate_g": 39,
+          "sugars_g": 39,
+          "added_sugars_g": 39,
+          "sodium_mg": 45,
+          "protein_g": 0
+        }
+      },
+      "expect": {
+        "nutrients_basis": "100g",
+        "nutrients_per_100g": {
+          "energy_kcal": 40.5405,
+          "carbohydrate_g": 10.5405,
+          "sugars_g": 10.5405,
+          "added_sugars_g": 10.5405,
+          "sodium_mg": 12.1622,
+          "protein_g": 0.0
+        },
+        "serving_grams": 370,
+        "nutrients_per_100ml": {
+          "energy_kcal": 42.2535,
+          "carbohydrate_g": 10.9859,
+          "sugars_g": 10.9859,
+          "added_sugars_g": 10.9859,
+          "sodium_mg": 12.6761,
+          "protein_g": 0.0
+        }
+      }
+    },
+    {
+      "name": "EU table, fibre beyond available carbohydrate",
+      "note": "Under eu, uk and au rules carbohydrate is available carbohydrate and excludes fibre, so fibre may exceed it.",
+      "label": {
+        "region": "eu",
+        "serving": {
+          "text": "1 portion (15 g)",
+          "grams": 15
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 73,
+          "energy_kj": 303,
+          "fat_g": 4.6,
+          "saturated_fat_g": 0.5,
+          "carbohydrate_available_g": 0.3,
+          "sugars_g": 0,
+          "fiber_g": 5.2,
+          "protein_g": 2.5,
+          "salt_g": 0
+        }
+      },
+      "expect": {
+        "nutrients_basis": "100g",
+        "nutrients_per_100g": {
+          "energy_kcal": 486.6667,
+          "energy_kj": 2020.0,
+          "fat_g": 30.6667,
+          "saturated_fat_g": 3.3333,
+          "carbohydrate_available_g": 2.0,
+          "sugars_g": 0.0,
+          "fiber_g": 34.6667,
+          "protein_g": 16.6667,
+          "salt_g": 0.0
+        },
+        "serving_grams": 15
+      }
+    },
+    {
+      "name": "No weight or volume printed",
+      "note": "Counted by servings: no weight is invented, so per 100 g is empty.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 softgel"
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 5,
+          "fat_g": 0.5,
+          "vitamin_d_ug": 25
+        }
+      },
+      "expect": {
+        "nutrients_basis": "serving",
+        "nutrients_per_100g": {}
+      }
+    },
+    {
+      "name": "Zero parts of a zero whole",
+      "note": "A part equal to its whole is consistent.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 tbsp (28g)",
+          "grams": 28
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 0,
+          "fat_g": 0,
+          "saturated_fat_g": 0,
+          "carbohydrate_g": 0,
+          "sugars_g": 0,
+          "protein_g": 0,
+          "sodium_mg": 5
+        }
+      },
+      "expect": {
+        "nutrients_basis": "100g",
+        "nutrients_per_100g": {
+          "energy_kcal": 0.0,
+          "fat_g": 0.0,
+          "saturated_fat_g": 0.0,
+          "carbohydrate_g": 0.0,
+          "sugars_g": 0.0,
+          "protein_g": 0.0,
+          "sodium_mg": 17.8571
+        },
+        "serving_grams": 28
+      }
+    },
+    {
+      "name": "Saturated fat over total fat",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "2 cookies (30g)",
+          "grams": 30
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 150,
+          "protein_g": 2,
+          "fat_g": 6,
+          "saturated_fat_g": 7,
+          "carbohydrate_g": 20,
+          "sugars_g": 10
+        }
+      },
+      "expect": {
+        "error": "label_inconsistent",
+        "parts": [
+          {
+            "part": "saturated_fat_g",
+            "whole": "fat_g"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sugars over carbohydrate",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "2 cookies (30g)",
+          "grams": 30
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 150,
+          "protein_g": 2,
+          "fat_g": 6,
+          "carbohydrate_g": 12,
+          "sugars_g": 15
+        }
+      },
+      "expect": {
+        "error": "label_inconsistent",
+        "parts": [
+          {
+            "part": "sugars_g",
+            "whole": "carbohydrate_g"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Added sugars over sugars",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "2 cookies (30g)",
+          "grams": 30
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 150,
+          "protein_g": 2,
+          "fat_g": 6,
+          "carbohydrate_g": 20,
+          "sugars_g": 5,
+          "added_sugars_g": 8
+        }
+      },
+      "expect": {
+        "error": "label_inconsistent",
+        "parts": [
+          {
+            "part": "added_sugars_g",
+            "whole": "sugars_g"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Fibre over total carbohydrate (us)",
+      "note": "Under us and ca rules total carbohydrate includes fibre.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "2 cookies (30g)",
+          "grams": 30
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 150,
+          "protein_g": 2,
+          "fat_g": 6,
+          "carbohydrate_g": 4,
+          "fiber_g": 9
+        }
+      },
+      "expect": {
+        "error": "label_inconsistent",
+        "parts": [
+          {
+            "part": "fiber_g",
+            "whole": "carbohydrate_g"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Two parts over their wholes",
+      "note": "Every inconsistent pair is reported, so the person can read each again.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "2 cookies (30g)",
+          "grams": 30
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 150,
+          "protein_g": 2,
+          "fat_g": 2,
+          "saturated_fat_g": 3,
+          "carbohydrate_g": 20,
+          "sugars_g": 25
+        }
+      },
+      "expect": {
+        "error": "label_inconsistent",
+        "parts": [
+          {
+            "part": "saturated_fat_g",
+            "whole": "fat_g"
+          },
+          {
+            "part": "sugars_g",
+            "whole": "carbohydrate_g"
+          }
+        ]
+      }
+    },
+    {
+      "name": "A serving read as too small",
+      "note": "Per 100 g would be 1,333 kcal, more than any food holds: the serving or the values were misread.",
+      "label": {
+        "region": "us",
+        "serving": {
+          "text": "1 tbsp (15g)",
+          "grams": 15
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 200,
+          "fat_g": 9,
+          "carbohydrate_g": 26,
+          "protein_g": 4
+        }
+      },
+      "expect": {
+        "error": "implausible"
+      }
+    },
+    {
+      "name": "Macronutrients over 100 g per 100 ml",
+      "note": "120 g of carbohydrate in 100 ml can't be: the per 100 ml values are held to the same bounds as per 100 g.",
+      "label": {
+        "region": "uk",
+        "serving": {
+          "text": "1 shot (25 ml)",
+          "ml": 25
+        },
+        "nutrients_per_serving": {
+          "energy_kcal": 150,
+          "fat_g": 0,
+          "carbohydrate_available_g": 30,
+          "sugars_g": 30,
+          "protein_g": 0
+        }
+      },
+      "expect": {
+        "error": "implausible"
+      }
+    }
+  ]
+}
