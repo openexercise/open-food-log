@@ -29,7 +29,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
-Open Food Log v0.3 (`ofl_version` `"0.3"`): every v0.2 document stays valid.
+## v0.13.0 — 2026-11-17
+
+Open Food Log v0.3 (`ofl_version` `"0.3"`): a person's own foods carry barcodes, labels become
+foods the same way everywhere, `create_food` joins the MCP core, and conformance checks the
+own-food barcode rule. Every v0.2 document stays valid.
 
 ### Added
 
@@ -46,6 +50,10 @@ Open Food Log v0.3 (`ofl_version` `"0.3"`): every v0.2 document stays valid.
   `create_food`.
 - The reference server's extensions in the MCP profile and the A2A card add `read_food_label` and
   `read-food-label`: a photo of a nutrition label read into a draft for `create_food`.
+- **Conformance: `own-food`** (v0.3). `ofl conformance` makes a food with a `gtin` (a random
+  in-store code, prefix 2, so it never names a real product) through `POST /v1/foods` and checks
+  that `GET /v1/foods/gtin:…` answers with that food, by its own ID, as a valid OFL food. The core
+  can't delete a food, so the run removes it only where a server offers `DELETE /v1/foods/{id}`.
 
 ### Changed
 
