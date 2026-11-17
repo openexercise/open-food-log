@@ -23,13 +23,16 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 - **69 liquids have no density** (`catalogue/REPORT.md`).
 - **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
   allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
-- **Release the branded file:** attach `branded-foods.jsonl.gz` and its `.sha256` to the next
-  release (`catalogue/README.md`, Release it), then Lifterclub pins it (`docs/fdc-branded.md`
-  phase 1).
 - **v1:** freezes when the first application outside Lifterclub writes the format in production
   ([README.md](README.md)).
 
 ## Unreleased
+
+## v0.12.0 — 2026-11-17
+
+USDA's Branded Foods, 396,916 US products by barcode, are published as `branded-foods.jsonl.gz`,
+an asset of this release (SHA-256 in `branded-foods.jsonl.gz.sha256`). Every v0.2 document stays
+valid.
 
 - **Added:** `ofl catalogue branded <download>` builds the branded catalogue,
   `branded-foods.jsonl.gz`, from USDA FoodData Central's Branded Foods by the rules
