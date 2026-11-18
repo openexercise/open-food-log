@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- The reference server's extensions: `read_food_label` (MCP) takes an optional `front_image`, and
+  `read-food-label` (A2A) an optional second raw part, a photo of the package's front, read in the
+  same call for the product's name and brand as printed there. Profile only: no schema or core
+  changes.
+
 ## v0.3 draft, 2026-11-17
 
 A person's own foods for packaged products, labels worked out the same way everywhere, and

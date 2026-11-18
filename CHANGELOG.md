@@ -29,6 +29,18 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.13.1 — 2026-11-17
+
+Profile only: the reference server's label-reading extensions take an optional photo of the
+package's front. No schema, core or catalogue changes.
+
+### Changed
+
+- The MCP profile's `read_food_label` (`mcp/tools.json`, `mcp/README.md`) takes an optional
+  `front_image`, and the A2A card's `read-food-label` (`a2a/agent-card.json`, `a2a/README.md`) an
+  optional second raw part: a photo of the package's front, read in the same call for the product's
+  name and brand as printed there.
+
 ## v0.13.0 — 2026-11-17
 
 Open Food Log v0.3 (`ofl_version` `"0.3"`): a person's own foods carry barcodes, labels become

@@ -759,12 +759,16 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "description": "Read a photo of a package's nutrition label into a draft of one of the user's own foods, for create_food. Nothing is stored. Every number in the draft is printed on the label and agrees with the rest of it; a number that couldn't be read or checked is left out and named in warnings, never guessed, so ask the user to read it off the package. Show the user every number and call create_food (food's gtin as barcode) only once they confirm. The photo is never stored. If it can't be read (photo_unread), ask the user for the numbers instead.",
+      "description": "Read a photo of a package's nutrition label into a draft of one of the user's own foods, for create_food. Nothing is stored. Every number in the draft is printed on the label and agrees with the rest of it; a number that couldn't be read or checked is left out and named in warnings, never guessed, so ask the user to read it off the package. Show the user every number and call create_food (food's gtin as barcode) only once they confirm. A photo of the package's front (front_image) gives the name and brand as printed there. The photos are never stored. If it can't be read (photo_unread), ask the user for the numbers instead.",
       "inputSchema": {
         "additionalProperties": false,
         "properties": {
           "barcode": {
             "description": "the package's barcode, when the user scanned or typed it; never read from the photo",
+            "type": "string"
+          },
+          "front_image": {
+            "description": "optionally, a photo of the front of the same package, base64-encoded, for the product's name and brand; with image, up to 3 MB together",
             "type": "string"
           },
           "image": {
