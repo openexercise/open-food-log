@@ -30,6 +30,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.14.0 — 2026-11-21
+
+Catalogue: added sugars on the 5,410 survey foods, from USDA's Food Patterns Equivalents Database.
+No schema or core changes; no name, ID, portion or other nutrient changed.
+
 ### Added
 
 - **Added sugars on the catalogue's survey foods.** 5,410 of the 12,442 generic foods (every record
