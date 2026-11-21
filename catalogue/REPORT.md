@@ -114,7 +114,7 @@ How many foods give each key of the vocabulary, by the source whose numbers the 
 | `carbohydrate_available_g` | none | 11807 | 11807 | 217 | 5410 | 6180 |
 | `fiber_g` | 291 | 11807 | 0 | 217 | 5410 | 6180 |
 | `sugars_g` | 269 | 10509 | 0 | 140 | 5410 | 4959 |
-| `added_sugars_g` | 539 | 0 | 0 | 0 | 0 | 0 |
+| `added_sugars_g` | 539 | 5410 | 0 | 0 | 5410 | 0 |
 | `starch_g` | 209 | 992 | 0 | 112 | 0 | 880 |
 | `polyols_g` | 299 | 0 | 0 | 0 | 0 | 0 |
 | `sodium_mg` | 307 | 12341 | 0 | 355 | 5410 | 6576 |
@@ -157,7 +157,7 @@ Every key is read by its FoodData Central number in the vocabulary's unit. Where
 
 - `ala_g`: FNDDS survey foods give only 18:3 undifferentiated (619), which counts isomers other than ALA, so survey foods have none.
 - `carbohydrate_available_g`: Worked out only where both carbohydrate and fibre are given, and not where fibre exceeds the total.
-- `added_sugars_g`: None of the three downloads reports added sugars (539); FoodData Central gives them for branded foods only.
+- `added_sugars_g`: None of the three downloads reports added sugars (539); FoodData Central gives them for branded foods only. Survey foods take an estimate from USDA's Food Patterns Equivalents Database instead (see Added sugars, below); SR Legacy and Foundation Foods records have none.
 - `starch_g`: Only Foundation Foods and some SR Legacy foods measure starch (209).
 - `polyols_g`: None of the three downloads reports sugar alcohols (299).
 - `iodine_ug`: Only Foundation Foods measure iodine (314).
@@ -169,6 +169,22 @@ Every key is read by its FoodData Central number in the vocabulary's unit. Where
 - `biotin_ug`: Only Foundation Foods measure biotin (416).
 - `folate_dfe_ug`: Foundation Foods give only total folate (417), which equals DFE only when a food has no folic acid, so they have none.
 - `folic_acid_ug`: Foundation Foods don't report folic acid (431).
+
+### Added sugars
+
+`added_sugars_g` isn't FoodData Central's. Survey foods take it from USDA's Food Patterns Equivalents Database 2021-2023 (`sources/fped-2123-added-sugars.csv`, 5432 food codes): ADD_SUGARS teaspoon equivalents per 100 g × 4.2 g, to one decimal place, joined by FNDDS food code (`sources/fndds-food-codes.csv`). It's an estimate from FNDDS recipes; each record that has it names the database in `provenance.sources`. SR Legacy and Foundation Foods records have none.
+
+| Survey foods | |
+| --- | --- |
+| Whose numbers the catalogue uses | 5410 |
+| With `added_sugars_g` | 5410 |
+| Of those, a stated 0 | 3202 |
+| Of those, capped at `sugars_g` (the estimate was above the food's total sugars by 2.1 g or less) | 208 |
+| Left without: the estimate is more than 2.1 g above `sugars_g` | 0 |
+| Left without: no `sugars_g` to hold the estimate to | 0 |
+| Left without: no row in the database for the food code | 0 |
+
+22 of the database's rows name no survey food whose numbers the catalogue uses: a food left out, or one whose name a Foundation Foods record took first.
 
 ## Attributes
 

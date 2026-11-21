@@ -146,10 +146,12 @@ The rules the generator follows (one record per name, which nutrient numbers are
 are worked out, what is left out, how IDs, portions and densities are made) are written in
 [catalogue/README.md](catalogue/README.md). A change to a rule changes that README in the same pull
 request. The code is in `cmd/ofl`: `catalogue.go` (reading and writing), `worked.go` (`energy_kj`,
-`salt_g`, `carbohydrate_available_g` and categories), `density.go` (which foods are liquids, and
-their density) and `aliases.go`. Each has tests beside it: add a case for the food that prompted the
+`salt_g`, `carbohydrate_available_g`, categories and the report's nutrient tables), `addedsugars.go`
+(survey foods' added sugars, from `sources/fped-2123-added-sugars.csv`), `density.go` (which foods
+are liquids, and their density) and `aliases.go`. Each has tests beside it: add a case for the food that prompted the
 change. `TestCatalogue` checks every record: valid against the food schema, IDs in order and used
-once, portions with unique IDs and at most one default, and a source for every density.
+once, portions with unique IDs and at most one default, a source for every density, and added sugars
+only on survey foods, each naming its source and no more than the food's total sugars.
 
 ### IDs
 
@@ -184,9 +186,10 @@ go run ./cmd/ofl catalogue refresh
 go test ./...
 ```
 
-`ofl catalogue refresh` applies the rules that work on records alone (aliases, and leaving out
-placeholder portions) again over the built catalogue, so it needs no FoodData Central downloads; a
-full rebuild applies the same rules. `TestCatalogueIsRefreshed` fails when a rule or `sources/`
+`ofl catalogue refresh` applies the rules that work on records alone (aliases, leaving out
+placeholder portions, and survey foods' added sugars from `sources/`) again over the built
+catalogue, and counts the report's nutrient tables again from the records, so it needs no
+FoodData Central downloads; a full rebuild applies the same rules. `TestCatalogueIsRefreshed` fails when a rule or `sources/`
 changed and it wasn't run. Curated aliases are named in the record's
 `provenance.sources` and aren't `generated`.
 

@@ -8,6 +8,8 @@ Generic foods in the Open Food Log format, one record per line in [`foods.jsonl`
 
 The catalogue is dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), like its source. Use it for anything, without asking. A credit to "Open Food Catalogue, from USDA FoodData Central" is welcome, not required. The code and schemas in this repository are Apache-2.0.
 
+Survey foods' added sugars come from a second USDA database, the Food Patterns Equivalents Database, a US government work that data.gov lists under the [US public domain label](https://www.usa.gov/publicdomain/label/1.0/) rather than CC0; each value's entry in `provenance.sources` says so. USDA suggests citing it as *U.S. Department of Agriculture, Agricultural Research Service. 2026. USDA Food Patterns Equivalents Database 2021-2023. Food Surveys Research Group Home Page, http://www.ars.usda.gov/nea/bhnrc/fsrg*.
+
 ## Where the numbers come from
 
 Every record is built from [USDA FoodData Central](https://fdc.nal.usda.gov) (public domain, CC0 1.0), retrieved 2026-11-12, by `ofl catalogue`:
@@ -18,6 +20,8 @@ Every record is built from [USDA FoodData Central](https://fdc.nal.usda.gov) (pu
 | FNDDS survey foods | 2024-10-31 | Everyday foods and dishes as Americans report eating them, with household portions |
 | SR Legacy | 2018-04 | The broad reference set, frozen since 2018 |
 
+One nutrient comes from elsewhere: survey foods' `added_sugars_g`, from USDA's [Food Patterns Equivalents Database (FPED) 2021-2023](https://www.ars.usda.gov/Services/docs.htm?docid=24615), retrieved 2026-11-21 (the rule is below).
+
 The rules, so anyone can check a record against its source (`identifiers.fdc_id` and `provenance.sources`):
 
 - **One record per name.** When two sources describe a food by the same name, the first in the table above wins; the others are listed in `provenance.sources` but their numbers aren't used. [REPORT.md](REPORT.md) counts every case, and how many foods have each nutrient.
@@ -26,6 +30,12 @@ The rules, so anyone can check a record against its source (`identifiers.fdc_id`
   - `energy_kj` is `energy_kcal` × 4.184 where FoodData Central gives no kilojoules (268). SR Legacy and some Foundation Foods give them; survey foods don't.
   - `salt_g` is sodium × 2.5, as EU and UK labels declare it (`sodium_mg` × 0.0025).
   - `carbohydrate_available_g` is `carbohydrate_g` − `fiber_g`, where both are given and fibre isn't above the total.
+- **Added sugars** (`added_sugars_g`) are on survey foods only, and are an estimate, not an analysis. None of the three downloads reports them (539). FPED gives added sugars for the same FNDDS 2021-2023 food codes, in teaspoon equivalents per 100 g, worked out by USDA from each food's FNDDS recipe. The catalogue reads them as grams by USDA's own factor, 4.2 g of granulated sugar to the teaspoon ("Added sugars (g) / 4.2 = teaspoon equivalents of added sugars", FPED 2021-2023 documentation, p. 31), to one decimal place, as FPED rounds its amounts:
+  - [`sources/fped-2123-added-sugars.csv`](../sources/fped-2123-added-sugars.csv) holds FPED's ADD_SUGARS column as the workbook gives it, with the workbook's address, checksum and how the extract was made. [`sources/fndds-food-codes.csv`](../sources/fndds-food-codes.csv) joins a survey record's `identifiers.fdc_id` to its food code, from the survey download; records don't carry the code as an identifier, only as the `id` of the FPED entry in `provenance.sources`.
+  - Only a record whose numbers are the survey source's takes a value. A survey food whose name a Foundation Foods record took first doesn't: its numbers are a laboratory's, and FPED's recipe doesn't describe them. SR Legacy and Foundation Foods records have none.
+  - FPED's 0.0 is written as a stated `0`: USDA says the food has no added sugars. A food with no FPED row would get nothing (every survey food has one today).
+  - Added sugars are part of total sugars. An estimate above the record's `sugars_g` by 2.1 g or less (half a teaspoon equivalent) is read as `sugars_g`, and the record's FPED entry says "capped at sugars_g"; one further above, or a record with no `sugars_g`, would be left without. [REPORT.md](REPORT.md) counts each case.
+  - What to know before relying on one: teaspoon equivalents are rounded to 0.1 (0.42 g), and USDA rounds some multi-part ingredients to the nearest half teaspoon equivalent (2.1 g), so a value can be that far off either way; it follows the FDA label's definition (sugars and syrups added in processing or preparation, honey, and concentrated fruit or vegetable juice beyond what the same volume of 100% juice holds; not the sugars naturally in fruit or milk); and some zeros are USDA's decision for a kind of food, not a measurement.
 - **Category** is FoodData Central's own: SR Legacy's and Foundation Foods' food category ("Dairy and Egg Products"), or a survey food's WWEIA category with its number ("Milk, whole", `1002`), all with `scheme` `fdc`. It's `inferred`: FoodData Central files the food under it, but no label or analysis declares it.
 - **Allergens, diet flags, ingredients and glycemic index or load** are left out: FoodData Central's generic foods don't state them, and the catalogue has no other CC0 source that does. Working them out from names would be guessing.
 - **Foods with no energy value** in any of those forms are left out, rather than given one.
@@ -36,7 +46,7 @@ The rules, so anyone can check a record against its source (`identifiers.fdc_id`
 - **IDs** are the name in lower case with runs of other characters made `-`.
 - **Aliases** say what people call a food, all of kind `common`:
   - From the name's own shape, with no model: a two-part name with a plain modifier is also that modifier first ("Apple, raw" is "raw apple"), and "X, NFS" (not further specified) is "x".
-  - Chosen by a person in `sources/curated-aliases.jsonl`, with why that food: "egg", "fried egg", "boiled egg", "omelet", "omelette", "scrambled egg", "cheese omelette", "egg white" and a few more, each naming a survey food with one egg (or white, or yolk) as a portion. They're named in the record's `provenance.sources`. `ofl catalogue refresh` attaches aliases again without the FoodData Central downloads.
+  - Chosen by a person in `sources/curated-aliases.jsonl`, with why that food: "egg", "fried egg", "boiled egg", "omelet", "omelette", "scrambled egg", "cheese omelette", "egg white" and a few more, each naming a survey food with one egg (or white, or yolk) as a portion. They're named in the record's `provenance.sources`. `ofl catalogue refresh` attaches aliases (and applies added sugars and the placeholder-portions rule) again without the FoodData Central downloads.
   - Suggested by a model, which is sent names only and asked for names only: Claude Haiku through the `/food-aliases` skill (`.claude/skills/food-aliases`), or Gemini (`cmd/aliases` with no subcommand, not run yet). The skill asks about a **family** at a time (every "Meat loaf …" record together), so a dish's plain name ("meatloaf") goes to the one record a person means and its neighbours get names that say how they differ ("turkey meatloaf"). The answers are kept in `sources/aliases.jsonl` with the model and date, so building never calls it; each alias a model gives is listed in the record's `provenance.generated`, and the model is named in `provenance.sources`. An alias is kept only if it's short, lowercase, and has no digit the food's name lacks, and never if it's another food's name or a name a rule or a person gave another food. A model's alias stays on one food only: when a model gives one to several ("french fries" to a fast-food, a frozen and a home record), the build keeps it on the record USDA leaves unspecified ("NFS", "NS as to …"), else one with a default portion, else the shortest name. No person reviews them: [`sources/alias-checks.jsonl`](../sources/alias-checks.jsonl) lists phrases that must name one food alone, the one listed, and `go test` fails when a run breaks one.
   - A rule's or a person's alias may belong to more than one food ("milk"). A matcher should then ask which one, not guess.
   - Withheld by a person in `sources/withheld-aliases.jsonl`, with why: a name too vague for any one food ("baby peaches", strained or diced), which no model alias may hold, so a matcher asks.
@@ -71,6 +81,8 @@ Download the three JSON files from [FoodData Central's downloads](https://fdc.na
 go run ./cmd/ofl catalogue <that directory>
 go test ./...
 ```
+
+Added sugars need no download of FPED: the build reads `sources/fped-2123-added-sugars.csv`. With the survey download alone, `go run ./cmd/ofl catalogue added-sugars <that directory>` writes `sources/fndds-food-codes.csv` from it and applies added sugars over the built catalogue, as `ofl catalogue refresh` then keeps doing; a full rebuild gives the same records. A new FPED release means a new extract (its header says how it was made) and its name, date and factor in `cmd/ofl/addedsugars.go`.
 
 ## Branded foods (`branded-foods.jsonl.gz`)
 
