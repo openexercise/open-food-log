@@ -68,7 +68,7 @@ func category(f fdcFood) *categoryDoc {
 // missing from a food is one FoodData Central doesn't report for that food.
 var leftOut = map[string]string{
 	"ala_g":                    "FNDDS survey foods give only 18:3 undifferentiated (619), which counts isomers other than ALA, so survey foods have none.",
-	"added_sugars_g":           "None of the three downloads reports added sugars (539); FoodData Central gives them for branded foods only.",
+	"added_sugars_g":           "None of the three downloads reports added sugars (539); FoodData Central gives them for branded foods only. Survey foods take an estimate from USDA's Food Patterns Equivalents Database instead (see Added sugars, below); SR Legacy and Foundation Foods records have none.",
 	"polyols_g":                "None of the three downloads reports sugar alcohols (299).",
 	"chloride_mg":              "None of the three downloads reports chlorine (302).",
 	"chromium_ug":              "None of the three downloads reports chromium (310).",
@@ -83,8 +83,51 @@ var leftOut = map[string]string{
 	"vitamin_a_rae_ug":         "Read as RAE (320) only; SR Legacy's vitamin A in IU (318) doesn't say the form, so isn't converted.",
 }
 
-// writeCoverage adds the per-nutrient table and what's missing, and why, to the report.
-func writeCoverage(b *strings.Builder, vocab []vocabEntry, coverage map[string]map[string]int, derived, withCategory map[string]int, total int) {
+// nutrientsHeading starts the part of the report that nutrientReport writes, down to its end.
+const nutrientsHeading = "\n## Nutrients\n"
+
+// workedOutNote ends the source that names a record's worked-out keys.
+const workedOutNote = " worked out by OFL v0 section 4"
+
+// nutrientReport is the report's per-nutrient table, what's missing and why, added sugars and
+// attributes, counted from the records themselves: by the source whose numbers a food uses (its
+// first), with the worked-out keys read from the source that names them. The build and `ofl
+// catalogue refresh` both write it, so the report never needs the downloads to stay true.
+func nutrientReport(vocab []vocabEntry, foods []*catalogueFood, sugars sugarStats) string {
+	derived, withCategory := map[string]int{}, map[string]int{}
+	coverage := map[string]map[string]int{}
+	for _, v := range vocab {
+		coverage[v.Key] = map[string]int{}
+	}
+	keyOf := map[string]string{}
+	for _, src := range sources {
+		keyOf[src.label] = src.key
+	}
+	for _, food := range foods {
+		if len(food.Provenance.Sources) == 0 {
+			continue
+		}
+		label := food.Provenance.Sources[0].Name
+		key := keyOf[label]
+		for k := range food.NutrientsPer100g {
+			if coverage[k] != nil {
+				coverage[k][key]++
+			}
+		}
+		if food.Category != nil {
+			withCategory[key]++
+		}
+		for _, s := range food.Provenance.Sources {
+			keys, ok := strings.CutSuffix(s.Name, workedOutNote)
+			if !ok {
+				continue
+			}
+			for _, k := range strings.Split(strings.TrimPrefix(keys, label+": "), ", ") {
+				derived[k]++
+			}
+		}
+	}
+	b, total := &strings.Builder{}, len(foods)
 	b.WriteString("\n## Nutrients\n\nHow many foods give each key of the vocabulary, by the source whose numbers the food uses. \"Worked out\" counts values OFL v0 section 4 defines from others (`energy_kj` from kcal × 4.184 where FoodData Central gives no kJ, `salt_g` as sodium × 2.5, `carbohydrate_available_g` as carbohydrate − fibre); each such record names them in `provenance.sources`. A food without a key doesn't have it: never zero.\n\n")
 	b.WriteString("| Key | FDC number | Foods | Worked out |")
 	for _, src := range sources {
@@ -116,6 +159,7 @@ func writeCoverage(b *strings.Builder, vocab []vocabEntry, coverage map[string]m
 			b.WriteString("- `" + k + "`: " + why + "\n")
 		}
 	}
+	b.WriteString(sugarReport(sugars))
 	b.WriteString("\n## Attributes\n\n")
 	n := 0
 	for _, src := range sources {
@@ -123,4 +167,5 @@ func writeCoverage(b *strings.Builder, vocab []vocabEntry, coverage map[string]m
 	}
 	fmt.Fprintf(b, "%d foods have a `category`: FoodData Central's food category (SR Legacy, Foundation Foods) or WWEIA category with its number (survey foods), scheme `fdc`, basis `inferred`.\n\n", n)
 	b.WriteString("No food has `allergens`, `diet_flags`, `ingredients_text`, `glycemic_index` or `glycemic_load`. FoodData Central's generic foods state none of them, and the catalogue has no other CC0 source that does; working them out from names would be guessing.\n")
+	return b.String()
 }

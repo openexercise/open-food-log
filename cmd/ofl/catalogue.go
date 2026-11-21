@@ -38,8 +38,10 @@ var fallbacks = map[string][]string{
 }
 
 type fdcFood struct {
-	FdcID        int    `json:"fdcId"`
-	Description  string `json:"description"`
+	FdcID       int    `json:"fdcId"`
+	Description string `json:"description"`
+	// FoodCode is a survey food's FNDDS food code, which other USDA databases go by.
+	FoodCode     foodCode `json:"foodCode"`
 	FoodCategory struct {
 		Description string `json:"description"`
 	} `json:"foodCategory"`
@@ -145,11 +147,11 @@ func buildCatalogue(dir, root string) error {
 	byID := map[string]*catalogueFood{}
 	type counts struct{ read, kept, branded, empty, noEnergy, merged, noPortions, density int }
 	liquids, noDensity := 0, []string{}
-	derived, withCategory := map[string]int{}, map[string]int{}
-	coverage := map[string]map[string]int{}
-	for _, v := range vocab {
-		coverage[v.Key] = map[string]int{}
+	fped, err := readFPED(root)
+	if err != nil {
+		return err
 	}
+	foodCodes := map[int]string{}
 	report := map[string]*counts{}
 	for _, src := range sources {
 		foods, err := readSource(filepath.Join(dir, src.file), src.field)
@@ -158,6 +160,16 @@ func buildCatalogue(dir, root string) error {
 		}
 		c := &counts{read: len(foods)}
 		report[src.key] = c
+		if src.key == "survey" {
+			if err := writeFoodCodes(root, foods); err != nil {
+				return err
+			}
+			for _, f := range foods {
+				if f.FoodCode != "" {
+					foodCodes[f.FdcID] = string(f.FoodCode)
+				}
+			}
+		}
 		for _, f := range foods {
 			if src.key == "sr" && isBranded(f.Description) {
 				c.branded++
@@ -190,17 +202,8 @@ func buildCatalogue(dir, root string) error {
 			}
 			if worked := deriveNutrients(nutrients); len(worked) > 0 {
 				ws := sd
-				ws.Name = src.label + ": " + strings.Join(worked, ", ") + " worked out by OFL v0 section 4"
+				ws.Name = src.label + ": " + strings.Join(worked, ", ") + workedOutNote
 				food.Provenance.Sources = append(food.Provenance.Sources, ws)
-				for _, k := range worked {
-					derived[k]++
-				}
-			}
-			if food.Category != nil {
-				withCategory[src.key]++
-			}
-			for k := range nutrients {
-				coverage[k][src.key]++
 			}
 			dropPlaceholderPortions(food)
 			if len(food.Portions) == 0 {
@@ -255,6 +258,9 @@ func buildCatalogue(dir, root string) error {
 		return err
 	}
 	model = soleModelAliases(sorted, curated, model, withheld)
+	// Added sugars go on before the aliases, as `ofl catalogue refresh` applies them, so a build
+	// and a refresh give the same records.
+	sugars := addSugars(sorted, foodCodes, fped)
 	var aliases aliasCounts
 	withAliases := 0
 	for _, id := range ids {
@@ -310,7 +316,7 @@ func buildCatalogue(dir, root string) error {
 	for _, name := range noDensity {
 		b.WriteString("- " + name + "\n")
 	}
-	writeCoverage(&b, vocab, coverage, derived, withCategory, len(ids))
+	b.WriteString(nutrientReport(vocab, sorted, sugars))
 	if err := os.WriteFile(filepath.Join(out, "REPORT.md"), []byte(b.String()), 0o644); err != nil {
 		return err
 	}

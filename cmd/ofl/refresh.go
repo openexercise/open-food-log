@@ -14,8 +14,9 @@ import (
 
 // refreshCatalogue applies the rules that work on records alone again, over the catalogue
 // already built, so changing one needs no FoodData Central downloads: placeholder portions are
-// left out, and every food's aliases are attached again from the name rules and sources/. It
-// returns the new foods.jsonl and REPORT.md.
+// left out, survey foods take their added sugars from sources/, and every food's aliases are
+// attached again from the name rules and sources/. It returns the new foods.jsonl and REPORT.md,
+// whose nutrient tables are counted again from the records.
 func refreshCatalogue(root string) (foods, report []byte, err error) {
 	curated, err := readCuratedAliases(root)
 	if err != nil {
@@ -56,6 +57,19 @@ func refreshCatalogue(root string) (foods, report []byte, err error) {
 		return nil, nil, err
 	}
 	model = soleModelAliases(all, curated, model, withheld)
+	vocab, err := readVocabulary(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	fped, err := readFPED(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	codes, err := readFoodCodes(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	sugars := addSugars(all, codes, fped)
 	var buf bytes.Buffer
 	var n aliasCounts
 	withAliases := 0
@@ -90,6 +104,11 @@ func refreshCatalogue(root string) (foods, report []byte, err error) {
 	if err != nil {
 		return nil, nil, err
 	}
+	at := bytes.Index(report, []byte(nutrientsHeading))
+	if at < 0 {
+		return nil, nil, errors.New("catalogue/REPORT.md has no Nutrients section to update")
+	}
+	report = append(report[:at:at], nutrientReport(vocab, all, sugars)...)
 	return buf.Bytes(), report, nil
 }
 

@@ -22,12 +22,36 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 - **A place for reviews** that the generator merges in (aliases have one now:
   `sources/curated-aliases.jsonl`).
 - **69 liquids have no density** (`catalogue/REPORT.md`).
-- **Nutrients with no CC0 source in hand:** added sugars, polyols, chromium and chloride, and no
-  allergens, diet flags or glycemic values (`catalogue/REPORT.md`, v0.6.0).
+- **Nutrients with no CC0 source in hand:** polyols, chromium and chloride, and no allergens, diet
+  flags or glycemic values (`catalogue/REPORT.md`, v0.6.0). Added sugars are on survey foods only:
+  SR Legacy and Foundation Foods records have none.
 - **v1:** freezes when the first application outside Lifterclub writes the format in production
   ([README.md](README.md)).
 
 ## Unreleased
+
+### Added
+
+- **Added sugars on the catalogue's survey foods.** 5,410 of the 12,442 generic foods (every record
+  whose numbers are FNDDS's) now carry `added_sugars_g`, from USDA's Food Patterns Equivalents
+  Database 2021-2023 (public domain; retrieved 2026-11-21): its ADD_SUGARS teaspoon equivalents per
+  100 g × 4.2 g, to one decimal place, joined by FNDDS food code. 3,202 are a stated 0; 208 sat above
+  the record's total sugars by 2.1 g or less (the most, 1.0 g) and are read as `sugars_g`; none was
+  left out. It is USDA's estimate from FNDDS recipes, not an analysis, and each record names the
+  database, its food code and "capped at sugars_g" where it applies in `provenance.sources`. SR
+  Legacy and Foundation Foods records have none, nor do the 21 survey foods whose names Foundation
+  Foods records took. No name, ID, portion or other nutrient changed. The rule and its caveats are
+  in `catalogue/README.md`; `catalogue/REPORT.md` counts each case.
+- `sources/fped-2123-added-sugars.csv` (FPED's column as its workbook gives it, with the workbook's
+  address and checksum) and `sources/fndds-food-codes.csv` (FDC ID to FNDDS food code for the 5,432
+  survey foods). `ofl catalogue added-sugars <dir>` writes the second from the survey download alone
+  and applies added sugars over the built catalogue; the build reads a survey food's `foodCode`.
+
+### Changed
+
+- `ofl catalogue refresh` applies added sugars again and counts `catalogue/REPORT.md`'s nutrient
+  tables from the records themselves, as the build now does, so the report stays true without the
+  FoodData Central downloads.
 
 ## v0.13.1 — 2026-11-17
 

@@ -21,7 +21,7 @@ func TestCatalogue(t *testing.T) {
 	v := validator(t)
 	scanner := bufio.NewScanner(f)
 	scanner.Buffer(make([]byte, 1<<20), 1<<20)
-	prev, count, densities := "", 0, 0
+	prev, count, densities, addedSugars := "", 0, 0, 0
 	for scanner.Scan() {
 		line := scanner.Bytes()
 		count++
@@ -53,6 +53,9 @@ func TestCatalogue(t *testing.T) {
 			t.Errorf("%s: no energy", food.ID)
 		}
 		checkWorkedOut(t, food, string(line))
+		if checkAddedSugars(t, food, line) {
+			addedSugars++
+		}
 		if food.DensityGPerML > 0 {
 			densities++
 			if !strings.Contains(string(line), `density_g_per_ml from `) {
@@ -74,6 +77,55 @@ func TestCatalogue(t *testing.T) {
 	if densities < 1000 {
 		t.Errorf("only %d foods with a density", densities)
 	}
+	if addedSugars < 5000 {
+		t.Errorf("only %d foods with added sugars", addedSugars)
+	}
+}
+
+// checkAddedSugars holds added sugars to their rule: only a food whose numbers are the survey
+// source's has them, each names the Food Patterns Equivalents Database and its food code in its
+// sources, and none is above the food's total sugars. It reports whether the food has them.
+func checkAddedSugars(t *testing.T, food Food, line []byte) bool {
+	t.Helper()
+	var doc struct {
+		Provenance struct {
+			Sources []struct {
+				Name, ID, URL, License string
+				RetrievedAt            string `json:"retrieved_at"`
+			} `json:"sources"`
+		} `json:"provenance"`
+	}
+	if err := json.Unmarshal(line, &doc); err != nil {
+		t.Fatal(err)
+	}
+	const database = "USDA Food Patterns Equivalents Database 2021-2023"
+	named := 0
+	for _, s := range doc.Provenance.Sources {
+		if !strings.HasPrefix(s.Name, database) {
+			continue
+		}
+		named++
+		if !strings.Contains(s.Name, "added_sugars_g from ADD_SUGARS teaspoon equivalents × 4.2 g") || len(s.ID) != 8 || s.URL == "" || s.License == "" || s.RetrievedAt == "" {
+			t.Errorf("%s: its added sugars source is %+v", food.ID, s)
+		}
+	}
+	added, ok := food.NutrientsPer100g["added_sugars_g"]
+	if !ok {
+		if named > 0 {
+			t.Errorf("%s: names the database without added sugars", food.ID)
+		}
+		return false
+	}
+	if named != 1 {
+		t.Errorf("%s: added sugars with %d sources naming the database", food.ID, named)
+	}
+	if len(doc.Provenance.Sources) == 0 || !strings.Contains(doc.Provenance.Sources[0].Name, "FNDDS survey foods") {
+		t.Errorf("%s: added sugars on a food whose numbers aren't the survey source's", food.ID)
+	}
+	if sugars, has := food.NutrientsPer100g["sugars_g"]; !has || added > sugars || added < 0 {
+		t.Errorf("%s: added sugars %v against total sugars %v", food.ID, added, sugars)
+	}
+	return true
 }
 
 // checkWorkedOut holds the values the catalogue works out to section 4's rules: salt is sodium ×
