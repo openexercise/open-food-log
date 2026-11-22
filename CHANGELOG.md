@@ -25,9 +25,6 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 - **Nutrients with no CC0 source in hand:** polyols, chromium and chloride, and no allergens, diet
   flags or glycemic values (`catalogue/REPORT.md`, v0.6.0). Added sugars are on survey foods only:
   SR Legacy and Foundation Foods records have none.
-- **The catalogue's v0.4 keys:** rebuild from the three FoodData Central downloads so foods carry
-  the 33 keys v0.4 added. Survey foods have none of the amino acids, single sugars, linoleic acid or
-  fluoride; SR Legacy has most.
 - **v1:** freezes when the first application outside Lifterclub writes the format in production
   ([README.md](README.md)).
 
@@ -40,8 +37,13 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
   fructose, lactose, maltose, galactose), linoleic acid (`la_g`) and DPA (`dpa_g`), retinol and five
   carotenoids, and fluoride. `schema/v0/SPEC.md` section 4 says which are parts of a whole already
   counted, and names three traps (`ala_g` is alpha-linolenic acid and `alanine_g` the amino acid;
-  `cystine_g` is cystine, not cysteine). Every v0.3 document stays valid. The catalogue doesn't
-  carry the new keys yet (`catalogue/REPORT.md` lists them at 0): that needs a rebuild.
+  `cystine_g` is cystine, not cysteine). Every v0.3 document stays valid.
+- **The catalogue carries the keys v0.4 added**, rebuilt from the three FoodData Central downloads
+  (the same releases; every earlier value, name, ID, portion and alias came out unchanged). Retinol on
+  11,533 of the 12,442 foods, the five carotenoids on about 10,200 each, DPA on 10,476; the 18 amino
+  acids on about 4,800 and the six single sugars on about 1,470, none of them on a survey food;
+  linoleic acid on 1,623; fluoride on 448. `catalogue/README.md` says where they come from and what
+  to expect of them.
 - `ofl catalogue supplements-measure --retrieved YYYY-MM-DD [--branded-gtins <file>] <zip>` measures
   NIH's Dietary Supplement Label Database (the bulk JSON download, CC0) before anything is built
   from it, and writes [`catalogue/SUPPLEMENTS-REPORT.md`](catalogue/SUPPLEMENTS-REPORT.md): labels

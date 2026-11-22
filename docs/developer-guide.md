@@ -557,7 +557,7 @@ The examples also use `example:` for illustrative products that don't exist.
 The Open Food Catalogue holds 12,442 generic foods built from USDA FoodData Central (Foundation
 Foods, FNDDS survey foods and SR Legacy), one OFL food per line. Branded products aren't in it: use
 `gtin:`. Each record carries its FoodData Central ID in `identifiers.fdc_id`, its sources in
-`provenance.sources`, and up to 52 nutrients, portions with FoodData Central's weights and wording,
+`provenance.sources`, and up to 85 nutrients, portions with FoodData Central's weights and wording,
 a density for most liquids, a FoodData Central category (`basis: inferred`) and aliases.
 
 US branded products from USDA's Branded Foods (CC0, about 400,000) come as a separate file,
