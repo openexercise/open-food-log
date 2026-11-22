@@ -30,6 +30,12 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.15.0 — 2026-11-21
+
+Open Food Log v0.4: 33 more nutrient keys (52 to 85), filled in the catalogue from FoodData Central.
+Every v0.3 document stays valid. Also a measure of NIH's supplement label database, before anything
+is built from it.
+
 ### Added
 
 - **Open Food Log v0.4** (`ofl_version` `"0.4"`): 33 more nutrient keys, 52 to 85, each with its
