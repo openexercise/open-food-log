@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+## v0.4 draft, 2026-11-21
+
+Thirty-three more nutrient keys, 52 to 85, for what food composition tables report beyond a label.
+Only additions: every v0.3 document stays valid, and a v0.3 reader ignores the keys it doesn't know.
+
+- **v0.4: amino acids.** `tryptophan_g`, `threonine_g`, `isoleucine_g`, `leucine_g`, `lysine_g`,
+  `methionine_g`, `cystine_g`, `phenylalanine_g`, `tyrosine_g`, `valine_g`, `arginine_g`,
+  `histidine_g`, `alanine_g`, `aspartic_acid_g`, `glutamic_acid_g`, `glycine_g`, `proline_g` and
+  `serine_g`, parts of `protein_g` (FoodData Central 501 to 518). `cystine_g` is cystine (INFOODS
+  `CYS`), not cysteine. `alanine_g` is INFOODS `ALA`; `ala_g` stays alpha-linolenic acid.
+- **v0.4: individual sugars.** `sucrose_g`, `glucose_g`, `fructose_g`, `lactose_g`, `maltose_g` and
+  `galactose_g`, parts of `sugars_g`.
+- **v0.4: two fatty acids.** `la_g`, linoleic acid (18:2 n-6 c,c), and `dpa_g`, the n-3
+  docosapentaenoic acid, parts of `polyunsaturated_fat_g` beside `ala_g`, `epa_g` and `dha_g`.
+- **v0.4: retinol and carotenoids.** `retinol_ug`, `beta_carotene_ug`, `alpha_carotene_ug`,
+  `beta_cryptoxanthin_ug`, `lycopene_ug` and `lutein_zeaxanthin_ug`. Retinol and the three
+  provitamin A carotenoids are parts of what `vitamin_a_rae_ug` already counts and are never added
+  to it. `lutein_zeaxanthin_ug` has no single INFOODS tagname.
+- **v0.4: fluoride.** `fluoride_ug`.
+- Section 4 says a part is never added to its whole, and names the three traps (`la_g`, `ala_g` and
+  `alanine_g`; `cystine_g`). None of the new keys has a Health Connect or HealthKit field.
+- `food.json`'s nutrients take the new keys, so they are valid wherever nutrients are: a food's
+  values, a label, a meal item, a recipe, a target. The API core's `FoodNutrients` lists them too.
 - The reference server's extensions: `read_food_label` (MCP) takes an optional `front_image`, and
   `read-food-label` (A2A) an optional second raw part, a photo of the package's front, read in the
   same call for the product's name and brand as printed there. Profile only: no schema or core
