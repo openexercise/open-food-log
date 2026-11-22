@@ -136,3 +136,13 @@ or `gh release upload vX.Y.Z branded-foods.jsonl.gz branded-foods.jsonl.gz.sha25
 | Built from | Records | Size | SHA-256 |
 | --- | --- | --- | --- |
 | 2026-10-29 (built with Go 1.26.2) | 396,916 | 68,970,860 bytes (69.0 MB; 648 MB unzipped) | `926a9b6b52adce40f3d7511fcdd46fbd643d1293267e88a2548f2f45211e1555` |
+
+## Supplements (measured, not built)
+
+Dietary supplements aren't in either file. The NIH Office of Dietary Supplements' [Dietary Supplement Label Database](https://dsld.od.nih.gov) (CC0) has been measured as branded foods were before they were built: [SUPPLEMENTS-REPORT.md](SUPPLEMENTS-REPORT.md) counts its labels, the barcodes that read as GTINs, the Supplement Facts rows that map onto the nutrient vocabulary and the ones that have no key, and how often an amount agrees with its percent daily value. Run it again on a newer download, read straight from the zip:
+
+```sh
+ofl catalogue supplements-measure --retrieved YYYY-MM-DD [--branded-gtins <file>] <path>/DSLD-full-database-JSON.zip
+```
+
+`--retrieved` is the day the download was fetched. `--branded-gtins` is optional: a file of the branded catalogue's GTINs, one a line (the `gtin:` IDs of `branded-foods.jsonl.gz`, without the prefix), to count the barcodes both hold. It writes the report and no records, in about ten seconds and 300 MB of memory on an Apple-silicon Mac.

@@ -30,6 +30,15 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+### Added
+
+- `ofl catalogue supplements-measure --retrieved YYYY-MM-DD [--branded-gtins <file>] <zip>` measures
+  NIH's Dietary Supplement Label Database (the bulk JSON download, CC0) before anything is built
+  from it, and writes [`catalogue/SUPPLEMENTS-REPORT.md`](catalogue/SUPPLEMENTS-REPORT.md): labels
+  on and off the market, how many barcodes read as GTINs, how many ingredient rows map onto the
+  nutrient vocabulary and which groups have no key, and each amount checked against its percent
+  daily value. It writes no records; no schema or catalogue change.
+
 ## v0.14.0 — 2026-11-21
 
 Catalogue: added sugars on the 5,410 survey foods, from USDA's Food Patterns Equivalents Database.

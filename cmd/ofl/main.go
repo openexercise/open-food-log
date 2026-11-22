@@ -27,7 +27,9 @@ const usage = `usage:
   ofl catalogue refresh                                  apply the record rules (portions, added sugars, aliases) again, over the built catalogue
   ofl catalogue added-sugars <dir>                       read the food codes in dir's surveyDownload.json into sources/, then refresh
   ofl catalogue branded-report <file>                    count what the branded rules drop from the Branded Foods JSON download (writes catalogue/BRANDED-REPORT.md)
-  ofl catalogue branded <file> [out]                     build the branded catalogue from the Branded Foods JSON download (branded-foods.jsonl.gz and its .sha256)`
+  ofl catalogue branded <file> [out]                     build the branded catalogue from the Branded Foods JSON download (branded-foods.jsonl.gz and its .sha256)
+  ofl catalogue supplements-measure --retrieved YYYY-MM-DD [--branded-gtins <file>] <zip>
+                                                         count what NIH's DSLD label download holds (writes catalogue/SUPPLEMENTS-REPORT.md, no records)`
 
 func main() {
 	if len(os.Args) < 2 {
@@ -71,6 +73,10 @@ func main() {
 		}
 		if len(os.Args) >= 3 && os.Args[2] == "branded" {
 			err = runBranded(os.Args[3:])
+			break
+		}
+		if len(os.Args) >= 3 && os.Args[2] == "supplements-measure" {
+			err = runSupplementsMeasure(os.Args[3:])
 			break
 		}
 		if len(os.Args) < 3 {
