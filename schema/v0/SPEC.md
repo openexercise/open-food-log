@@ -1,6 +1,6 @@
 # Open Food Log v0
 
-**Status: v0.3 draft, 2026-11-17** (v0.2 2026-11-13, v0.1 2026-11-12, first draft 2026-11-09). Anything may change until v1; section 13 says how. The key words MUST, SHOULD and MAY are
+**Status: v0.4 draft, 2026-11-21** (v0.3 2026-11-17, v0.2 2026-11-13, v0.1 2026-11-12, first draft 2026-11-09). Anything may change until v1; section 13 says how. The key words MUST, SHOULD and MAY are
 used as in RFC 2119. Its home is [openfoodlog.org](https://openfoodlog.org).
 
 The Open Food Log (OFL) describes what a person ate so any app or assistant can record it, read it
@@ -88,10 +88,25 @@ skimmed are different foods.
 ## 4. Nutrients
 
 - Keys come from [`nutrients.json`](nutrients.json) and end in their unit: `energy_kcal`,
-  `protein_g`, `sodium_mg`, `vitamin_d_ug`. There is no other way to give a unit. v0.1 has 52 keys:
-  energy, the macronutrients and their parts (fatty acid classes, ALA, EPA and DHA, sugars, added
-  sugars, starch, polyols, fibre), the minerals and vitamins on US and EU labels, choline, caffeine,
-  alcohol and water.
+  `protein_g`, `sodium_mg`, `vitamin_d_ug`. There is no other way to give a unit. v0.4 has 85 keys
+  (v0.1 to v0.3 had 52): energy, the macronutrients and their parts (the 18 amino acids food tables
+  report; fatty acid classes, linoleic acid, ALA, EPA, DPA and DHA; sugars, the six individual
+  sugars, added sugars, starch, polyols, fibre), the minerals and vitamins on US and EU labels,
+  fluoride, retinol and five carotenoids, choline, caffeine, alcohol and water.
+- **A part is never added to its whole.** A total over a nutrient counts that key alone:
+  - `retinol_ug`, `beta_carotene_ug`, `alpha_carotene_ug` and `beta_cryptoxanthin_ug` are parts of
+    what `vitamin_a_rae_ug` already counts, each in micrograms of the compound itself; a reader MUST
+    NOT add them to it. `lycopene_ug` and `lutein_zeaxanthin_ug` have no vitamin A activity and are
+    in no other key.
+  - `sucrose_g`, `glucose_g`, `fructose_g`, `lactose_g`, `maltose_g` and `galactose_g` are parts of
+    `sugars_g`, and the amino acids are parts of `protein_g`. A source MAY give some parts and not
+    others, so their sum is a lower bound on the whole, never a replacement for it.
+  - `la_g` and `dpa_g`, like `ala_g`, `epa_g` and `dha_g`, are parts of `polyunsaturated_fat_g`.
+- **Three names that trap.** `la_g` is linoleic acid (18:2 n-6 c,c), the omega-6 fatty acid.
+  `ala_g` stays alpha-linolenic acid (18:3 n-3), as labels abbreviate it, and `alanine_g` is the
+  amino acid: INFOODS' tagname `ALA` is alanine, so a producer mapping from INFOODS tagnames MUST
+  put `ALA` under `alanine_g` and `F18D3N3` under `ala_g`. `cystine_g` is cystine as food
+  composition tables report it (INFOODS `CYS`), not cysteine.
 - **A key left out is unknown, never zero.** A producer MUST NOT write 0 for a value it doesn't have.
   A total over items that don't all carry a nutrient is a lower bound, and a reader that shows it
   SHOULD say so.
@@ -378,7 +393,7 @@ both by volume; `water_g` in foods maps to neither.
 
 ## 13. Versions and extensions
 
-- `ofl_version` names the version a document was written to, as `MAJOR.MINOR` (`"0.3"`). A document
+- `ofl_version` names the version a document was written to, as `MAJOR.MINOR` (`"0.4"`). A document
   without one is `0.0`, the first draft. The schemas' `$id`s stay `…/schema/v0/` for every 0.x.
 - **A minor version only adds**: new optional members, nutrient keys, enum values and documents. It
   never removes or renames a member, never changes a unit or what a value means, and never makes an

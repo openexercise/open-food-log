@@ -154,7 +154,7 @@ serving that has no weight, so `nutrients_per_100g` is `{}`.
 
 ## 4. Nutrients
 
-[`nutrients.json`](../schema/v0/nutrients.json) lists the 52 keys a document may use. Each key ends in
+[`nutrients.json`](../schema/v0/nutrients.json) lists the 85 keys a document may use. Each key ends in
 its unit; there's no other way to give one.
 
 ```json
