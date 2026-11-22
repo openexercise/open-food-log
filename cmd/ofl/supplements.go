@@ -357,11 +357,13 @@ func supplementAmount(key, keyUnit string, amount float64, unit string) (value f
 	return 0, howNoneUnit
 }
 
-// iuFactors is what one IU weighs in the key's unit, per form where the form changes it. From the
-// NIH Office of Dietary Supplements' unit conversions for the 2016 labelling rule: vitamin D 1 IU
-// = 0.025 mcg whatever the form; vitamin A 1 IU = 0.3 mcg RAE as retinol or as beta-carotene in a
-// supplement (0.05 as beta-carotene in food); vitamin E 1 IU = 0.67 mg as natural d-alpha-
-// tocopherol and 0.45 mg as synthetic dl-alpha-tocopherol.
+// iuFactors is what one IU weighs in the key's unit, per form where the form changes it. From FDA's
+// "Converting Units of Measure for Folate, Niacin, and Vitamins A, D, and E on the Nutrition and
+// Supplement Facts Labels: Guidance for Industry" (August 2019), checked against it on 2026-11-22:
+// vitamin D 1 IU = 0.025 mcg whatever the form (Table 4); vitamin A 1 IU = 0.3 mcg RAE as retinol
+// or as beta-carotene in a supplement, 0.05 as beta-carotene in food (Table 3); vitamin E 1 IU =
+// 0.67 mg as natural RRR- (d-) alpha-tocopherol and 0.45 mg as synthetic all-rac- (dl-) alpha-
+// tocopherol, esters included (Table 6).
 var iuFactors = map[string][]float64{
 	"vitamin_d_ug":     {0.025},
 	"vitamin_a_rae_ug": {0.3},
@@ -423,12 +425,15 @@ type dailyValue struct {
 // dailyValues are the Reference Daily Intakes and Daily Reference Values of 21 CFR 101.9(c)(8)(iv)
 // and (c)(9) for adults and children 4 or more years of age. Current: as amended by "Food
 // Labeling: Revision of the Nutrition and Supplement Facts Labels", 81 FR 33742 (27 May 2016),
-// required on labels from 1 January 2020 (2021 for smaller manufacturers). Before: the same
-// paragraphs as they stood before that rule (FDA's "Daily Value on the Nutrition and Supplement
-// Facts Labels" lists both side by side). Old values stated in IU are also given in the key's
-// unit: vitamin A 5,000 IU as 1,500 mcg, vitamin D 400 IU as 10 mcg, vitamin E 30 IU as 20.1 mg
-// natural or 13.5 mg synthetic. Folic acid has no daily value of its own: its row is read against
-// folate's, 400 mcg before and 400 mcg DFE now (235 mcg of folic acid, at 1.7 DFE each).
+// whose compliance dates (26 July 2018, 2019 for manufacturers under $10 million in food sales)
+// 83 FR 19619 (4 May 2018) moved to 1 January 2020 and 2021; the same as FDA's "Daily Value on
+// the Nutrition and Supplement Facts Labels" table. Before: the same paragraphs in the 2015 edition
+// of 21 CFR (govinfo, CFR-2015-title21-vol2-sec101-9). All checked against those sources on
+// 2026-11-22. Old values stated in IU are also given in the key's unit: vitamin A 5,000 IU as
+// 1,500 mcg, vitamin D 400 IU as 10 mcg, vitamin E 30 IU as 20.1 mg natural or 13.5 mg synthetic.
+// Folic acid has no daily value of its own: its row is read against folate's, 400 mcg before and
+// 400 mcg DFE now (235 mcg of folic acid, at 1.7 DFE each: the factor FDA's unit guidance above
+// gives, though the regulation's DFE footnote, 1 DFE = 0.6 mcg folic acid, works out to 1.67).
 // Choline and added sugars had no daily value before the rule.
 var dailyValues = map[string]dailyValue{
 	"fat_g":               {current: 78, before: []float64{65}},
