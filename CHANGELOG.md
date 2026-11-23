@@ -30,6 +30,16 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+### Fixed
+
+- **Everyday words found the wrong food first:** "spaghetti" offered dry spinach spaghetti, "chips" rice
+  chips and "chocolate" a 60–69% dark chocolate. Curated aliases now give "spaghetti" (and "cooked
+  spaghetti", "spaghetti noodles", "plain spaghetti") to Pasta, cooked; "chips", "crisps" and "potato crisps"
+  to Potato chips, NFS; and "chocolate", "milk chocolate", "chocolate bar" and "milk chocolate bar" to
+  Chocolate candy, the survey's milk chocolate. "Milk chocolate" moves from SR Legacy's "Candies, milk
+  chocolate" (a model's alias), since the survey food has a default portion. Each is held by
+  `sources/alias-checks.jsonl`.
+
 ## v0.15.0 — 2026-11-21
 
 Open Food Log v0.4: 33 more nutrient keys (52 to 85), filled in the catalogue from FoodData Central.
