@@ -214,3 +214,7 @@
 {"phrase": "stewed turkey", "id": "ofc:turkey-light-or-dark-meat-stewed-skin-not-eaten"}
 {"phrase": "vanilla pudding mix", "id": "ofc:puddings-vanilla-dry-mix-regular"}
 {"phrase": "wine", "id": "ofc:alcoholic-beverage-wine-table-all"}
+{"phrase": "spaghetti", "id": "ofc:pasta-cooked"}
+{"phrase": "chips", "id": "ofc:potato-chips-nfs"}
+{"phrase": "chocolate", "id": "ofc:chocolate-candy"}
+{"phrase": "milk chocolate", "id": "ofc:chocolate-candy"}
