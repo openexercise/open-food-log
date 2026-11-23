@@ -30,6 +30,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+## v0.15.1 — 2026-11-23
+
+Everyday words find the everyday food: "spaghetti", "chips" and "chocolate" no longer offer spinach
+spaghetti, rice chips or dark chocolate first. No change to the format.
+
 ### Fixed
 
 - **Everyday words found the wrong food first:** "spaghetti" offered dry spinach spaghetti, "chips" rice
