@@ -30,6 +30,11 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+- **Changed:** `cmd/aliases` with no subcommand asks Claude Haiku through the Claude API
+  (`ANTHROPIC_API_KEY`) instead of Gemini. Gemini on Vertex AI is now the backup, used only when the
+  Claude API is rate-limited, erroring or unreachable and `OFL_GCP_PROJECT` is set (it is no longer
+  required). Each saved answer names the model that gave it. Still not run: no alias changed.
+
 ## v0.15.1 — 2026-11-23
 
 Everyday words find the everyday food: "spaghetti", "chips" and "chocolate" no longer offer spinach

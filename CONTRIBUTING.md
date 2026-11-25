@@ -163,11 +163,12 @@ changes meaning and is never reused: a food that goes away gets `status: replace
 ### Aliases
 
 Aliases are what people call a food. 1,680 come from the shape of names, with no model
-("Apple, raw" is also "raw apple"; "X, NFS" is also "x"). `cmd/aliases` can ask a model (Gemini on
-Vertex AI) for more:
+("Apple, raw" is also "raw apple"; "X, NFS" is also "x"). `cmd/aliases` can ask a model for more:
+Claude Haiku (`ANTHROPIC_API_KEY`), with Gemini on Vertex AI as the backup when `OFL_GCP_PROJECT` is
+set and the Claude API is unavailable:
 
 ```bash
-OFL_GCP_PROJECT=<project> go run ./cmd/aliases
+go run ./cmd/aliases
 ```
 
 It sends food names only, and appends the answers to `sources/aliases.jsonl` with the model and
