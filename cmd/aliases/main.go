@@ -3,9 +3,11 @@
 // merges the answers without calling the model. It sends names only and asks for names only: no
 // numbers come from the model.
 //
-// With no subcommand it asks Gemini on Vertex AI, one food at a time:
+// With no subcommand it asks Claude Haiku (ANTHROPIC_API_KEY, or an `ant auth login` profile), a
+// batch of foods at a time. With OFL_GCP_PROJECT set, Gemini on Vertex AI is the backup when the
+// Claude API is unavailable; each answer is saved with the model that gave it:
 //
-//	OFL_GCP_PROJECT=<project> go run ./cmd/aliases [-limit N]
+//	[OFL_GCP_PROJECT=<project>] go run ./cmd/aliases [-limit N]
 //
 // The /food-aliases skill asks Claude Haiku instead, a family of related foods at a time, so the
 // plain name of a dish goes to one food alone. Go writes the questions and checks the answers:
@@ -26,17 +28,13 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
-
-	"google.golang.org/genai"
 )
 
 const (
-	model    = "gemini-3.8-flash"
-	location = "global"
-	workers  = 8
-	batch    = 40
-	source   = "sources/aliases.jsonl"
-	foods    = "catalogue/foods.jsonl"
+	workers = 8
+	batch   = 40
+	source  = "sources/aliases.jsonl"
+	foods   = "catalogue/foods.jsonl"
 )
 
 const system = `You help build an open food catalogue. For each food below, given by its ID and its USDA
@@ -79,10 +77,6 @@ func main() {
 }
 
 func run(ctx context.Context, limit int) error {
-	project := os.Getenv("OFL_GCP_PROJECT")
-	if project == "" {
-		return errors.New("OFL_GCP_PROJECT is required")
-	}
 	done, err := answered()
 	if err != nil {
 		return err
@@ -95,7 +89,7 @@ func run(ctx context.Context, limit int) error {
 		todo = todo[:limit]
 	}
 	fmt.Printf("%d foods to ask about, %d already answered\n", len(todo), len(done))
-	client, err := genai.NewClient(ctx, &genai.ClientConfig{Backend: genai.BackendVertexAI, Project: project, Location: location})
+	client, err := newModels(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +106,7 @@ func run(ctx context.Context, limit int) error {
 	for range workers {
 		wg.Go(func() {
 			for b := range jobs {
-				answers, err := ask(ctx, client, b)
+				answers, model, err := ask(ctx, client, b)
 				if err != nil {
 					failed.Add(int64(len(b)))
 					fmt.Fprintf(os.Stderr, "batch from %s failed: %v\n", b[0][0], err)
@@ -185,9 +179,9 @@ func pending(done map[string]bool) ([][2]string, error) {
 	return out, s.Err()
 }
 
-// ask sends one batch and returns the aliases by ID. An answer that leaves out a food, or names
-// one it wasn't asked about, is refused, and the batch is tried again.
-func ask(ctx context.Context, c *genai.Client, b [][2]string) (map[string][]string, error) {
+// ask sends one batch and returns the aliases by ID and the model that gave them. An answer that
+// leaves out a food, or names one it wasn't asked about, is refused, and the batch is tried again.
+func ask(ctx context.Context, m *models, b [][2]string) (map[string][]string, string, error) {
 	var prompt strings.Builder
 	for _, f := range b {
 		fmt.Fprintf(&prompt, "%s\t%s\n", f[0], f[1])
@@ -197,37 +191,34 @@ func ask(ctx context.Context, c *genai.Client, b [][2]string) (map[string][]stri
 		if attempt > 0 {
 			time.Sleep(time.Duration(attempt*attempt) * 3 * time.Second)
 		}
-		callCtx, cancel := context.WithTimeout(ctx, 120*time.Second)
-		resp, err := c.Models.GenerateContent(callCtx, model, genai.Text(prompt.String()), &genai.GenerateContentConfig{
-			SystemInstruction: genai.NewContentFromText(system, genai.RoleUser),
-			ResponseMIMEType:  "application/json",
-			Temperature:       genai.Ptr[float32](0),
-		})
-		cancel()
+		text, model, err := m.answer(ctx, prompt.String())
 		if err != nil {
 			last = err
 			continue
 		}
-		var answers map[string][]string
-		if err := json.Unmarshal([]byte(resp.Text()), &answers); err != nil {
-			last = fmt.Errorf("not the JSON asked for: %w", err)
+		answers, err := parseAnswers(text, b)
+		if err != nil {
+			last = err
 			continue
 		}
-		if len(answers) != len(b) {
-			last = fmt.Errorf("answered %d foods of %d", len(answers), len(b))
-			continue
-		}
-		missing := false
-		for _, f := range b {
-			if _, ok := answers[f[0]]; !ok {
-				missing = true
-			}
-		}
-		if missing {
-			last = errors.New("the answer's IDs aren't the ones asked about")
-			continue
-		}
-		return answers, nil
+		return answers, model, nil
 	}
-	return nil, last
+	return nil, "", last
+}
+
+// parseAnswers decodes one answer and checks it names exactly the foods asked about.
+func parseAnswers(text string, b [][2]string) (map[string][]string, error) {
+	var answers map[string][]string
+	if err := json.Unmarshal(jsonBody(text), &answers); err != nil {
+		return nil, fmt.Errorf("not the JSON asked for: %w", err)
+	}
+	if len(answers) != len(b) {
+		return nil, fmt.Errorf("answered %d foods of %d", len(answers), len(b))
+	}
+	for _, f := range b {
+		if _, ok := answers[f[0]]; !ok {
+			return nil, errors.New("the answer's IDs aren't the ones asked about")
+		}
+	}
+	return answers, nil
 }
