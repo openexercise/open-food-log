@@ -277,6 +277,9 @@ go run ./cmd/ofl site dist
 - Keep `## Still to do` current: add what you leave undone, remove what ships.
 - `CHANGELOG.md` covers this repository. The format's own changelog, `schema/CHANGELOG.md`, is
   published from Lifterclub; don't edit it here.
+- Pull requests are squash-merged, so the pull request's title becomes the commit on `main`: it
+  must be a conventional commit too. CI's `required` check (the tests and builds, a title check
+  and a secret scan) must pass before a pull request can merge.
 
 ## Releases
 

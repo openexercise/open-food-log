@@ -30,6 +30,13 @@ Known gaps and deferred work, removed when it ships (and recorded under Unreleas
 
 ## Unreleased
 
+- **Changed:** `main` is protected (pull request, squash only, linear history, no force push or
+  deletion), and release tags can't be moved or deleted. CI's `required` job is the one check a pull
+  request needs: it covers the existing jobs plus a PR title check and gitleaks on the pull
+  request's commits. Every action is pinned to a SHA on `ubuntu-24.04`, workflows get read-only
+  permissions and timeouts, the Pages deploy now reports its URL (its step had no `id`), and the
+  repository gains Dependabot, CODEOWNERS and a PR template.
+
 - **Changed:** `cmd/aliases` with no subcommand asks Claude Haiku through the Claude API
   (`ANTHROPIC_API_KEY`) instead of Gemini. Gemini on Vertex AI is now the backup, used only when the
   Claude API is rate-limited, erroring or unreachable and `OFL_GCP_PROJECT` is set (it is no longer
